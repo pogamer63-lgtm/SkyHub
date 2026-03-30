@@ -132,6 +132,8 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         <a href={`/player/${profile.username}/mining`}      className="flex items-center gap-1.5 rounded-lg border border-sky-500/20 bg-sky-500/5 hover:bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-300 transition-colors">⛏ Mining</a>
         <a href={`/player/${profile.username}/dungeons`}    className="flex items-center gap-1.5 rounded-lg border border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-300 transition-colors">🏰 Dungeons</a>
         <a href={`/player/${profile.username}/slayer`}      className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 transition-colors">⚔️ Slayer</a>
+        <a href={`/player/${profile.username}/gear`}        className="flex items-center gap-1.5 rounded-lg border border-slate-500/20 bg-slate-500/5 hover:bg-slate-500/10 px-4 py-2 text-sm font-medium text-slate-300 transition-colors">🛡️ Gear</a>
+        <a href={`/player/${profile.username}/money`}       className="flex items-center gap-1.5 rounded-lg border border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 px-4 py-2 text-sm font-medium text-yellow-300 transition-colors">💰 Money</a>
         <a href={`/player/${profile.username}/accessories`} className="flex items-center gap-1.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300 transition-colors">💍 Accessories</a>
       </div>
 
