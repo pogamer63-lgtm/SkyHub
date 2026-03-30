@@ -5,6 +5,7 @@ import { generateRecommendations } from '@/lib/recommendations/engine';
 import { getAvatarUrl } from '@/lib/providers/skins/skin-provider';
 import { getBazaarPrices } from '@/lib/api/bazaar';
 import { formatCoins, levelColor, priorityColor, scoreColor } from '@/lib/utils/format';
+import { SKILL_XP_TABLE, xpToNextLevel, levelProgress } from '@/lib/data/xp-tables';
 import { PlayerProfile, Recommendation } from '@/lib/types/player';
 
 interface Props {
@@ -101,6 +102,8 @@ export default async function PlayerPage({ params, searchParams }: Props) {
             <span>Catacombs <strong className="text-white">{profile.dungeons.catacombs.level}</strong></span>
             <span>Coins <strong className="text-yellow-300">{formatCoins(profile.purseCoins + profile.bankCoins)}</strong></span>
             <span>MP <strong className="text-purple-300">{profile.magicalPower}</strong></span>
+            <span>Fairy Souls <strong className="text-pink-300">{profile.fairySouls}</strong></span>
+            <span>Networth <strong className="text-emerald-300">{formatCoins(estimateNetworth(profile))}</strong></span>
           </div>
         </div>
         {/* Profile selector */}
@@ -125,9 +128,10 @@ export default async function PlayerPage({ params, searchParams }: Props) {
 
       {/* Planner Navigation */}
       <div className="flex gap-2 mb-6 flex-wrap">
-        <a href={`/player/${profile.username}/farming`}    className="flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300 transition-colors">🌾 Farming</a>
-        <a href={`/player/${profile.username}/mining`}     className="flex items-center gap-1.5 rounded-lg border border-sky-500/20 bg-sky-500/5 hover:bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-300 transition-colors">⛏ Mining</a>
-        <a href={`/player/${profile.username}/dungeons`}   className="flex items-center gap-1.5 rounded-lg border border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-300 transition-colors">🏰 Dungeons</a>
+        <a href={`/player/${profile.username}/farming`}     className="flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300 transition-colors">🌾 Farming</a>
+        <a href={`/player/${profile.username}/mining`}      className="flex items-center gap-1.5 rounded-lg border border-sky-500/20 bg-sky-500/5 hover:bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-300 transition-colors">⛏ Mining</a>
+        <a href={`/player/${profile.username}/dungeons`}    className="flex items-center gap-1.5 rounded-lg border border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-300 transition-colors">🏰 Dungeons</a>
+        <a href={`/player/${profile.username}/slayer`}      className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 transition-colors">⚔️ Slayer</a>
         <a href={`/player/${profile.username}/accessories`} className="flex items-center gap-1.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300 transition-colors">💍 Accessories</a>
       </div>
 
@@ -137,6 +141,7 @@ export default async function PlayerPage({ params, searchParams }: Props) {
           <SkillsPanel skills={profile.skills} />
           <SlayerPanel slayers={profile.slayers} />
           <DungeonPanel dungeons={profile.dungeons} />
+          <PetsPanel pets={profile.pets} />
         </div>
 
         {/* Right: Recommendations */}
@@ -184,19 +189,48 @@ export default async function PlayerPage({ params, searchParams }: Props) {
   );
 }
 
+// ─── Networth Estimator ───────────────────────────────────────────────────────
+
+const PET_TIER_VALUE: Record<string, number> = {
+  COMMON: 500,
+  UNCOMMON: 5_000,
+  RARE: 100_000,
+  EPIC: 2_000_000,
+  LEGENDARY: 30_000_000,
+  MYTHIC: 80_000_000,
+};
+
+function estimateNetworth(profile: PlayerProfile): number {
+  const coins = profile.purseCoins + profile.bankCoins;
+  // Rough pet portfolio estimate: base value × (level / max_level)^1.5
+  const petValue = profile.pets.reduce((sum, pet) => {
+    const base = PET_TIER_VALUE[pet.tier] ?? 500;
+    const maxLevel = pet.tier === 'LEGENDARY' || pet.tier === 'MYTHIC' ? 200 : 100;
+    const levelFactor = Math.pow(pet.level / maxLevel, 1.5);
+    return sum + base * levelFactor;
+  }, 0);
+  return Math.round(coins + petValue);
+}
+
 // ─── Sub-Components ──────────────────────────────────────────────────────────
 
 function SkillsPanel({ skills }: { skills: PlayerProfile['skills'] }) {
   const entries = [
-    { name: 'Farming', level: skills.farming },
-    { name: 'Mining', level: skills.mining },
-    { name: 'Combat', level: skills.combat },
-    { name: 'Foraging', level: skills.foraging },
-    { name: 'Fishing', level: skills.fishing },
-    { name: 'Enchanting', level: skills.enchanting },
-    { name: 'Alchemy', level: skills.alchemy },
-    { name: 'Taming', level: skills.taming },
+    { name: 'Farming',    level: skills.farming,    xp: skills.farming_xp },
+    { name: 'Mining',     level: skills.mining,     xp: skills.mining_xp },
+    { name: 'Combat',     level: skills.combat,     xp: skills.combat_xp },
+    { name: 'Foraging',   level: skills.foraging,   xp: skills.foraging_xp },
+    { name: 'Fishing',    level: skills.fishing,    xp: skills.fishing_xp },
+    { name: 'Enchanting', level: skills.enchanting, xp: skills.enchanting_xp },
+    { name: 'Alchemy',    level: skills.alchemy,    xp: skills.alchemy_xp },
+    { name: 'Taming',     level: skills.taming,     xp: 0 },
   ];
+
+  function fmtXP(n: number): string {
+    if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+    if (n >= 1_000) return `${(n / 1_000).toFixed(0)}k`;
+    return String(n);
+  }
 
   return (
     <div className="card p-4">
@@ -204,19 +238,30 @@ function SkillsPanel({ skills }: { skills: PlayerProfile['skills'] }) {
         📊 Skills
         <span className="ml-auto text-xs text-slate-500">Avg {(skills.average ?? 0).toFixed(1)}</span>
       </h3>
-      <div className="space-y-2">
-        {entries.map(({ name, level }) => (
-          <div key={name} className="flex items-center gap-2">
-            <span className="text-xs text-slate-400 w-20">{name}</span>
-            <div className="flex-1 h-1.5 rounded-full bg-white/5">
-              <div
-                className="h-full rounded-full bg-indigo-500 transition-all"
-                style={{ width: `${Math.min(100, (level / 60) * 100)}%` }}
-              />
+      <div className="space-y-2.5">
+        {entries.map(({ name, level, xp }) => {
+          const prog = xp > 0 ? levelProgress(xp, SKILL_XP_TABLE) : level / 60;
+          const toNext = xp > 0 ? xpToNextLevel(xp, SKILL_XP_TABLE) : null;
+          const maxed = level >= 60;
+          return (
+            <div key={name}>
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="text-xs text-slate-400 w-20">{name}</span>
+                <div className="flex-1" />
+                {toNext !== null && !maxed && (
+                  <span className="text-xs text-slate-600">{fmtXP(toNext)} to next</span>
+                )}
+                <span className={`text-xs font-medium w-6 text-right ${levelColor(level)}`}>{level}</span>
+              </div>
+              <div className="h-1.5 rounded-full bg-white/5">
+                <div
+                  className={`h-full rounded-full transition-all ${maxed ? 'bg-yellow-500' : 'bg-indigo-500'}`}
+                  style={{ width: `${Math.min(100, prog * 100)}%` }}
+                />
+              </div>
             </div>
-            <span className={`text-xs font-medium w-6 text-right ${levelColor(level)}`}>{level}</span>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -272,6 +317,50 @@ function DungeonPanel({ dungeons }: { dungeons: PlayerProfile['dungeons'] }) {
             <span className="text-slate-300">Lv {data.level}</span>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function PetsPanel({ pets }: { pets: PlayerProfile['pets'] }) {
+  const active = pets.find(p => p.active);
+  const topPets = [...pets].sort((a, b) => {
+    const tierOrder = ['MYTHIC', 'LEGENDARY', 'EPIC', 'RARE', 'UNCOMMON', 'COMMON'];
+    const diff = tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier);
+    return diff !== 0 ? diff : b.level - a.level;
+  }).slice(0, 5);
+
+  const TIER_COLOR: Record<string, string> = {
+    COMMON: 'text-slate-300', UNCOMMON: 'text-green-300', RARE: 'text-blue-300',
+    EPIC: 'text-purple-300', LEGENDARY: 'text-yellow-300', MYTHIC: 'text-pink-300',
+  };
+
+  if (pets.length === 0) return null;
+
+  return (
+    <div className="card p-4">
+      <h3 className="font-medium text-white mb-3 text-sm flex items-center gap-2">
+        🐾 Pets
+        <span className="ml-auto text-xs text-slate-500">{pets.length} total</span>
+      </h3>
+      {active && (
+        <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/5 px-3 py-2 mb-3 flex items-center justify-between text-xs">
+          <span className="text-yellow-300 font-medium">Active: {active.type.replace(/_/g, ' ')}</span>
+          <span className="text-slate-400">Lv {active.level} {active.tier}</span>
+        </div>
+      )}
+      <div className="space-y-1.5">
+        {topPets.map((pet, i) => (
+          <div key={i} className="flex items-center justify-between text-xs">
+            <span className="text-slate-300 truncate">{pet.type.replace(/_/g, ' ')}</span>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-slate-500">Lv {pet.level}</span>
+              <span className={`font-medium ${TIER_COLOR[pet.tier] ?? 'text-slate-400'}`}>{pet.tier.slice(0, 3)}</span>
+              {pet.active && <span className="text-yellow-400">★</span>}
+            </div>
+          </div>
+        ))}
+        {pets.length > 5 && <div className="text-xs text-slate-600 text-center">+{pets.length - 5} more</div>}
       </div>
     </div>
   );
