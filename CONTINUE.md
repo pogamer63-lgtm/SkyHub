@@ -7,6 +7,24 @@
 
 ## ✅ Completed
 
+### Phase 2 (2026-03-30)
+- [x] `lib/api/bazaar.ts` — Hypixel Bazaar price fetcher (no key required, 5min cache)
+- [x] `app/player/[username]/error.tsx` — Error boundary (uses `unstable_retry` per Next.js 16 docs)
+- [x] `app/player/[username]/loading.tsx` — Loading skeleton (Suspense fallback)
+- [x] `app/player/[username]/farming/page.tsx` — Farming Fortune Planner:
+  - Calculates FF from skill, garden level, Jacob perks, crop milestones, active pet
+  - Shows upgrade priority table (what to improve first)
+  - Crop milestone progress per crop (from garden resources)
+  - NBT-gated sources clearly labeled (equipment, armor)
+- [x] `app/player/[username]/mining/page.tsx` — HOTM / Mining Planner:
+  - All 22 HOTM nodes with current vs max levels, powder costs
+  - Priority upgrades panel (essential/high nodes)
+  - Powder balance display (mithril, gemstone, glacite)
+  - Locked nodes shown (grayed out, HOTM level required)
+- [x] `lib/types/player.ts` + `lib/hypixel/parser.ts` — Added `jacobPerks`, `gardenResources`
+- [x] Planner nav buttons added to profile page (Farming + Mining)
+- [x] Build: **PASSES** (7 routes, 0 TS errors)
+
 ### Infrastructure
 - [x] Git initialized, remote set to `https://github.com/pogamer63-lgtm/SkyHub.git`
 - [x] Next.js 16 + TypeScript + Tailwind CSS scaffolded
@@ -75,13 +93,13 @@ git config --global credential.helper manager
 git push origin main  # will prompt for GitHub login
 ```
 
-### 2. Farming Planner Page
+### 2. ~~Farming Planner Page~~ ✅ DONE
 - File: `app/farmer/page.tsx` or `app/player/[username]/farming/page.tsx`
 - Show all Farming Fortune sources for the player
 - Sortable table: fortune gain / cost / fortune per coin
 - Include: skills, equipment, pet, reforges, garden upgrades, Jacob perks
 
-### 3. Mining Planner Page
+### 3. ~~Mining Planner Page~~ ✅ DONE
 - File: `app/player/[username]/mining/page.tsx`
 - HOTM node tree visualization
 - Powder allocation calculator
@@ -98,7 +116,7 @@ git push origin main  # will prompt for GitHub login
 - Currently accessories count is 0 — need real parsing
 - File to update: `lib/hypixel/parser.ts` → `parseAccessories()`
 
-### 6. Bazaar price integration
+### 6. ~~Bazaar price integration~~ ✅ DONE
 - Create `lib/api/bazaar.ts`
 - Fetch from Hypixel Bazaar API: `/v2/skyblock/bazaar`
 - Use prices in recommendation cost estimates

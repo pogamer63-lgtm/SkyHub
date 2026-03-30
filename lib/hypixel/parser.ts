@@ -223,8 +223,10 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
     plots: garden.plots_unlocked ?? 0,
     cropUpgrades: garden.crop_upgrade_levels ?? {},
     jacobMedals: jacob.medals_inv ?? {},
+    jacobPerks: jacob.perks ?? {},
+    gardenResources: garden.resources_collected ?? {},
     copper: garden.copper ?? 0,
-    farmingFortune: 0, // calculated separately
+    farmingFortune: 0, // calculated separately (needs NBT for equipment)
   };
 }
 

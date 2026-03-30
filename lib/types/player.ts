@@ -119,6 +119,8 @@ export interface FarmingProgress {
   plots: number;
   cropUpgrades: Record<string, number>;
   jacobMedals: Record<string, number>;
+  jacobPerks: Record<string, number>;
+  gardenResources: Record<string, number>;
   copper: number;
   farmingFortune: number;
 }

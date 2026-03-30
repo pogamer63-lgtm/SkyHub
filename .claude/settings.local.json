@@ -14,7 +14,8 @@
       "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm install @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-progress @radix-ui/react-tabs @radix-ui/react-tooltip @radix-ui/react-badge @radix-ui/react-separator @radix-ui/react-slot)",
       "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm install @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-progress @radix-ui/react-tabs @radix-ui/react-tooltip @radix-ui/react-separator @radix-ui/react-slot)",
       "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm run build)",
-      "Bash(\"E:/pyton/SkyHub/README.md\":*)"
+      "Bash(\"E:/pyton/SkyHub/README.md\":*)",
+      "Bash(npm run:*)"
     ]
   }
 }

@@ -118,6 +118,22 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         )}
       </div>
 
+      {/* Planner Navigation */}
+      <div className="flex gap-2 mb-6 flex-wrap">
+        <a
+          href={`/player/${profile.username}/farming`}
+          className="flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300 transition-colors"
+        >
+          🌾 Farming Fortune Planner
+        </a>
+        <a
+          href={`/player/${profile.username}/mining`}
+          className="flex items-center gap-1.5 rounded-lg border border-sky-500/20 bg-sky-500/5 hover:bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-300 transition-colors"
+        >
+          ⛏ HOTM / Mining Planner
+        </a>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Stats Overview */}
         <div className="lg:col-span-1 space-y-4">
