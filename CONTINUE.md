@@ -1,13 +1,26 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-03-30
-**Session status:** Phase 1 COMPLETE ✅
+**Session status:** Phase 2 COMPLETE ✅
 
 ---
 
 ## ✅ Completed
 
-### Phase 2 (2026-03-30)
+### Phase 2 — Part 2 (2026-03-30)
+- [x] `lib/hypixel/nbt.ts` — Full NBT parser (base64 → gzip → NBT → item list with rarity/reforge/enchants)
+- [x] `lib/hypixel/parser.ts` → `enrichWithNBT()` — async post-parse accessory enrichment
+- [x] `lib/data/accessories.ts` — Curated accessory database (~55 entries, upgrade chains)
+- [x] `lib/api/auction.ts` — AH lowest BIN fetcher (3 pages, 10min cache)
+- [x] `app/player/[username]/accessories/page.tsx` — Accessory Optimizer:
+  - Real MP from NBT, Bazaar upgrades sorted by MP/1M coins, MP milestones
+- [x] `app/player/[username]/dungeons/page.tsx` — Dungeon Planner:
+  - F1-F7 + MM progress, next milestone, class levels, fastest times
+- [x] Recommendation engine uses real Bazaar prices for cost estimates
+- [x] Profile page: NBT enrichment on load, 4 planner nav links
+- [x] Build: **PASSES** (9 routes, 0 TS errors)
+
+### Phase 2 — Part 1 (2026-03-30)
 - [x] `lib/api/bazaar.ts` — Hypixel Bazaar price fetcher (no key required, 5min cache)
 - [x] `app/player/[username]/error.tsx` — Error boundary (uses `unstable_retry` per Next.js 16 docs)
 - [x] `app/player/[username]/loading.tsx` — Loading skeleton (Suspense fallback)
@@ -105,30 +118,21 @@ git push origin main  # will prompt for GitHub login
 - Powder allocation calculator
 - Next best node to unlock
 
-### 4. Accessory Optimizer Page
-- File: `app/player/[username]/accessories/page.tsx`
-- List all accessories by tier
-- Missing accessories sorted by price
-- MP gain per coin
+### 4. ~~Accessory Optimizer Page~~ ✅ DONE
 
-### 5. Real NBT parsing for inventory
-- Install `prismarine-nbt` for parsing inventory NBT data
-- Currently accessories count is 0 — need real parsing
-- File to update: `lib/hypixel/parser.ts` → `parseAccessories()`
+### 5. ~~Real NBT parsing for inventory~~ ✅ DONE
 
 ### 6. ~~Bazaar price integration~~ ✅ DONE
 - Create `lib/api/bazaar.ts`
 - Fetch from Hypixel Bazaar API: `/v2/skyblock/bazaar`
 - Use prices in recommendation cost estimates
 
-### 7. Auction House price data
-- Create `lib/api/auction.ts`
-- Use lowest BIN prices for gear recommendations
+### 7. ~~Auction House price data~~ ✅ DONE
 
 ### 8. UI polish
-- Add loading skeletons for player page
-- Add error boundary
-- Add profile comparison mode
+- ~~Add loading skeletons for player page~~ ✅ DONE
+- ~~Add error boundary~~ ✅ DONE
+- Add profile comparison mode (Phase 3)
 
 ### 9. PostgreSQL + Prisma
 - Add `prisma/schema.prisma`
@@ -139,11 +143,11 @@ git push origin main  # will prompt for GitHub login
 
 ## ⚠️ Known Issues / Limitations
 
-1. **Accessory count = 0**: NBT parsing not yet implemented. Requires `prismarine-nbt`.
-2. **Recommendation costs are estimates**: Real Bazaar/AH prices not integrated yet.
-3. **Farming Fortune = 0**: Calculation needs gear/equipment data (NBT required).
-4. **No real-time prices**: All cost estimates are static approximations.
-5. **Pet level edge cases**: Uses simplified XP table, may be off for very high levels.
+1. **Accessory MP from talisman bag**: Only works if Hypixel API returns inventory NBT (requires player to have joined recently). Fallback uses `highest_magical_power` from API.
+2. **AH prices approximate**: Only 3 pages scanned of ~60+ total. Use as ballpark only.
+3. **Farming Fortune equipment**: Armor/equipment reforges need NBT (`equipment_contents`). Currently labeled [NBT] with placeholder.
+4. **Accessory list incomplete**: ~55 curated entries; full game has 400+. Phase 3: scrape from wiki or use external dataset.
+5. **Pet level edge cases**: Simplified XP table, may be off at very high levels.
 
 ---
 
@@ -152,10 +156,18 @@ git push origin main  # will prompt for GitHub login
 | File | Purpose |
 |------|---------|
 | `lib/hypixel/client.ts` | Hypixel API + Mojang API requests |
-| `lib/hypixel/parser.ts` | Raw API → PlayerProfile |
+| `lib/hypixel/parser.ts` | Raw API → PlayerProfile + enrichWithNBT |
+| `lib/hypixel/nbt.ts` | NBT parser (base64 → item list) |
 | `lib/recommendations/engine.ts` | Recommendation rules (add new rules here) |
+| `lib/api/bazaar.ts` | Bazaar price fetcher (no key needed) |
+| `lib/api/auction.ts` | AH lowest BIN price fetcher |
+| `lib/data/accessories.ts` | Curated accessory database |
 | `lib/types/player.ts` | All app-level TypeScript types |
 | `app/player/[username]/page.tsx` | Main profile page |
+| `app/player/[username]/farming/page.tsx` | Farming Fortune Planner |
+| `app/player/[username]/mining/page.tsx` | HOTM / Mining Planner |
+| `app/player/[username]/dungeons/page.tsx` | Dungeon Planner |
+| `app/player/[username]/accessories/page.tsx` | Accessory Optimizer |
 | `.env.example` | Environment variable template |
 
 ---
