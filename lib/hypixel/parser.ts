@@ -20,6 +20,7 @@ import {
   FarmingProgress,
   GameStage,
 } from '@/lib/types/player';
+import { parseInventoryNBT, MP_PER_RARITY } from '@/lib/hypixel/nbt';
 
 // XP tables
 const SKILL_XP_TABLE = [
@@ -326,4 +327,44 @@ export function selectBestProfile(
     }
   }
   return parseProfile(best, uuid, username);
+}
+
+/**
+ * Asynchronously enriches a PlayerProfile with NBT-parsed inventory data.
+ * Call this after selectBestProfile / parseProfile in server contexts.
+ * Falls back gracefully if NBT parsing fails.
+ */
+export async function enrichWithNBT(
+  profile: PlayerProfile,
+  rawProfile: SkyBlockProfile,
+  uuid: string,
+): Promise<PlayerProfile> {
+  const member = rawProfile.members[uuid] ?? {};
+  const talismans = member.inventory?.bag_contents?.talisman_bag?.data;
+
+  if (!talismans) return profile;
+
+  try {
+    const items = await parseInventoryNBT(talismans);
+    const accessories = items.filter(i => i.id && !i.id.startsWith('NONE'));
+
+    // Calculate real MP from rarity
+    const realMP = accessories.reduce((sum, item) => sum + (MP_PER_RARITY[item.rarity] ?? 3), 0);
+
+    // Group by rarity for missing calculations
+    const ids = new Set(accessories.map(i => i.id));
+
+    return {
+      ...profile,
+      accessories: {
+        ...profile.accessories,
+        count: accessories.length,
+        magicalPower: Math.max(profile.accessories.magicalPower, realMP),
+        ownedIds: ids,
+      },
+      magicalPower: Math.max(profile.magicalPower, realMP),
+    };
+  } catch {
+    return profile;
+  }
 }

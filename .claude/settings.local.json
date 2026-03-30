@@ -15,7 +15,10 @@
       "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm install @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-progress @radix-ui/react-tabs @radix-ui/react-tooltip @radix-ui/react-separator @radix-ui/react-slot)",
       "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm run build)",
       "Bash(\"E:/pyton/SkyHub/README.md\":*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(npm install:*)",
+      "Bash(node -e \"const nbt = require\\(''prismarine-nbt''\\); console.log\\(Object.keys\\(nbt\\)\\);\")",
+      "Bash(node -e \"const nbt = require\\(''prismarine-nbt''\\); const p = nbt.parse.toString\\(\\); console.log\\(p.slice\\(0, 200\\)\\);\")"
     ]
   }
 }

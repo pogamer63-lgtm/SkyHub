@@ -12,6 +12,7 @@ import {
   RecommendationCategory,
   GameStage,
 } from '@/lib/types/player';
+import { BazaarPrices, getBazaarBuyPrice } from '@/lib/api/bazaar';
 
 // ─── Helper Scorers ────────────────────────────────────────────────────────────
 
@@ -113,9 +114,16 @@ function checkSkillsProgression(profile: PlayerProfile): Recommendation[] {
   return recs;
 }
 
-function checkSlayerProgression(profile: PlayerProfile): Recommendation[] {
+function checkSlayerProgression(profile: PlayerProfile, bazaar?: BazaarPrices): Recommendation[] {
   const recs: Recommendation[] = [];
   const { zombie, spider, wolf, enderman, blaze } = profile.slayers;
+
+  // Estimate Revenant Flesh cost from Bazaar if available
+  const fleshPrice = bazaar ? getBazaarBuyPrice(bazaar, 'REVENANT_FLESH') : 0;
+  const zombieCost = fleshPrice > 0 ? Math.round(fleshPrice * 200) : 1_500_000;
+  const zombieCostLabel = fleshPrice > 0
+    ? `~${formatCoins(zombieCost)} (Revenant Flesh × Bazaar)`
+    : '~1.5M coins (estimate)';
 
   if (zombie.level < 5 && profile.skills.combat >= 12) {
     recs.push({
@@ -124,8 +132,8 @@ function checkSlayerProgression(profile: PlayerProfile): Recommendation[] {
       title: 'Complete Zombie Slayer Level 5',
       description: `You're at Zombie Slayer ${zombie.level}. Reaching level 5 unlocks Revenant armor, which is a huge early-mid game upgrade. Costs roughly 1-2M coins in slayer XP to complete.`,
       whyItMatters: 'Zombie Slayer Level 5 unlocks Revenant Armor — one of the best early progression sets. It also unlocks the Revenant Horror boss for consistent combat XP.',
-      estimatedCost: 1_500_000,
-      estimatedCostLabel: '~1.5M coins (rune, supplies)',
+      estimatedCost: zombieCost,
+      estimatedCostLabel: zombieCostLabel,
       estimatedBenefit: 'Revenant Armor access, strong defense boost, better combat XP',
       roiScore: 88,
       urgencyScore: 85,
@@ -223,9 +231,19 @@ function checkDungeonProgression(profile: PlayerProfile): Recommendation[] {
   return recs;
 }
 
-function checkMagicalPower(profile: PlayerProfile): Recommendation[] {
+function checkMagicalPower(profile: PlayerProfile, bazaar?: BazaarPrices): Recommendation[] {
   const recs: Recommendation[] = [];
   const mp = profile.magicalPower;
+
+  // Estimate cost of cheap accessories from Bazaar
+  const candyRingPrice = bazaar ? getBazaarBuyPrice(bazaar, 'CANDY_RING') : 0;
+  const speedRingPrice = bazaar ? getBazaarBuyPrice(bazaar, 'SPEED_RING') : 0;
+  const cheapAccessoryCost = candyRingPrice > 0 && speedRingPrice > 0
+    ? Math.round((candyRingPrice + speedRingPrice) * 3)
+    : 2_000_000;
+  const cheapAccessoryLabel = bazaar && cheapAccessoryCost < 2_000_000
+    ? `~${formatCoins(cheapAccessoryCost)} (Bazaar accessories)`
+    : '~2M coins (cheap accessories)';
 
   if (mp < 200) {
     recs.push({
@@ -234,8 +252,8 @@ function checkMagicalPower(profile: PlayerProfile): Recommendation[] {
       title: 'Reach 200 Magical Power',
       description: `You have ${mp} Magical Power. Reaching 200 MP is a key early milestone that significantly boosts your stats from talisman synergies.`,
       whyItMatters: 'Magical Power multiplies your stats from accessories. Low MP means you are wasting a huge stat multiplier that costs relatively little to fill.',
-      estimatedCost: 2_000_000,
-      estimatedCostLabel: '~2M coins (cheap accessories)',
+      estimatedCost: cheapAccessoryCost,
+      estimatedCostLabel: cheapAccessoryLabel,
       estimatedBenefit: '+15-25% to all stats from MP scaling',
       roiScore: 90,
       urgencyScore: 85,
@@ -400,16 +418,16 @@ function checkCriticalBlockers(profile: PlayerProfile): Recommendation[] {
 
 // ─── Main Engine ───────────────────────────────────────────────────────────────
 
-export function generateRecommendations(profile: PlayerProfile): RecommendationSet {
+export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarPrices): RecommendationSet {
   const gameStage = determineGameStage(profile);
 
   // Collect all recommendations from all rule modules
   const all: Recommendation[] = [
     ...checkCriticalBlockers(profile),
     ...checkSkillsProgression(profile),
-    ...checkSlayerProgression(profile),
+    ...checkSlayerProgression(profile, bazaar),
     ...checkDungeonProgression(profile),
-    ...checkMagicalPower(profile),
+    ...checkMagicalPower(profile, bazaar),
     ...checkFarmingProgression(profile),
     ...checkMiningProgression(profile),
   ];

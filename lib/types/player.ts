@@ -101,6 +101,8 @@ export interface AccessoryInfo {
   missingEpic: string[];
   selectedPower?: string;
   powers: string[];
+  /** Populated after NBT enrichment */
+  ownedIds?: Set<string>;
 }
 
 export interface MiningProgress {

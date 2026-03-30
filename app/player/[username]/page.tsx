@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
-import { selectBestProfile } from '@/lib/hypixel/parser';
+import { selectBestProfile, enrichWithNBT } from '@/lib/hypixel/parser';
 import { generateRecommendations } from '@/lib/recommendations/engine';
 import { getAvatarUrl } from '@/lib/providers/skins/skin-provider';
+import { getBazaarPrices } from '@/lib/api/bazaar';
 import { formatCoins, levelColor, priorityColor, scoreColor } from '@/lib/utils/format';
 import { PlayerProfile, Recommendation } from '@/lib/types/player';
 
@@ -42,7 +43,9 @@ export default async function PlayerPage({ params, searchParams }: Props) {
       );
       if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
 
-      profile = selectBestProfile([targetProfile], uuid, resolvedName);
+      const parsed = selectBestProfile([targetProfile], uuid, resolvedName);
+      // Enrich with NBT (real accessories) — non-fatal if it fails
+      profile = await enrichWithNBT(parsed, targetProfile, uuid).catch(() => parsed);
     }
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load profile.';
@@ -63,7 +66,9 @@ export default async function PlayerPage({ params, searchParams }: Props) {
     );
   }
 
-  const recs = generateRecommendations(profile);
+  // Fetch Bazaar prices for recommendation cost estimates (non-fatal)
+  const bazaar = await getBazaarPrices().catch(() => undefined);
+  const recs = generateRecommendations(profile, bazaar);
   const avatarUrl = getAvatarUrl(profile.uuid, 128);
 
   return (
@@ -120,18 +125,10 @@ export default async function PlayerPage({ params, searchParams }: Props) {
 
       {/* Planner Navigation */}
       <div className="flex gap-2 mb-6 flex-wrap">
-        <a
-          href={`/player/${profile.username}/farming`}
-          className="flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300 transition-colors"
-        >
-          🌾 Farming Fortune Planner
-        </a>
-        <a
-          href={`/player/${profile.username}/mining`}
-          className="flex items-center gap-1.5 rounded-lg border border-sky-500/20 bg-sky-500/5 hover:bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-300 transition-colors"
-        >
-          ⛏ HOTM / Mining Planner
-        </a>
+        <a href={`/player/${profile.username}/farming`}    className="flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300 transition-colors">🌾 Farming</a>
+        <a href={`/player/${profile.username}/mining`}     className="flex items-center gap-1.5 rounded-lg border border-sky-500/20 bg-sky-500/5 hover:bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-300 transition-colors">⛏ Mining</a>
+        <a href={`/player/${profile.username}/dungeons`}   className="flex items-center gap-1.5 rounded-lg border border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-300 transition-colors">🏰 Dungeons</a>
+        <a href={`/player/${profile.username}/accessories`} className="flex items-center gap-1.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300 transition-colors">💍 Accessories</a>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
