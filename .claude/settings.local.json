@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(git --version)",
+      "Bash(cmd.exe /c \"node --version\")",
+      "Bash(cmd.exe /c \"npm --version\")",
+      "Bash(cmd.exe /c \"git --version\")",
+      "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\")",
+      "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes --name skyhub)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton\" npx create-next-app@latest skyhub-app --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm install zod axios @tanstack/react-query @tanstack/react-query-devtools lucide-react clsx tailwind-merge class-variance-authority)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm install @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-progress @radix-ui/react-tabs @radix-ui/react-tooltip @radix-ui/react-badge @radix-ui/react-separator @radix-ui/react-slot)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm install @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-progress @radix-ui/react-tabs @radix-ui/react-tooltip @radix-ui/react-separator @radix-ui/react-slot)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm\" cd \"E:/pyton/SkyHub\" npm run build)",
+      "Bash(\"E:/pyton/SkyHub/README.md\":*)"
+    ]
+  }
+}
