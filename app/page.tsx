@@ -11,6 +11,19 @@ const FEATURES = [
   { icon: '🛡️', title: 'Gear Analyzer', desc: 'Slot-by-slot armor and weapon analysis with tier ratings and upgrade cost estimates.' },
   { icon: '💎', title: 'Accessory Optimizer', desc: 'Missing accessories ranked by Magical Power per coin spent.' },
   { icon: '💵', title: 'Money Making', desc: 'Account-specific income methods ranked by unlocked potential and coins per hour.' },
+  { icon: '🎣', title: 'Fishing Planner', desc: 'Trophy fish progress, rod tier recommendations, Fishing Fortune sources.' },
+  { icon: '🐾', title: 'Pets Planner', desc: 'Best-in-slot pets per activity, XP leveling guide, tier breakdown.' },
+  { icon: '📊', title: 'Skills Planner', desc: 'XP tracking per skill, leveling methods ranked by cost and XP/hour.' },
+  { icon: '🤖', title: 'Collections & Minions', desc: 'Minion slot tracking, collection milestones, near-milestone alerts.' },
+  { icon: '💎', title: 'Networth Estimate', desc: 'Detailed breakdown: coins, pets, gear, powder, and fairy souls.' },
+  { icon: '⚔️', title: 'Slayer Planner', desc: 'All 6 bosses tracked with XP, level progress, and recommended next tier.' },
+];
+
+const STATS = [
+  { value: '19', label: 'Routes & Pages' },
+  { value: '12+', label: 'Planner Categories' },
+  { value: '11', label: 'Recommendation Rules' },
+  { value: 'Live', label: 'Bazaar & AH Prices' },
 ];
 
 export default async function HomePage() {
@@ -40,13 +53,28 @@ export default async function HomePage() {
         <SearchForm recentSearches={recentNames} />
       </section>
 
+      {/* Stats bar */}
+      <section className="border-t border-white/5 px-4 py-8 bg-slate-900/30">
+        <div className="mx-auto max-w-3xl">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+            {STATS.map(s => (
+              <div key={s.label}>
+                <div className="text-2xl font-bold text-indigo-300">{s.value}</div>
+                <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="border-t border-white/5 px-4 py-16">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-2xl font-semibold text-slate-300 mb-12">More than a stat viewer</h2>
+          <h2 className="text-center text-2xl font-semibold text-slate-300 mb-2">More than a stat viewer</h2>
+          <p className="text-center text-sm text-slate-500 mb-12">Every page is built around one question: <em>what should I do next?</em></p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {FEATURES.map(f => (
-              <div key={f.title} className="card p-5 hover:border-white/20 transition-colors">
+              <div key={f.title + f.desc} className="card p-5 hover:border-white/20 transition-colors">
                 <div className="mb-3 text-2xl">{f.icon}</div>
                 <h3 className="font-semibold text-white mb-1">{f.title}</h3>
                 <p className="text-sm text-slate-400">{f.desc}</p>
@@ -54,6 +82,14 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* CTA */}
+      <section className="border-t border-white/5 px-4 py-12 text-center">
+        <p className="text-slate-400 text-sm mb-4">Ready to optimize your SkyBlock progression?</p>
+        <a href="#search" className="inline-block rounded-lg bg-indigo-600 hover:bg-indigo-500 px-6 py-3 text-sm font-medium text-white transition-colors">
+          Analyze Your Profile →
+        </a>
       </section>
     </div>
   );
