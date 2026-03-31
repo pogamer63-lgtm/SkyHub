@@ -149,6 +149,7 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         <a href={`/player/${profile.username}/accessories`} className="flex items-center gap-1.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300 transition-colors">💍 Accessories</a>
         <a href={`/player/${profile.username}/fishing`}      className="flex items-center gap-1.5 rounded-lg border border-cyan-500/20 bg-cyan-500/5 hover:bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-300 transition-colors">🎣 Fishing</a>
         <a href={`/player/${profile.username}/collections`}  className="flex items-center gap-1.5 rounded-lg border border-teal-500/20 bg-teal-500/5 hover:bg-teal-500/10 px-4 py-2 text-sm font-medium text-teal-300 transition-colors">🤖 Collections</a>
+        <a href={`/player/${profile.username}/pets`}         className="flex items-center gap-1.5 rounded-lg border border-pink-500/20 bg-pink-500/5 hover:bg-pink-500/10 px-4 py-2 text-sm font-medium text-pink-300 transition-colors">🐾 Pets</a>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
