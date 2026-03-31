@@ -219,6 +219,9 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
     else break;
   }
 
+  const contests = jacob.contests ?? {};
+  const contestsParticipated = Object.keys(contests).length;
+
   return {
     gardenLevel,
     plots: garden.plots_unlocked ?? 0,
@@ -227,7 +230,9 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
     jacobPerks: jacob.perks ?? {},
     gardenResources: garden.resources_collected ?? {},
     copper: garden.copper ?? 0,
-    farmingFortune: 0, // calculated separately (needs NBT for equipment)
+    farmingFortune: 0,
+    uniqueGolds: jacob.unique_golds2 ?? [],
+    contestsParticipated,
   };
 }
 

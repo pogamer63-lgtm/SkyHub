@@ -125,6 +125,8 @@ export interface FarmingProgress {
   gardenResources: Record<string, number>;
   copper: number;
   farmingFortune: number;
+  uniqueGolds: string[];
+  contestsParticipated: number;
 }
 
 // Recommendation types

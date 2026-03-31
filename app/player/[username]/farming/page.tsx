@@ -525,6 +525,43 @@ export default async function FarmingPage({ params, searchParams }: Props) {
         </div>
       )}
 
+      {/* Jacob's Farming */}
+      <div className="card p-5 mb-6">
+        <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
+          🏅 Jacob&apos;s Farming
+          <span className="text-xs font-normal text-slate-500">{profile.farming.contestsParticipated} contests entered</span>
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          {[
+            { key: 'bronze',   label: 'Bronze',   color: 'text-amber-700',   bg: 'border-amber-700/20 bg-amber-700/5' },
+            { key: 'silver',   label: 'Silver',   color: 'text-slate-300',   bg: 'border-slate-500/20 bg-slate-500/5' },
+            { key: 'gold',     label: 'Gold',     color: 'text-yellow-300',  bg: 'border-yellow-500/20 bg-yellow-500/5' },
+            { key: 'platinum', label: 'Platinum', color: 'text-cyan-300',    bg: 'border-cyan-500/20 bg-cyan-500/5' },
+            { key: 'diamond',  label: 'Diamond',  color: 'text-blue-300',    bg: 'border-blue-500/20 bg-blue-500/5' },
+          ].filter(m => (profile.farming.jacobMedals[m.key] ?? 0) > 0 || m.key === 'gold').map(medal => (
+            <div key={medal.key} className={`rounded-lg border p-3 text-center ${medal.bg}`}>
+              <div className={`text-xl font-bold ${medal.color}`}>{profile.farming.jacobMedals[medal.key] ?? 0}</div>
+              <div className="text-xs text-slate-500 mt-0.5">{medal.label} Medals</div>
+            </div>
+          ))}
+        </div>
+        {profile.farming.uniqueGolds.length > 0 && (
+          <div>
+            <div className="text-xs text-yellow-400 font-medium mb-2">🥇 Gold Medal Crops ({profile.farming.uniqueGolds.length})</div>
+            <div className="flex flex-wrap gap-1.5">
+              {profile.farming.uniqueGolds.map(crop => (
+                <span key={crop} className="rounded-full border border-yellow-500/30 bg-yellow-500/10 px-2 py-0.5 text-xs text-yellow-300 capitalize">
+                  {crop.replace(/_/g, ' ').toLowerCase()}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+        {profile.farming.uniqueGolds.length === 0 && profile.farming.contestsParticipated > 0 && (
+          <p className="text-xs text-slate-500">No gold medals yet — aim for top placement in Jacob contests to earn gold medals per crop.</p>
+        )}
+      </div>
+
       {/* Crop Milestones */}
       <div className="card p-5">
         <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
