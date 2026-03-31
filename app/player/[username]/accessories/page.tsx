@@ -6,6 +6,7 @@ import { ACCESSORY_LIST, ACCESSORY_BY_ID, AccessoryEntry } from '@/lib/data/acce
 import { PlayerProfile } from '@/lib/types/player';
 import { formatCoins } from '@/lib/utils/format';
 import { MP_PER_RARITY, ItemRarity } from '@/lib/hypixel/nbt';
+import { getUncuratedAccessories } from '@/lib/data/accessories-api';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -132,6 +133,15 @@ export default async function AccessoriesPage({ params, searchParams }: Props) {
 
   const bazaarMissing = sortedMissing.filter(a => a.bazaarPrice !== null && a.bazaarPrice > 0).slice(0, 15);
   const ahMissing = sortedMissing.filter(a => a.bazaarPrice === null || a.bazaarPrice === 0).slice(0, 10);
+
+  // Fetch additional accessories from Hypixel Items API (all 400+ accessories)
+  const curatedIds = new Set(ACCESSORY_LIST.map(a => a.id));
+  const apiExtras = hasNBT
+    ? (await getUncuratedAccessories(curatedIds))
+        .filter(a => !ownedIds.has(a.id))
+        .sort((a, b) => b.mp - a.mp)
+        .slice(0, 30)
+    : [];
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -264,6 +274,29 @@ export default async function AccessoriesPage({ params, searchParams }: Props) {
           Each MP milestone unlocks stronger stat scaling from your accessories.
         </p>
       </div>
+
+      {/* API-sourced additional accessories */}
+      {apiExtras.length > 0 && (
+        <div className="card p-5 mt-6">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-semibold text-white">Additional Missing Accessories</h2>
+            <span className="text-xs text-slate-500 bg-slate-800 rounded-full px-2 py-0.5">
+              From Hypixel Items API · {apiExtras.length} shown
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 mb-3">
+            These accessories exist in the full game data but are not in our curated database. Prices may not be available.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {apiExtras.map(acc => (
+              <div key={acc.id} className={`rounded-lg border px-3 py-2 text-xs ${RARITY_COLORS[acc.rarity]}`}>
+                <div className="font-medium truncate">{acc.name}</div>
+                <div className="text-slate-500 mt-0.5">+{acc.mp} MP · {acc.rarity}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
