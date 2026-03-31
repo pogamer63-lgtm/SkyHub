@@ -31,22 +31,24 @@ export default async function PlayerPage({ params, searchParams }: Props) {
   try {
     const { uuid, username: resolvedName } = await resolvePlayer(username);
 
-    // Try snapshot cache first (5-min TTL in DB)
+    // Always fetch profile list (for switcher), then try snapshot cache
+    const profilesRes = await getSkyBlockProfiles(uuid);
+
+    if (profilesRes.success && profilesRes.profiles?.length) {
+      allProfiles = profilesRes.profiles.map(p => ({
+        id: p.profile_id,
+        name: p.cute_name,
+        selected: p.selected ?? false,
+      }));
+    }
+
     const cached = await loadSnapshot(uuid, profileId ?? undefined).catch(() => null);
     if (cached) {
       profile = cached;
     } else {
-      const profilesRes = await getSkyBlockProfiles(uuid);
-
       if (!profilesRes.success || !profilesRes.profiles?.length) {
         error = 'No SkyBlock profiles found for this player.';
       } else {
-        allProfiles = profilesRes.profiles.map(p => ({
-          id: p.profile_id,
-          name: p.cute_name,
-          selected: p.selected ?? false,
-        }));
-
         let targetProfile = profilesRes.profiles.find(p =>
           p.profile_id === profileId || p.cute_name.toLowerCase() === profileId?.toLowerCase()
         );
@@ -153,6 +155,7 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         <a href={`/player/${profile.username}/skills`}       className="flex items-center gap-1.5 rounded-lg border border-indigo-500/20 bg-indigo-500/5 hover:bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300 transition-colors">📊 Skills</a>
         <a href={`/player/${profile.username}/networth`}     className="flex items-center gap-1.5 rounded-lg border border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 px-4 py-2 text-sm font-medium text-yellow-300 transition-colors">💎 Networth</a>
         <a href={`/player/${profile.username}/museum`}       className="flex items-center gap-1.5 rounded-lg border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-300 transition-colors">🏛 Museum</a>
+        <a href={`/player/${profile.username}/bestiary`}     className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 transition-colors">📖 Bestiary</a>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

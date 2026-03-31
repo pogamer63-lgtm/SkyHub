@@ -18,11 +18,12 @@ const FEATURES = [
   { icon: '💎', title: 'Networth Estimate', desc: 'Detailed breakdown: coins, pets, gear, powder, and fairy souls.' },
   { icon: '⚔️', title: 'Slayer Planner', desc: 'All 6 bosses tracked with XP, level progress, and recommended next tier.' },
   { icon: '🏛', title: 'Museum Tracker', desc: 'Track donated items, museum value milestones, and Magical Power earned from the museum.' },
+  { icon: '📖', title: 'Bestiary', desc: 'Mob kill tracking, milestone level progress per family, completion percentage.' },
 ];
 
 const STATS = [
-  { value: '21', label: 'Routes & Pages' },
-  { value: '13+', label: 'Planner Categories' },
+  { value: '22', label: 'Routes & Pages' },
+  { value: '14+', label: 'Planner Categories' },
   { value: '15', label: 'Recommendation Rules' },
   { value: 'Live', label: 'Bazaar & AH Prices' },
 ];
