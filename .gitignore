@@ -54,3 +54,6 @@ __pycache__/
 Thumbs.db
 
 /lib/generated/prisma
+
+# Texture pack source (already extracted to public/items/)
+/temp/
