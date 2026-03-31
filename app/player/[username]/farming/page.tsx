@@ -1,7 +1,9 @@
 import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
+import { parseInventoryNBT, ParsedItem } from '@/lib/hypixel/nbt';
 import { PlayerProfile } from '@/lib/types/player';
+import { SkyBlockProfile } from '@/lib/types/hypixel';
 import { formatCoins } from '@/lib/utils/format';
 
 interface Props {
@@ -77,6 +79,61 @@ function getNextMilestoneAt(cropKey: string, currentLevel: number): number | nul
   return thresholds[currentLevel];
 }
 
+// ─── Farming Equipment FF Database ───────────────────────────────────────────
+
+/** Known farming armor/equipment items and their FF bonus */
+const FARMING_ARMOR_FF: Record<string, number> = {
+  // Lotus set (Bazaar, ~5M/piece)
+  LOTUS_HAT: 60, LOTUS_CHESTPLATE: 60, LOTUS_LEGGINGS: 60, LOTUS_BOOTS: 60,
+  // Fermento set (Kuudra)
+  FERMENTO_HAT: 60, FERMENTO_CHESTPLATE: 60, FERMENTO_LEGGINGS: 60, FERMENTO_BOOTS: 60,
+  // Rancher's Boots (speed-based, rough estimate)
+  RANCHER_BOOTS: 15,
+  // Rabbit Hat (Hypixel shop / Jacob rewards)
+  RABBIT_HAT: 5,
+  // Melon Helmet (early game)
+  MELON_HAT: 10,
+};
+
+/** Equipment reforges that give farming fortune */
+const FARMING_REFORGE_FF: Record<string, number> = {
+  'turbo-crop': 5,  // +5 FF per equipment piece
+  'bountiful': 4,   // Bountiful reforge on equipment
+};
+
+/** Calculate FF from parsed armor/equipment items */
+function calcGearFF(items: ParsedItem[]): { ff: number; breakdown: string[] } {
+  let ff = 0;
+  const breakdown: string[] = [];
+
+  for (const item of items) {
+    if (!item.id || item.id === 'AIR') continue;
+
+    // Check armor/equipment FF by item ID
+    for (const [key, bonus] of Object.entries(FARMING_ARMOR_FF)) {
+      if (item.id.includes(key)) {
+        ff += bonus;
+        breakdown.push(`${item.name || key}: +${bonus} FF`);
+        break;
+      }
+    }
+
+    // Check reforge FF
+    if (item.reforge) {
+      const reforgeKey = item.reforge.toLowerCase();
+      for (const [reforge, bonus] of Object.entries(FARMING_REFORGE_FF)) {
+        if (reforgeKey.includes(reforge)) {
+          ff += bonus;
+          breakdown.push(`${item.name || item.id} (${item.reforge} reforge): +${bonus} FF`);
+          break;
+        }
+      }
+    }
+  }
+
+  return { ff, breakdown };
+}
+
 // ─── FF Source Calculation ────────────────────────────────────────────────────
 
 interface FFSource {
@@ -90,7 +147,7 @@ interface FFSource {
   upgradeCost?: string;
 }
 
-function calculateFFSources(profile: PlayerProfile): FFSource[] {
+function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], equipItems: ParsedItem[]): FFSource[] {
   const sources: FFSource[] = [];
   const { skills, farming, pets } = profile;
 
@@ -194,26 +251,34 @@ function calculateFFSources(profile: PlayerProfile): FFSource[] {
     });
   }
 
-  // 6. Equipment Reforges (NBT required)
+  // 6. Armor FF (from NBT if available)
+  const armorGear = calcGearFF(armorItems);
+  const hasArmorNBT = armorItems.some(i => i.id && i.id !== 'AIR' && i.name);
+  sources.push({
+    name: 'Armor Set',
+    category: 'Gear',
+    current: armorGear.ff,
+    max: 240,
+    notes: hasArmorNBT
+      ? (armorGear.breakdown.length > 0 ? armorGear.breakdown.join(', ') : 'No farming armor detected')
+      : 'Requires recent login for NBT data',
+    needsNBT: !hasArmorNBT,
+    upgradeHint: armorGear.ff === 0 ? 'Lotus or Fermento set gives +60 FF/piece (best farming armor)' : undefined,
+  });
+
+  // 7. Equipment FF (from NBT if available)
+  const equipGear = calcGearFF(equipItems);
+  const hasEquipNBT = equipItems.some(i => i.id && i.id !== 'AIR' && i.name);
   sources.push({
     name: 'Equipment Reforges',
     category: 'Gear',
-    current: 0,
-    max: 120,
-    notes: 'Requires gear scan',
-    needsNBT: true,
-    upgradeHint: 'Turbo-Crop reforges give +5 FF each (5 equipment slots)',
-  });
-
-  // 7. Farming Armor (NBT required)
-  sources.push({
-    name: 'Armor Bonus',
-    category: 'Gear',
-    current: 0,
-    max: 200,
-    notes: 'Requires gear scan',
-    needsNBT: true,
-    upgradeHint: 'Rancher → Fermento → Blessed armor for FF',
+    current: equipGear.ff,
+    max: 25,
+    notes: hasEquipNBT
+      ? (equipGear.breakdown.length > 0 ? equipGear.breakdown.join(', ') : 'No farming equipment reforges detected')
+      : 'Requires recent login for NBT data',
+    needsNBT: !hasEquipNBT,
+    upgradeHint: equipGear.ff < 20 ? 'Turbo-Crop reforge gives +5 FF per equipment piece' : undefined,
   });
 
   return sources;
@@ -261,6 +326,8 @@ export default async function FarmingPage({ params, searchParams }: Props) {
   const { profile: profileId } = await searchParams;
 
   let profile: PlayerProfile | null = null;
+  let armorItems: ParsedItem[] = [];
+  let equipItems: ParsedItem[] = [];
   let error: string | null = null;
 
   try {
@@ -275,6 +342,17 @@ export default async function FarmingPage({ params, searchParams }: Props) {
       );
       if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
       profile = selectBestProfile([targetProfile], uuid, resolvedName);
+
+      // Parse armor + equipment NBT for real FF values
+      const member = targetProfile.members[uuid] ?? {};
+      const armorData = member.inventory?.armor?.data;
+      if (armorData) {
+        try { armorItems = await parseInventoryNBT(armorData, true); } catch { /* non-fatal */ }
+      }
+      const equipData = member.inventory?.equipment_contents?.data;
+      if (equipData) {
+        try { equipItems = await parseInventoryNBT(equipData, true); } catch { /* non-fatal */ }
+      }
     }
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load profile.';
@@ -295,7 +373,7 @@ export default async function FarmingPage({ params, searchParams }: Props) {
     );
   }
 
-  const ffSources = calculateFFSources(profile);
+  const ffSources = calculateFFSources(profile, armorItems, equipItems);
   const knownFF = ffSources.filter(s => !s.needsNBT).reduce((sum, s) => sum + s.current, 0);
   const maxKnownFF = ffSources.filter(s => !s.needsNBT).reduce((sum, s) => sum + s.max, 0);
   const cropProgress = getCropProgress(profile.farming.gardenResources);

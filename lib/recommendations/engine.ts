@@ -359,6 +359,282 @@ function checkMiningProgression(profile: PlayerProfile): Recommendation[] {
   return recs;
 }
 
+function checkGearProgression(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const cat = profile.dungeons.catacombs.level;
+  const combat = profile.skills.combat;
+  const avg = profile.skills.average ?? 0;
+
+  // Early game: push to hardened diamond / basic set
+  if (combat < 15 && avg < 20) {
+    recs.push({
+      id: 'gear_early_armor',
+      category: 'combat',
+      title: 'Upgrade to Hardened Diamond Armor',
+      description: 'Hardened Diamond is the best early-game armor set before dragons. It costs only 20k–50k and dramatically improves survivability.',
+      whyItMatters: 'Dying repeatedly wastes time and coins. Hardened Diamond lets you grind combat/slayer efficiently.',
+      estimatedCost: 40_000,
+      estimatedCostLabel: '~40k from Bazaar/AH',
+      estimatedBenefit: '+600 Defense, great survivability, cheap upgrade',
+      roiScore: 92,
+      urgencyScore: 80,
+      progressionScore: 75,
+      requirementScore: 0,
+      confidenceScore: 88,
+      sourceTags: ['gear', 'armor', 'cheap'],
+      dependsOn: [],
+      unlocks: ['better_slayer', 'faster_grinding'],
+      gameStage: ['early'],
+      priority: 'high',
+      type: 'cheapest',
+    });
+  }
+
+  // Mid game: push to dragon / perfect set
+  if (cat >= 10 && cat < 25 && combat >= 20 && avg >= 20) {
+    recs.push({
+      id: 'gear_dragon_set',
+      category: 'combat',
+      title: 'Upgrade to a Dragon Armor Set',
+      description: 'Dragon Armor (Strong, Unstable, or Superior) is a massive mid-game upgrade. Strong Dragon is the best budget option for general combat.',
+      whyItMatters: 'Dragon Armor provides set bonuses that significantly multiply combat effectiveness. Moving from early to dragon armor is one of the biggest power spikes.',
+      estimatedCost: 2_000_000,
+      estimatedCostLabel: '~2M (Strong Dragon set)',
+      estimatedBenefit: '+800 Strength/Crit Damage from set bonuses, major DPS increase',
+      roiScore: 85,
+      urgencyScore: 78,
+      progressionScore: 88,
+      requirementScore: 20,
+      confidenceScore: 85,
+      sourceTags: ['gear', 'armor', 'mid-game', 'dragon'],
+      dependsOn: [],
+      unlocks: ['better_dungeons', 'faster_slayer', 'f6_viability'],
+      gameStage: ['mid'],
+      priority: 'high',
+      type: 'best_roi',
+    });
+  }
+
+  // Late game: push to Necron armor
+  if (cat >= 24 && profile.dungeons.catacombs.highestFloor < 7) {
+    recs.push({
+      id: 'gear_push_f7',
+      category: 'dungeons',
+      title: 'Push to Floor 7 for Necron Armor',
+      description: `You're Catacombs ${cat} — close to F7 (requires Cat 28). Necron Armor is the best pre-Kuudra armor and a major progression milestone.`,
+      whyItMatters: 'Necron Armor from F7 is the best armor before Crimson Isle content. Getting it accelerates every other progression area.',
+      estimatedCost: 10_000_000,
+      estimatedCostLabel: '~10M (gear prep for F7)',
+      estimatedBenefit: 'Necron Armor access, F7 clears unlock MM progression',
+      roiScore: 88,
+      urgencyScore: 82,
+      progressionScore: 92,
+      requirementScore: 60,
+      confidenceScore: 85,
+      sourceTags: ['gear', 'dungeons', 'f7', 'necron'],
+      dependsOn: ['dungeon_floor6'],
+      unlocks: ['necron_armor', 'master_mode', 'mm_income'],
+      gameStage: ['late'],
+      priority: 'high',
+      type: 'progression',
+    });
+  }
+
+  return recs;
+}
+
+function checkLateGameProgression(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const cat = profile.dungeons.catacombs.level;
+  const mp = profile.magicalPower;
+  const { blaze, vampire } = profile.slayers;
+
+  // Push to MM when F7 is cleared
+  if (profile.dungeons.catacombs.highestFloor >= 7 && cat >= 28 && profile.dungeons.masterMode.highestFloor === 0) {
+    recs.push({
+      id: 'enter_master_mode',
+      category: 'dungeons',
+      title: 'Start Master Mode Dungeons',
+      description: 'You\'ve cleared F7! Master Mode is available and provides significantly better loot including Goldor, Storm, Maxor, and Necron armor upgrades.',
+      whyItMatters: 'Master Mode is the next progression tier after F7. MM drops are worth far more than normal F7 drops.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'No extra cost — just run MM',
+      estimatedBenefit: 'Crimson Essence, MM armor upgrades, significantly higher loot value',
+      roiScore: 90,
+      urgencyScore: 88,
+      progressionScore: 92,
+      requirementScore: 70,
+      confidenceScore: 90,
+      sourceTags: ['dungeons', 'master-mode', 'late-game'],
+      dependsOn: [],
+      unlocks: ['master_mode_loot', 'mm_armor', 'crimson_essence'],
+      gameStage: ['late', 'endgame'],
+      priority: 'high',
+      type: 'progression',
+    });
+  }
+
+  // Blaze slayer for Crimson Isle access
+  if (blaze.level < 4 && profile.skills.combat >= 30 && cat >= 20) {
+    recs.push({
+      id: 'slayer_blaze_4',
+      category: 'slayer',
+      title: 'Push Blaze Slayer to Level 4',
+      description: 'Blaze Slayer Level 4 unlocks Crimson Isle faction quests and Mage Outfit drops. The Mage Outfit alone sells for 15M+.',
+      whyItMatters: 'Blaze Slayer is the gateway to Crimson Isle content and Kuudra progression. Mage Outfit drops are excellent income.',
+      estimatedCost: 5_000_000,
+      estimatedCostLabel: '~5M in consumables',
+      estimatedBenefit: 'Crimson Isle access, Mage Outfit drops (5M+ each), faction reputation',
+      roiScore: 84,
+      urgencyScore: 76,
+      progressionScore: 86,
+      requirementScore: 50,
+      confidenceScore: 82,
+      sourceTags: ['slayer', 'blaze', 'crimson-isle', 'late-game'],
+      dependsOn: [],
+      unlocks: ['crimson_isle', 'kuudra_access', 'mage_outfit'],
+      gameStage: ['late', 'endgame'],
+      priority: 'medium',
+      type: 'progression',
+    });
+  }
+
+  // Vampire slayer for late-game
+  if (vampire.level < 3 && cat >= 30) {
+    recs.push({
+      id: 'slayer_vampire_3',
+      category: 'slayer',
+      title: 'Unlock Vampire Slayer Level 3',
+      description: 'Vampire Slayer Level 3 unlocks the Bat Person Armor and important accessories. It\'s one of the easier slayer progressions and unlocks valuable late-game items.',
+      whyItMatters: 'Vampire slayer provides unique accessories not available elsewhere. The Bat Person pet from vampire slayer is also highly valuable.',
+      estimatedCost: 3_000_000,
+      estimatedCostLabel: '~3M in slayer XP',
+      estimatedBenefit: 'Unique accessories, Bat Person pet access, late-game unlocks',
+      roiScore: 72,
+      urgencyScore: 65,
+      progressionScore: 75,
+      requirementScore: 55,
+      confidenceScore: 78,
+      sourceTags: ['slayer', 'vampire', 'late-game'],
+      dependsOn: [],
+      unlocks: ['bat_person_pet', 'vampire_accessories'],
+      gameStage: ['late', 'endgame'],
+      priority: 'medium',
+      type: 'progression',
+    });
+  }
+
+  // High MP milestone
+  if (mp >= 400 && mp < 600) {
+    recs.push({
+      id: 'magical_power_600',
+      category: 'accessories',
+      title: 'Reach 600 Magical Power',
+      description: `You're at ${mp} MP. 600 MP is the late-game talisman target. Epic and Legendary accessories dramatically increase your power scaling.`,
+      whyItMatters: '600 MP unlocks the full potential of your accessory reforges and power stones. It\'s a significant damage/defense multiplier.',
+      estimatedCost: 40_000_000,
+      estimatedCostLabel: '~40M (epic/legendary accessories)',
+      estimatedBenefit: '+25-40% additional stat scaling, access to higher-tier power stones',
+      roiScore: 80,
+      urgencyScore: 68,
+      progressionScore: 82,
+      requirementScore: 30,
+      confidenceScore: 85,
+      sourceTags: ['accessories', 'magical-power', 'late-game'],
+      dependsOn: ['magical_power_400'],
+      unlocks: ['full_power_scaling', 'late_reforges'],
+      gameStage: ['late', 'endgame'],
+      priority: 'medium',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
+function checkHOTMNodes(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const mining = profile.mining;
+  const nodes = mining.hotmNodes;
+
+  if (mining.hotmLevel < 7) return recs;
+
+  // Check for key unpurchased nodes at HOTM 7+
+  const keyNodes: Array<{ key: string; name: string; benefit: string }> = [
+    { key: 'mining_speed_2', name: 'Mining Speed II', benefit: '+200 Mining Speed' },
+    { key: 'mining_fortune_2', name: 'Mining Fortune II', benefit: '+50 Mining Fortune' },
+    { key: 'gemstone_infusion', name: 'Gemstone Infusion', benefit: '+Gemstone drop rates' },
+    { key: 'efficient_miner', name: 'Efficient Miner', benefit: 'AoE mining on veins' },
+  ];
+
+  const missing = keyNodes.filter(n => !nodes[n.key] || nodes[n.key] === 0);
+  if (missing.length > 0) {
+    recs.push({
+      id: 'hotm_key_nodes',
+      category: 'mining',
+      title: `Unlock Key HOTM Nodes (${missing.length} missing)`,
+      description: `You're HOTM ${mining.hotmLevel} but missing key nodes: ${missing.map(n => n.name).join(', ')}. These significantly improve mining income.`,
+      whyItMatters: 'HOTM nodes compound — unlocking all key nodes at your level maximizes gemstone income and powder accumulation.',
+      estimatedCost: mining.powderMithril + mining.powderGemstone > 50_000 ? 0 : 2_000_000,
+      estimatedCostLabel: mining.powderMithril + mining.powderGemstone > 50_000 ? 'Use existing powder' : '~2M to buy powder',
+      estimatedBenefit: missing.map(n => n.benefit).join(', '),
+      roiScore: 82,
+      urgencyScore: 70,
+      progressionScore: 78,
+      requirementScore: 40,
+      confidenceScore: 80,
+      sourceTags: ['mining', 'hotm', 'nodes'],
+      dependsOn: [],
+      unlocks: ['better_gemstone_income', 'powder_efficiency'],
+      gameStage: ['mid', 'late', 'endgame'],
+      priority: 'medium',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
+function checkCoinsReserve(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const total = (profile.purseCoins ?? 0) + (profile.bankCoins ?? 0);
+  const stage = determineGameStage(profile);
+
+  // Low coin warning per game stage
+  const minCoins: Record<typeof stage, number> = {
+    early: 50_000,
+    mid: 500_000,
+    late: 5_000_000,
+    endgame: 20_000_000,
+  };
+
+  if (total < minCoins[stage]) {
+    recs.push({
+      id: 'low_coins',
+      category: 'money',
+      title: 'Low Coin Reserve',
+      description: `You only have ${formatCoins(total)} coins. For ${stage} game, you should have at least ${formatCoins(minCoins[stage])}. Consider farming or minion income first.`,
+      whyItMatters: 'Coins are required for every upgrade. Running out of coins blocks all progression. Having a reserve prevents expensive emergency sales.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'Earn coins through active play',
+      estimatedBenefit: `${formatCoins(minCoins[stage] - total)} more coins to unlock upgrades`,
+      roiScore: 70,
+      urgencyScore: 85,
+      progressionScore: 60,
+      requirementScore: 0,
+      confidenceScore: 90,
+      sourceTags: ['coins', 'income', 'blocker'],
+      dependsOn: [],
+      unlocks: ['upgrade_ability'],
+      gameStage: ['early', 'mid', 'late', 'endgame'],
+      priority: total < minCoins[stage] / 5 ? 'critical' : 'high',
+      type: 'blocker',
+    });
+  }
+
+  return recs;
+}
+
 function checkCriticalBlockers(profile: PlayerProfile): Recommendation[] {
   const recs: Recommendation[] = [];
 
@@ -424,16 +700,27 @@ export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarP
   // Collect all recommendations from all rule modules
   const all: Recommendation[] = [
     ...checkCriticalBlockers(profile),
+    ...checkCoinsReserve(profile),
     ...checkSkillsProgression(profile),
     ...checkSlayerProgression(profile, bazaar),
     ...checkDungeonProgression(profile),
     ...checkMagicalPower(profile, bazaar),
     ...checkFarmingProgression(profile),
     ...checkMiningProgression(profile),
+    ...checkGearProgression(profile),
+    ...checkLateGameProgression(profile),
+    ...checkHOTMNodes(profile),
   ];
 
-  // Filter by game stage relevance
-  const relevant = all.filter(r => r.gameStage.includes(gameStage) || r.type === 'blocker');
+  // Filter by game stage relevance — include current stage + adjacent stages
+  const stageOrder: GameStage[] = ['early', 'mid', 'late', 'endgame'];
+  const stageIdx = stageOrder.indexOf(gameStage);
+  const relevantStages = new Set<GameStage>([
+    gameStage,
+    stageOrder[stageIdx - 1],
+    stageOrder[stageIdx + 1],
+  ].filter(Boolean) as GameStage[]);
+  const relevant = all.filter(r => r.gameStage.some(s => relevantStages.has(s)) || r.type === 'blocker');
 
   // Sort by composite score
   const scored = relevant.sort((a, b) => {
