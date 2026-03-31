@@ -1,13 +1,20 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-03-31
-**Session status:** Phase 5 Part 2 COMPLETE ✅
+**Session status:** Phase 5 Part 3 COMPLETE ✅
 
 ---
 
 ## ✅ Completed (all phases)
 
-### Phase 5 — Part 2 (2026-03-31) — current session
+### Phase 5 — Part 3 (2026-03-31) — current session
+- [x] `lib/recommendations/engine.ts` — 2 new rules (17 total): `checkGardenUpgrades`, `checkAccessoryPower`
+  - `checkGardenUpgrades`: Garden Lv 7 milestone + crop upgrade leveling recommendations
+  - `checkAccessoryPower`: critical blocker if MP ≥ 50 but no Power selected; low-prio if < 3 powers unlocked
+- [x] `app/player/[username]/farming/page.tsx` — Crop Upgrades panel (per-crop level, FF contribution, progress bar)
+- [x] 22 routes, 17 recommendation modules, 0 TS errors
+
+### Phase 5 — Part 2 (2026-03-31)
 - [x] `app/player/[username]/bestiary/page.tsx` — Bestiary Tracker (33 mob families, milestone progress bars, completion %)
 - [x] `app/player/[username]/page.tsx` — fixed profile switcher on cache hit (getSkyBlockProfiles now always called)
 - [x] 22 routes, 14 planner links per profile, 0 TS errors
@@ -75,9 +82,7 @@ Nothing. Clean state. Ready to continue.
   - Garden visitor tracking
   - Crop-specific reforge recommendations
 
-### 3. Recommendation engine — 2 more rules (target 17)
-- Add `checkAccessoryReforges`: detect accessories with suboptimal reforges (needs NBT reforge data)
-- Add `checkGardenLevel`: recommend garden upgrades for farming players with Garden > 0
+### 3. ~~Recommendation engine — 2 more rules~~ ✅ Done (now 17 modules)
 
 ### 4. Profile snapshot persistence improvement
 - When loaded from snapshot cache, still fetch `allProfiles` for the profile switcher
