@@ -3,6 +3,7 @@ import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { getBazaarPrices, getBazaarBuyPrice, BazaarPrices } from '@/lib/api/bazaar';
 import { PlayerProfile, SlayerInfo } from '@/lib/types/player';
+import { getItemIconUrl } from '@/lib/utils/item-icons';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -20,6 +21,7 @@ interface SlayerBossConfig {
   key: keyof PlayerProfile['slayers'];
   name: string;
   emoji: string;
+  bossIconId?: string;
   color: string;
   borderColor: string;
   /** XP needed to reach each level (cumulative) */
@@ -51,6 +53,7 @@ const SLAYER_BOSSES: SlayerBossConfig[] = [
     key: 'zombie',
     name: 'Revenant Horror',
     emoji: '🧟',
+    bossIconId: 'REVENANT_HORROR',
     color: 'text-green-300',
     borderColor: 'border-green-500/20',
     xpBreakpoints: [5, 15, 200, 1000, 5000, 20000, 100000, 400000, 1000000],
@@ -69,6 +72,7 @@ const SLAYER_BOSSES: SlayerBossConfig[] = [
     key: 'spider',
     name: 'Tarantula Broodfather',
     emoji: '🕷️',
+    bossIconId: 'TARANTULA_BROODFATHER',
     color: 'text-orange-300',
     borderColor: 'border-orange-500/20',
     xpBreakpoints: [5, 25, 200, 1000, 5000, 20000, 100000, 400000, 1000000],
@@ -86,6 +90,7 @@ const SLAYER_BOSSES: SlayerBossConfig[] = [
     key: 'wolf',
     name: 'Sven Packmaster',
     emoji: '🐺',
+    bossIconId: 'SVEN_PACKMASTER',
     color: 'text-blue-300',
     borderColor: 'border-blue-500/20',
     xpBreakpoints: [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000],
@@ -103,6 +108,7 @@ const SLAYER_BOSSES: SlayerBossConfig[] = [
     key: 'enderman',
     name: 'Voidgloom Seraph',
     emoji: '🌑',
+    bossIconId: 'VOIDGLOOM_SERAPH',
     color: 'text-purple-300',
     borderColor: 'border-purple-500/20',
     xpBreakpoints: [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000],
@@ -120,6 +126,7 @@ const SLAYER_BOSSES: SlayerBossConfig[] = [
     key: 'blaze',
     name: 'Inferno Demonlord',
     emoji: '🔥',
+    bossIconId: 'INFERNO_DEMONLORD',
     color: 'text-red-300',
     borderColor: 'border-red-500/20',
     xpBreakpoints: [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000],
@@ -335,7 +342,12 @@ export default async function SlayerPage({ params, searchParams }: Props) {
             {/* Boss Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">{config.emoji}</span>
+                {config.bossIconId ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={getItemIconUrl(config.bossIconId) ?? ''} alt={config.name} width={32} height={32} className="pixelated w-8 h-8 shrink-0" />
+                ) : (
+                  <span className="text-2xl">{config.emoji}</span>
+                )}
                 <div>
                   <h2 className={`font-semibold ${config.color}`}>{config.name}</h2>
                   <div className="text-xs text-slate-500">{formatNum(slayer.xp)} XP</div>
