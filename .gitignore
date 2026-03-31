@@ -52,3 +52,5 @@ __pycache__/
 
 # OS
 Thumbs.db
+
+/lib/generated/prisma
