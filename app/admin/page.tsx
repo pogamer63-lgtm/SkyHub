@@ -46,7 +46,7 @@ export default async function AdminPage() {
             { label: 'Environment', status: process.env.NODE_ENV ?? 'unknown', ok: true },
             { label: 'Next.js', status: '16.x (App Router)', ok: true },
             { label: 'Prisma', status: '7.6.0', ok: true },
-            { label: 'Routes', status: '14 active', ok: true },
+            { label: 'Routes', status: '16 active', ok: true },
           ].map(item => (
             <div key={item.label} className="bg-slate-800/50 rounded-lg px-4 py-3">
               <div className="text-xs text-slate-500 mb-0.5">{item.label}</div>
@@ -152,6 +152,7 @@ npx prisma migrate dev --name init`}</pre>
             { name: 'Accessory Optimizer', status: 'live', path: '/player/[username]/accessories' },
             { name: 'Money Making Analyzer', status: 'live', path: '/player/[username]/money' },
             { name: 'Fishing Planner', status: 'live', path: '/player/[username]/fishing' },
+            { name: 'Collections & Minions', status: 'live', path: '/player/[username]/collections' },
             { name: 'Profile Comparison', status: 'live', path: '/compare' },
             { name: 'Data & Research', status: 'live', path: '/research' },
             { name: 'Recommendation Engine', status: 'live', note: '11 rule modules' },

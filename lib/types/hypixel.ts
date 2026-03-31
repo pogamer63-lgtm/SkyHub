@@ -77,6 +77,7 @@ export interface SkyBlockMember {
   garden_player_data?: GardenData;
   jacobs_farming?: JacobsFarmingData;
   collection?: Record<string, number>;
+  crafted_generators?: string[];
   accessory_bag_storage?: AccessoryBagData;
   bestiary?: Record<string, unknown>;
   nether_island_player_data?: NetherData;
