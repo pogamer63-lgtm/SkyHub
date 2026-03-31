@@ -1,56 +1,57 @@
 # SkyHub — Continuation State
 
-**Last updated:** 2026-03-30
-**Session status:** Phase 3 — Part 1 COMPLETE ✅
+**Last updated:** 2026-03-31
+**Session status:** Phase 3 — Part 2 COMPLETE ✅
 
 ---
 
 ## ✅ Completed (all phases)
 
+### Phase 3 — Part 2 (2026-03-31)
+- [x] `app/research/page.tsx` — Data & Research transparency page
+  - 6 data sources documented (provides + limitations + cache TTL)
+  - 8 recommendation rules explained in plain English with confidence %
+  - Scoring dimensions explained, known limitations section, architecture overview
+- [x] `prisma/schema.prisma` + `prisma.config.ts` — Prisma 7 + PostgreSQL
+  - `PlayerSnapshot` model (uuid, profileId, data JSON, timestamps)
+  - `SearchHistory` model (username, uuid, timestamp)
+  - Prisma 7 compatible: no `url` in schema, uses `PrismaPg` adapter in client
+- [x] `lib/db/client.ts` — PrismaClient singleton (null if no DATABASE_URL)
+- [x] `lib/db/snapshots.ts` — saveSnapshot, loadSnapshot, recordSearch, getRecentSearches
+  - All operations non-fatal — app works fully without a database
+- [x] `app/compare/page.tsx` + `compare/compare-form.tsx` — Profile Comparison
+  - 20-stat side-by-side table with % difference indicators
+  - Win count banner, gap analysis ("what A needs to catch B")
+  - URL: `/compare?a=player1&b=player2`
+- [x] Landing page: server component, recent searches from DB, 9 feature cards
+- [x] `app/search-form.tsx` extracted as client component with recent search buttons
+- [x] Search API route records searches in `SearchHistory`
+- [x] Nav: added Compare + Data links
+- [x] Recommendation engine: 4 new rule modules (11 total):
+  - `checkGearProgression`: early/mid/late armor tier recommendations
+  - `checkLateGameProgression`: MM entry, Blaze T4, Vampire T3, MP 600
+  - `checkHOTMNodes`: missing key nodes at HOTM 7+
+  - `checkCoinsReserve`: low coin warning scaled to game stage
+  - Stage filter includes adjacent stages (early sees mid, etc.)
+- [x] Farming Fortune: real equipment NBT parsing (Lotus, Fermento, Turbo-Crop, etc.)
+- [x] `lib/data/accessories-api.ts` — Hypixel Items API fetcher (400+ accessories, 1hr cache)
+- [x] Accessories page: shows API-sourced missing items not in curated list
+- [x] Build: **PASSES** (14 routes, 0 TS errors) — pushed to GitHub
+
 ### Phase 3 — Part 1 (2026-03-30)
-- [x] `app/player/[username]/gear/page.tsx` — Gear Analyzer
-  - Parses armor + equipment + weapon NBT server-side
-  - Gear Score 0-100, 7-tier item database (Starter → BiS)
-  - Slot-by-slot ratings, reforge guide, upgrade paths with coin estimates
-  - Full armor progression roadmap (6 stages)
-- [x] `app/player/[username]/money/page.tsx` — Money Making Analyzer
-  - 14 income methods: farming/mining/dungeons/slayer/fishing/Bazaar/minions
-  - Unlock check per method, Bazaar-weighted coins/hr estimates
-  - Locked vs unlocked ranking, finance advice by coin bracket
-  - Passive AFK income estimate from minion farms
-- [x] Profile page: Gear 🛡️ + Money 💰 nav links added (7 nav links total)
-- [x] Build: **PASSES** (12 routes, 0 TS errors)
-- [x] Pushed to GitHub (`a19efae`)
+- [x] `app/player/[username]/gear/page.tsx` — Gear Analyzer (armor/weapon NBT, 7-tier DB)
+- [x] `app/player/[username]/money/page.tsx` — Money Making (14 income methods, Bazaar-weighted)
+- [x] Profile page: 7 planner nav links
 
-### Phase 2 — Part 2 (2026-03-30)
-- [x] `lib/hypixel/nbt.ts` — Full NBT parser (base64 → gzip → NBT → item list)
-- [x] `lib/hypixel/parser.ts` → `enrichWithNBT()` — async post-parse NBT enrichment
-- [x] `lib/data/accessories.ts` — Curated accessory database (~55 entries, upgrade chains)
-- [x] `lib/api/auction.ts` — AH lowest BIN fetcher (3 pages, 10min cache)
-- [x] `app/player/[username]/accessories/page.tsx` — Accessory Optimizer
-- [x] `app/player/[username]/dungeons/page.tsx` — Dungeon Planner (F1-F7 + MM)
-- [x] `app/player/[username]/slayer/page.tsx` — Slayer Planner (all 6 bosses)
-- [x] `lib/data/xp-tables.ts` — XP tables + helpers (exported)
-- [x] Profile page: NBT enrichment, PetsPanel, networth estimator, 5 nav links
+### Phase 2 (2026-03-30)
+- [x] NBT parser, enrichWithNBT, accessory optimizer, dungeon planner, slayer planner
+- [x] Farming Fortune planner, HOTM planner, Bazaar + AH price APIs
+- [x] XP tables, pets panel, networth estimate
 
-### Phase 2 — Part 1 (2026-03-30)
-- [x] `lib/api/bazaar.ts` — Bazaar price fetcher (no API key needed, 5min cache)
-- [x] `app/player/[username]/error.tsx` — Error boundary (Next.js 16 `unstable_retry`)
-- [x] `app/player/[username]/loading.tsx` — Suspense skeleton
-- [x] `app/player/[username]/farming/page.tsx` — Farming Fortune Planner
-- [x] `app/player/[username]/mining/page.tsx` — HOTM / Mining Planner (22 nodes)
-
-### Infrastructure + Core (Phase 1)
-- [x] Next.js 16 + TypeScript + Tailwind CSS
-- [x] `lib/hypixel/client.ts` — API client with in-memory TTL cache
-- [x] `lib/hypixel/parser.ts` — Full profile parser (skills/slayer/dungeons/pets/mining/farming)
-- [x] `lib/recommendations/engine.ts` — Recommendation engine (8 rules, Bazaar-aware)
-- [x] `lib/types/hypixel.ts` + `lib/types/player.ts` — All TypeScript types
-- [x] `app/page.tsx` — Landing page with search
-- [x] `app/player/[username]/page.tsx` — Full profile overview
-- [x] `app/api/player/search/route.ts` + `app/api/player/[username]/route.ts`
-- [x] `README.md`, `.env.example`, `SPEC.md`
-- [x] Git connected to `https://github.com/pogamer63-lgtm/SkyHub.git`
+### Phase 1 (2026-03-29)
+- [x] Full Next.js 16 app scaffold, all core infrastructure, player profile page
+- [x] Recommendation engine (MVP), skin provider, texture registry
+- [x] Landing page, API routes, error boundary, loading skeleton
 
 ---
 
@@ -60,79 +61,59 @@ Nothing. Clean state. Ready to continue.
 
 ---
 
-## 📋 Next Steps — Phase 3 (in priority order)
+## 📋 Next Steps — Phase 4 (in priority order)
 
-### 1. Research / Data Transparency page (SPEC §8.11)
-- File: `app/research/page.tsx` or `app/player/[username]/research/page.tsx`
-- Show where recommendations come from (data sources, confidence, last updated)
-- List all known data sources (Hypixel API, Bazaar, AH, hardcoded game data)
-- Show data freshness (cache TTL, last fetch timestamp)
-- Optionally show the recommendation rules in human-readable form
-- No external fetch needed — purely explains the app's logic
-
-### 2. PostgreSQL + Prisma (SPEC §7 / §9)
-- Install: `npm install prisma @prisma/client`
-- Create `prisma/schema.prisma`:
-  - `PlayerSnapshot` — stores parsed PlayerProfile JSON + timestamp (cache layer)
-  - `SearchHistory` — username + timestamp (for popular searches / landing page)
-- `lib/db/client.ts` — Prisma client singleton
-- `lib/db/snapshots.ts` — save/load snapshot helpers
-- Update `app/api/player/[username]/route.ts` to read/write snapshots
-- Update `app/page.tsx` to show recent/popular searches from DB
-- Add `DATABASE_URL` to `.env.example` (already there)
-- Schema should be ready for Redis replacement of in-memory cache later
-
-### 3. Profile Comparison Mode (SPEC §8.3)
-- File: `app/compare/page.tsx`
-- Compare two players side-by-side: skills, slayer, dungeons, MP, networth
-- URL: `/compare?a=player1&b=player2`
-- Highlight who is ahead in each category
-- Show what Player A needs to catch up to Player B in each area
-
-### 4. Recommendation Engine — Expanded Rules (SPEC §9)
-- Current engine has 8 rules. Expand to cover all planner pages:
-  - Gear: detect weak armor set → recommend upgrade path
-  - Farming: detect low FF → recommend top FF sources
-  - Mining: detect missing high-priority HOTM nodes → recommend next node
-  - Dungeons: detect class imbalance → recommend which class to level
-  - Slayer: detect profitable next boss tier → recommend
-- Add filter UI on the profile page recommendations section (cheapest / best ROI / fastest / by category)
-
-### 5. Equipment Farming Fortune Fix (Known Issue #3)
-- `app/player/[username]/farming/page.tsx` currently shows [NBT] placeholder for equipment
-- Fix: call `parseInventoryNBT(member.inventory.equipment_contents.data)` in the farming page
-- Map known farming equipment IDs to their Farming Fortune values:
-  - `RABBIT_HAT` → +5 FF
-  - `BOUNTIFUL_SCEPTER` → FF by perk level
-  - Lotus armor set → +60 FF / piece
-  - Fermento → +60 FF / piece
-  - Melon Dicer → crop-specific FF
-
-### 6. Accessory Database Expansion (Known Issue #4)
-- Current: ~55 entries. Full game has 400+.
-- Option A: Add more manually to `lib/data/accessories.ts`
-- Option B: Fetch from `https://api.hypixel.net/v2/resources/skyblock/items` (no key needed)
-  - Filter by `category: "ACCESSORY"` and extract item IDs + rarities
-  - Map to MP using existing `MP_PER_RARITY` lookup
-  - Store in `lib/data/accessories-generated.ts` as auto-generated supplement
-
-### 7. Admin / Data Sync page (SPEC §8.12)
+### 1. Admin / Data Sync page (SPEC §8.12)
 - File: `app/admin/page.tsx`
-- Show: cache status (entries count, oldest entry), last API fetch timestamps
-- Show: build info (version, last deployed)
-- No auth needed initially — internal tool
+- Show: Prisma connection status, cache entry counts, last fetch timestamps
+- Show: build info (route count, environment)
+- No auth needed initially — useful for debugging deployments
+- Access at `/admin`
+
+### 2. Recommendation filter UI on profile page (SPEC §8.3)
+- Profile page currently shows all recommendations in one list
+- Add filter tabs: All / Cheapest / Best ROI / Fastest / Blockers / By Category
+- Client-side filtering (no server roundtrip needed)
+- Extract current recommendations section into a client component
+
+### 3. Fishing Planner (SPEC §8 extra)
+- File: `app/player/[username]/fishing/page.tsx`
+- Show fishing level, rod, bait, fishing fortune sources
+- Trophy fishing progress tracker (show which trophies are unlocked)
+- Mob fishing income estimates
+- Add nav link on profile page (8th link)
+
+### 4. Profile Snapshot persistence on profile load
+- Currently `saveSnapshot` and `loadSnapshot` exist but are not called from the player page
+- Update `app/player/[username]/page.tsx` to:
+  - Call `loadSnapshot()` first — if fresh (<5min), skip API call
+  - Call `saveSnapshot()` after successful profile load
+- Reduces Hypixel API calls significantly for repeat views
+
+### 5. Better recommendation presentation on profile page
+- Add "Why this matters" expandable section per recommendation
+- Add ROI/urgency mini-bars
+- Group by category with collapsible sections
+- Add "View in Planner" deep link to the relevant planner page
+
+### 6. Prisma migration — run on first deploy
+- Run `npx prisma migrate dev` when DATABASE_URL is set
+- Add to README instructions for database setup
+- The schema is ready — just needs to be migrated
 
 ---
 
 ## ⚠️ Known Issues / Limitations
 
-1. **Accessory MP from talisman bag**: Requires player to have logged in recently (Hypixel API returns NBT only then). Fallback uses `highest_magical_power` from API.
-2. **AH prices approximate**: Only 3 pages of ~60+ scanned. Ballpark only.
-3. **Farming Fortune equipment**: Shows [NBT] placeholder — fix in Phase 3 step 5 above.
-4. **Accessory list incomplete**: ~55 curated entries; full game has 400+. See Phase 3 step 6.
-5. **Pet level edge cases**: Simplified XP table, may drift at very high levels (100+).
-6. **Gear analyzer weapons**: Only detects weapons from main inventory (not hotbar) — depends on API returning `inv_contents`.
-7. **Dungeons/accessories links on profile page**: Lines 133/135 of `page.tsx` use backslash in template literals — verify they work in production (they show correctly in build but may be a lint/copy artifact).
+1. **Inventory NBT gating**: Armor, equipment, talisman bag only parse if player logged in recently.
+2. **AH price accuracy**: Only first 3 of ~60+ pages scanned. Ballpark only.
+3. **Prisma DB optional**: All DB features silently no-op if DATABASE_URL is not set.
+   Run `npx prisma migrate dev --name init` after setting DATABASE_URL to activate.
+4. **Accessory API items**: Items from the Hypixel Items API shown without prices (Bazaar IDs not mapped).
+5. **Pet level edge cases**: Simplified XP table, may drift at very high levels.
+6. **Gear weapon detection**: Only detects weapons from `inv_contents` (requires NBT).
+7. **Dungeons/accessories links**: Lines 133/135 in `app/player/[username]/page.tsx`
+   use backslash in template literals — verify in production.
 
 ---
 
@@ -140,35 +121,41 @@ Nothing. Clean state. Ready to continue.
 
 | File | Purpose |
 |------|---------|
-| `lib/hypixel/client.ts` | Hypixel + Mojang API requests, in-memory TTL cache |
+| `lib/hypixel/client.ts` | Hypixel + Mojang API client, in-memory TTL cache |
 | `lib/hypixel/parser.ts` | Raw API → PlayerProfile + `enrichWithNBT()` |
 | `lib/hypixel/nbt.ts` | NBT parser (base64 → ParsedItem[]) |
-| `lib/recommendations/engine.ts` | Recommendation rules — add new rules here |
+| `lib/recommendations/engine.ts` | 11-module recommendation engine |
 | `lib/api/bazaar.ts` | Bazaar price fetcher (no key needed) |
 | `lib/api/auction.ts` | AH lowest BIN price fetcher |
 | `lib/data/accessories.ts` | ~55 curated accessories with upgrade chains |
+| `lib/data/accessories-api.ts` | Hypixel Items API fetcher (400+ accessories) |
 | `lib/data/xp-tables.ts` | Skill + dungeon XP tables + helper functions |
+| `lib/db/client.ts` | Prisma 7 singleton (null if no DATABASE_URL) |
+| `lib/db/snapshots.ts` | Player snapshot + search history DB helpers |
 | `lib/types/player.ts` | All app-level TypeScript types |
 | `lib/types/hypixel.ts` | Raw Hypixel API types |
-| `app/player/[username]/page.tsx` | Main profile page (7 nav links to planners) |
-| `app/player/[username]/farming/page.tsx` | Farming Fortune Planner |
+| `app/page.tsx` | Landing page (server component, recent searches) |
+| `app/compare/page.tsx` | Profile comparison page |
+| `app/research/page.tsx` | Data & Research transparency page |
+| `app/player/[username]/page.tsx` | Main profile page (7 planner nav links) |
+| `app/player/[username]/farming/page.tsx` | Farming Fortune Planner (real equipment NBT) |
 | `app/player/[username]/mining/page.tsx` | HOTM / Mining Planner |
 | `app/player/[username]/dungeons/page.tsx` | Dungeon Planner |
 | `app/player/[username]/slayer/page.tsx` | Slayer Planner (6 bosses) |
-| `app/player/[username]/accessories/page.tsx` | Accessory Optimizer |
+| `app/player/[username]/accessories/page.tsx` | Accessory Optimizer (curated + API extras) |
 | `app/player/[username]/gear/page.tsx` | Gear Analyzer |
 | `app/player/[username]/money/page.tsx` | Money Making Analyzer |
+| `prisma/schema.prisma` | PlayerSnapshot + SearchHistory models |
 | `SPEC.md` | Full 26-section original specification |
 
 ---
 
 ## 🔑 Environment
 
-- Node: v25.8.2
-- npm: v11.11.1
-- Next.js: 16.2.1
-- Build status: ✅ PASSING (12 routes, 0 TS errors)
-- PATH needed: `/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm`
+- Node: v25.8.2 · npm: v11.11.1 · Next.js: 16.2.1 · Prisma: 7.6.0
+- Build: ✅ PASSING (14 routes, 0 TS errors)
+- PATH: `/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm`
+- DATABASE_URL: optional — set in `.env` to activate PostgreSQL features
 
 ---
 
@@ -179,4 +166,12 @@ export PATH="$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm"
 cd "E:/pyton/SkyHub"
 git status
 cat CONTINUE.md
+```
+
+## Database Setup (when ready)
+
+```bash
+# Set DATABASE_URL in .env first, then:
+npx prisma migrate dev --name init
+# App will then persist player snapshots and show recent searches on landing page
 ```
