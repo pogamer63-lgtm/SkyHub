@@ -1,13 +1,18 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-03-31
-**Session status:** Phase 5 Part 1 COMPLETE ✅
+**Session status:** Phase 5 Part 2 COMPLETE ✅
 
 ---
 
 ## ✅ Completed (all phases)
 
-### Phase 5 — Part 1 (2026-03-31) — current session
+### Phase 5 — Part 2 (2026-03-31) — current session
+- [x] `app/player/[username]/bestiary/page.tsx` — Bestiary Tracker (33 mob families, milestone progress bars, completion %)
+- [x] `app/player/[username]/page.tsx` — fixed profile switcher on cache hit (getSkyBlockProfiles now always called)
+- [x] 22 routes, 14 planner links per profile, 0 TS errors
+
+### Phase 5 — Part 1 (2026-03-31)
 - [x] `components/ItemIcon.tsx` — Smart item icon component with 3 modes:
   - Helmet/armor: uses `*_model.png` pre-rendered 3D preview (60 helmets)
   - Animated items: JS-driven sprite-sheet animation via `setInterval` + `backgroundPosition`
@@ -100,7 +105,7 @@ Nothing. Clean state. Ready to continue.
 3. **Prisma DB optional**: All DB features silently no-op if DATABASE_URL is not set.
 4. **Accessory API items**: Items from the Hypixel Items API shown without prices.
 5. **Pet level XP table**: Simplified XP table in pets/page.tsx.
-6. **allProfiles on cache hit**: When loadSnapshot() returns data, profile switcher is empty.
+6. ~~**allProfiles on cache hit**~~: Fixed — getSkyBlockProfiles now called before cache check.
 7. **Networth estimate**: Very rough — no storage/enderchest/AH listings.
 8. **Museum value**: Estimated from curated notable items list only. Actual in-game value from API is more accurate when available.
 9. **Animated textures with 1 frame** (axe_of_the_shredded, etc.): ANIMATED_ITEMS map contains items with `frames: 1`. These animate with 1 frame = effectively static. Could filter them out.
