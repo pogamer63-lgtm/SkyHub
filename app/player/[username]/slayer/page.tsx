@@ -3,7 +3,7 @@ import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { getBazaarPrices, getBazaarBuyPrice, BazaarPrices } from '@/lib/api/bazaar';
 import { PlayerProfile, SlayerInfo } from '@/lib/types/player';
-import { getItemIconUrl } from '@/lib/utils/item-icons';
+import ItemIcon from '@/components/ItemIcon';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -343,8 +343,7 @@ export default async function SlayerPage({ params, searchParams }: Props) {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 {config.bossIconId ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={getItemIconUrl(config.bossIconId) ?? ''} alt={config.name} width={32} height={32} className="pixelated w-8 h-8 shrink-0" />
+                  <ItemIcon itemId={config.bossIconId} size={32} useModel={false} />
                 ) : (
                   <span className="text-2xl">{config.emoji}</span>
                 )}

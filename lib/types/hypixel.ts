@@ -28,6 +28,25 @@ export interface SkyBlockProfile {
   members: Record<string, SkyBlockMember>;
   banking?: { balance: number };
   game_mode?: string;
+  museum?: SkyBlockMuseum;
+}
+
+export interface SkyBlockMuseum {
+  members?: Record<string, MuseumMember>;
+}
+
+export interface MuseumItem {
+  donated_time?: number;
+  featuredSlot?: string;
+  borrowing?: boolean;
+  [key: string]: unknown;
+}
+
+export interface MuseumMember {
+  items?: Record<string, MuseumItem>;
+  special?: MuseumItem[];
+  value?: number;
+  appraisal?: boolean;
 }
 
 export interface SkyBlockMember {

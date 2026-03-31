@@ -7,7 +7,7 @@ import { PlayerProfile } from '@/lib/types/player';
 import { formatCoins } from '@/lib/utils/format';
 import { MP_PER_RARITY, ItemRarity } from '@/lib/hypixel/nbt';
 import { getUncuratedAccessories } from '@/lib/data/accessories-api';
-import { getItemIconUrl } from '@/lib/utils/item-icons';
+import ItemIcon from '@/components/ItemIcon';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -196,8 +196,7 @@ export default async function AccessoriesPage({ params, searchParams }: Props) {
                   <tr key={acc.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-2.5">
                       <div className="flex items-center gap-2">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={getItemIconUrl(acc.id) ?? ''} alt="" width={20} height={20} className="pixelated w-5 h-5 shrink-0" onError={undefined} />
+                        <ItemIcon itemId={acc.id} size={20} useModel={false} />
                         <div>
                           <div className="text-white font-medium">{acc.name}</div>
                           {acc.notes && <div className="text-xs text-slate-500">{acc.notes}</div>}

@@ -727,6 +727,102 @@ function checkPetsProgression(profile: PlayerProfile): Recommendation[] {
   return recs;
 }
 
+function checkPetItems(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+
+  const legendaryOrMythicPets = profile.pets.filter(
+    p => (p.tier === 'LEGENDARY' || p.tier === 'MYTHIC') && !p.active
+  );
+  const activePet = profile.pets.find(p => p.active);
+
+  // Active LEGENDARY/MYTHIC pet with no held item
+  if (activePet && (activePet.tier === 'LEGENDARY' || activePet.tier === 'MYTHIC') && !activePet.heldItem) {
+    recs.push({
+      id: 'pet_item_active',
+      category: 'general',
+      title: `Equip a Pet Item on ${activePet.type.replace(/_/g, ' ')}`,
+      description: `Your active ${activePet.tier.toLowerCase()} ${activePet.type.replace(/_/g, ' ')} has no held item. Pet items significantly boost your pet's effectiveness.`,
+      whyItMatters: 'Pet items multiply the bonuses of LEGENDARY pets. A Minos Relic, Hunting Knife, or Dwarf Turtle Shieldberry can dramatically increase your output.',
+      estimatedCost: 200_000,
+      estimatedCostLabel: '200k–5M depending on item',
+      estimatedBenefit: '+20–50% improved pet effectiveness',
+      roiScore: 85,
+      urgencyScore: 70,
+      progressionScore: 75,
+      requirementScore: 0,
+      confidenceScore: 90,
+      sourceTags: ['pets', 'items'],
+      dependsOn: [],
+      unlocks: ['pet_item_bonuses'],
+      gameStage: ['mid', 'late', 'endgame'],
+      priority: 'medium',
+      type: 'best_roi',
+    });
+  }
+
+  // Legendary pets sitting idle without held items (not active but still worth noting)
+  const idleLegendaryNoItem = legendaryOrMythicPets.filter(p => !p.heldItem).slice(0, 2);
+  for (const pet of idleLegendaryNoItem) {
+    recs.push({
+      id: `pet_item_idle_${pet.type}`,
+      category: 'general',
+      title: `Pet Item Missing: ${pet.type.replace(/_/g, ' ')}`,
+      description: `Your ${pet.tier.toLowerCase()} ${pet.type.replace(/_/g, ' ')} has no held item. When you switch to this pet, you'll be leaving stats on the table.`,
+      whyItMatters: 'Even when not active, equipping pet items now means you\'re ready to swap. Items are often cheap relative to the pets they boost.',
+      estimatedCost: 200_000,
+      estimatedCostLabel: '200k+',
+      estimatedBenefit: 'Ready to maximize pet when switching',
+      roiScore: 55,
+      urgencyScore: 40,
+      progressionScore: 50,
+      requirementScore: 0,
+      confidenceScore: 80,
+      sourceTags: ['pets', 'items'],
+      dependsOn: [],
+      unlocks: [],
+      gameStage: ['mid', 'late', 'endgame'],
+      priority: 'low',
+      type: 'cheapest',
+    });
+  }
+
+  return recs;
+}
+
+function checkMuseumValue(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const mp = profile.accessories.magicalPower;
+
+  // Museum MP is valuable — recommend donating if they have nothing donated yet
+  // We can't know museum value without the raw profile, but we can infer from MP
+  // If player has high-tier gear but seems to be missing museum MP (rough heuristic)
+  if ((profile.skyblockLevel ?? 0) >= 100 && mp < 400) {
+    recs.push({
+      id: 'museum_donate',
+      category: 'accessories',
+      title: 'Donate Items to the Museum',
+      description: 'The Museum rewards Magical Power for donating valuable items. Even donating old weapons and armor sets you\'ve replaced can net significant MP.',
+      whyItMatters: 'Museum donations provide permanent Magical Power bonuses at value milestones. Items like old dragon armor sets, weapons, and fishing rods all count.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'Free (use items you already have)',
+      estimatedBenefit: '+1–10 Magical Power from existing items',
+      roiScore: 90,
+      urgencyScore: 60,
+      progressionScore: 65,
+      requirementScore: 0,
+      confidenceScore: 70,
+      sourceTags: ['museum', 'magical-power', 'free'],
+      dependsOn: [],
+      unlocks: ['museum_mp'],
+      gameStage: ['mid', 'late', 'endgame'],
+      priority: 'medium',
+      type: 'cheapest',
+    });
+  }
+
+  return recs;
+}
+
 function checkCriticalBlockers(profile: PlayerProfile): Recommendation[] {
   const recs: Recommendation[] = [];
 
@@ -804,6 +900,8 @@ export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarP
     ...checkHOTMNodes(profile),
     ...checkFishingProgression(profile),
     ...checkPetsProgression(profile),
+    ...checkPetItems(profile),
+    ...checkMuseumValue(profile),
   ];
 
   // Filter by game stage relevance — include current stage + adjacent stages

@@ -4,7 +4,7 @@ import { selectBestProfile } from '@/lib/hypixel/parser';
 import { parseInventoryNBT, ParsedItem, ItemRarity } from '@/lib/hypixel/nbt';
 import { SkyBlockProfile } from '@/lib/types/hypixel';
 import { formatCoins } from '@/lib/utils/format';
-import { getItemIconUrl } from '@/lib/utils/item-icons';
+import ItemIcon from '@/components/ItemIcon';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -411,10 +411,7 @@ export default async function GearPage({ params, searchParams }: Props) {
                   ) : (
                     <>
                       <div className="flex items-center gap-2 mb-1">
-                        {getItemIconUrl(item.id) && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={getItemIconUrl(item.id)!} alt="" width={24} height={24} className="pixelated w-6 h-6 shrink-0" />
-                        )}
+                        <ItemIcon itemId={item.id} size={24} />
                         <div className="text-sm font-medium leading-snug">{item.name || item.id}</div>
                       </div>
                       {item.reforge && (
@@ -458,10 +455,7 @@ export default async function GearPage({ params, searchParams }: Props) {
                   ) : (
                     <>
                       <div className="flex items-center gap-2 mb-1">
-                        {getItemIconUrl(item.id) && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={getItemIconUrl(item.id)!} alt="" width={24} height={24} className="pixelated w-6 h-6 shrink-0" />
-                        )}
+                        <ItemIcon itemId={item.id} size={24} />
                         <div className="text-sm font-medium leading-snug">{item.name || item.id}</div>
                       </div>
                       {item.reforge && (
@@ -496,10 +490,7 @@ export default async function GearPage({ params, searchParams }: Props) {
               return (
                 <div key={i} className={`flex items-center justify-between rounded-lg border px-4 py-2 ${colorClass}`}>
                   <div className="flex items-center gap-2">
-                    {getItemIconUrl(item.id) && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={getItemIconUrl(item.id)!} alt="" width={24} height={24} className="pixelated w-6 h-6 shrink-0" />
-                    )}
+                    <ItemIcon itemId={item.id} size={24} useModel={false} />
                     <div>
                       <span className="font-medium text-sm">{item.name || item.id}</span>
                       {item.reforge && <span className="text-xs text-slate-400 ml-2">({item.reforge})</span>}
