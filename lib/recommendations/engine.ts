@@ -635,6 +635,98 @@ function checkCoinsReserve(profile: PlayerProfile): Recommendation[] {
   return recs;
 }
 
+function checkFishingProgression(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const fishingLevel = profile.skills.fishing;
+  const activePet = profile.pets.find(p => p.active);
+
+  // Low fishing level + no fishing pet
+  if (fishingLevel < 10 && (profile.skills.average ?? 0) > 15) {
+    recs.push({
+      id: 'fishing_early',
+      category: 'fishing',
+      title: 'Level Fishing to 10',
+      description: `Your Fishing skill is only ${fishingLevel}. Fishing 10 unlocks sea creature spawns and better items. It's one of the most passive skills to level.`,
+      whyItMatters: 'Fishing skill provides Fishing Fortune (+4/level) and unlocks deeper water areas. AFK ocean fishing is very low effort.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'AFK time only',
+      estimatedBenefit: '+40 Fishing Fortune, sea creature unlocks',
+      roiScore: 65,
+      urgencyScore: 45,
+      progressionScore: 60,
+      requirementScore: 0,
+      confidenceScore: 85,
+      sourceTags: ['fishing', 'easy'],
+      dependsOn: [],
+      unlocks: ['sea_creatures', 'fishing_fortune', 'better_rods'],
+      gameStage: ['early', 'mid'],
+      priority: 'medium',
+      type: 'progression',
+    });
+  }
+
+  // No fishing pet active during fishing
+  if (fishingLevel >= 15 && activePet && activePet.type !== 'FLYING_FISH' && activePet.type !== 'DOLPHIN' && activePet.type !== 'SQUID') {
+    recs.push({
+      id: 'fishing_pet',
+      category: 'fishing',
+      title: 'Use a Fishing Pet While Fishing',
+      description: 'For fishing sessions, switch to a Flying Fish, Dolphin, or Squid pet for massively improved Fishing Fortune and sea creature rates.',
+      whyItMatters: 'Fishing pets multiply drops. A Flying Fish legendary pet can add 100+ Fishing Fortune. Switching pets before fishing is always worth it.',
+      estimatedCost: 5_000_000,
+      estimatedCostLabel: '~5M for a good fishing pet',
+      estimatedBenefit: '+100+ Fishing Fortune, better sea creature loot, faster trophy fishing',
+      roiScore: 80,
+      urgencyScore: 60,
+      progressionScore: 72,
+      requirementScore: 20,
+      confidenceScore: 85,
+      sourceTags: ['fishing', 'pets'],
+      dependsOn: [],
+      unlocks: ['better_fishing_drops', 'trophy_fish_efficiency'],
+      gameStage: ['mid', 'late'],
+      priority: 'medium',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
+function checkPetsProgression(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const pets = profile.pets;
+  const legendary = pets.filter(p => p.tier === 'LEGENDARY' || p.tier === 'MYTHIC');
+  const avg = profile.skills.average ?? 0;
+
+  // No legendary pets
+  if (legendary.length === 0 && avg >= 20) {
+    recs.push({
+      id: 'first_legendary_pet',
+      category: 'general',
+      title: 'Get Your First Legendary Pet',
+      description: 'You have no Legendary pets. A Legendary pet provides dramatically better bonuses than Epic or lower. Spider (Slayer) or Enchanting pets are affordable first choices.',
+      whyItMatters: 'Legendary pets unlock their most powerful abilities and have significantly higher stat scaling. Even an affordable Legendary pet is a major upgrade.',
+      estimatedCost: 5_000_000,
+      estimatedCostLabel: '~5–20M for affordable legendary',
+      estimatedBenefit: 'Double the stats of an Epic pet, unique legendary abilities',
+      roiScore: 85,
+      urgencyScore: 70,
+      progressionScore: 78,
+      requirementScore: 10,
+      confidenceScore: 88,
+      sourceTags: ['pets', 'legendary'],
+      dependsOn: [],
+      unlocks: ['legendary_pet_abilities', 'better_stat_bonuses'],
+      gameStage: ['mid', 'late'],
+      priority: 'high',
+      type: 'progression',
+    });
+  }
+
+  return recs;
+}
+
 function checkCriticalBlockers(profile: PlayerProfile): Recommendation[] {
   const recs: Recommendation[] = [];
 
@@ -710,6 +802,8 @@ export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarP
     ...checkGearProgression(profile),
     ...checkLateGameProgression(profile),
     ...checkHOTMNodes(profile),
+    ...checkFishingProgression(profile),
+    ...checkPetsProgression(profile),
   ];
 
   // Filter by game stage relevance — include current stage + adjacent stages
