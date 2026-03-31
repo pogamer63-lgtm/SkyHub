@@ -7,6 +7,7 @@ import { getBazaarPrices } from '@/lib/api/bazaar';
 import { formatCoins, levelColor, priorityColor, scoreColor } from '@/lib/utils/format';
 import { SKILL_XP_TABLE, xpToNextLevel, levelProgress } from '@/lib/data/xp-tables';
 import { PlayerProfile, Recommendation } from '@/lib/types/player';
+import { saveSnapshot, loadSnapshot } from '@/lib/db/snapshots';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -28,25 +29,35 @@ export default async function PlayerPage({ params, searchParams }: Props) {
 
   try {
     const { uuid, username: resolvedName } = await resolvePlayer(username);
-    const profilesRes = await getSkyBlockProfiles(uuid);
 
-    if (!profilesRes.success || !profilesRes.profiles?.length) {
-      error = 'No SkyBlock profiles found for this player.';
+    // Try snapshot cache first (5-min TTL in DB)
+    const cached = await loadSnapshot(uuid, profileId ?? undefined).catch(() => null);
+    if (cached) {
+      profile = cached;
     } else {
-      allProfiles = profilesRes.profiles.map(p => ({
-        id: p.profile_id,
-        name: p.cute_name,
-        selected: p.selected ?? false,
-      }));
+      const profilesRes = await getSkyBlockProfiles(uuid);
 
-      let targetProfile = profilesRes.profiles.find(p =>
-        p.profile_id === profileId || p.cute_name.toLowerCase() === profileId?.toLowerCase()
-      );
-      if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
+      if (!profilesRes.success || !profilesRes.profiles?.length) {
+        error = 'No SkyBlock profiles found for this player.';
+      } else {
+        allProfiles = profilesRes.profiles.map(p => ({
+          id: p.profile_id,
+          name: p.cute_name,
+          selected: p.selected ?? false,
+        }));
 
-      const parsed = selectBestProfile([targetProfile], uuid, resolvedName);
-      // Enrich with NBT (real accessories) — non-fatal if it fails
-      profile = await enrichWithNBT(parsed, targetProfile, uuid).catch(() => parsed);
+        let targetProfile = profilesRes.profiles.find(p =>
+          p.profile_id === profileId || p.cute_name.toLowerCase() === profileId?.toLowerCase()
+        );
+        if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
+
+        const parsed = selectBestProfile([targetProfile], uuid, resolvedName);
+        // Enrich with NBT (real accessories) — non-fatal if it fails
+        profile = await enrichWithNBT(parsed, targetProfile, uuid).catch(() => parsed);
+
+        // Persist snapshot for future requests
+        if (profile) saveSnapshot(profile).catch(() => {});
+      }
     }
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load profile.';
@@ -135,6 +146,7 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         <a href={`/player/${profile.username}/gear`}        className="flex items-center gap-1.5 rounded-lg border border-slate-500/20 bg-slate-500/5 hover:bg-slate-500/10 px-4 py-2 text-sm font-medium text-slate-300 transition-colors">🛡️ Gear</a>
         <a href={`/player/${profile.username}/money`}       className="flex items-center gap-1.5 rounded-lg border border-yellow-500/20 bg-yellow-500/5 hover:bg-yellow-500/10 px-4 py-2 text-sm font-medium text-yellow-300 transition-colors">💰 Money</a>
         <a href={`/player/${profile.username}/accessories`} className="flex items-center gap-1.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300 transition-colors">💍 Accessories</a>
+        <a href={`/player/${profile.username}/fishing`}     className="flex items-center gap-1.5 rounded-lg border border-cyan-500/20 bg-cyan-500/5 hover:bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-300 transition-colors">🎣 Fishing</a>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -28,6 +28,7 @@ export default function RootLayout({
               <a href="/" className="hover:text-white transition-colors">Home</a>
               <a href="/compare" className="hover:text-white transition-colors">Compare</a>
               <a href="/research" className="hover:text-white transition-colors">Data</a>
+              <a href="/admin" className="hover:text-white transition-colors">Admin</a>
               <a href="https://github.com/pogamer63-lgtm/SkyHub" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
             </div>
           </div>
