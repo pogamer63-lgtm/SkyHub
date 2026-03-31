@@ -8,6 +8,7 @@ import { formatCoins, levelColor, priorityColor, scoreColor } from '@/lib/utils/
 import { SKILL_XP_TABLE, xpToNextLevel, levelProgress } from '@/lib/data/xp-tables';
 import { PlayerProfile, Recommendation } from '@/lib/types/player';
 import { saveSnapshot, loadSnapshot } from '@/lib/db/snapshots';
+import RecommendationsPanel from './recommendations-panel';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -185,18 +186,8 @@ export default async function PlayerPage({ params, searchParams }: Props) {
             </div>
           )}
 
-          {/* All recommendations tabs */}
-          <div className="card p-5">
-            <h2 className="font-semibold text-white mb-4">All Recommendations</h2>
-            <div className="space-y-3">
-              {recs.all.slice(0, 8).map(r => <RecommendationCard key={r.id} rec={r} />)}
-            </div>
-            {recs.all.length === 0 && (
-              <p className="text-slate-500 text-sm text-center py-4">
-                No recommendations generated. The engine may need more data about this profile.
-              </p>
-            )}
-          </div>
+          {/* All recommendations with filter tabs */}
+          <RecommendationsPanel recs={recs.all} username={profile.username} />
         </div>
       </div>
     </div>
