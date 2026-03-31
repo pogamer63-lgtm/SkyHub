@@ -1,13 +1,18 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-03-31
-**Session status:** Phase 5 Part 3 COMPLETE ✅
+**Session status:** Phase 5 Part 4 COMPLETE ✅
 
 ---
 
 ## ✅ Completed (all phases)
 
-### Phase 5 — Part 3 (2026-03-31) — current session
+### Phase 5 — Part 4 (2026-03-31) — current session
+- [x] `app/compare/page.tsx`: Champion Badges panel (8 categories, color-coded, A/B win tallies)
+- [x] `app/player/[username]/money/page.tsx`: Live Bazaar price status banner (timestamp, item count, animate-pulse)
+- [x] `components/ItemIcon.tsx`: skip 1-frame animated items (render as static)
+
+### Phase 5 — Part 3 (2026-03-31)
 - [x] `lib/recommendations/engine.ts` — 2 new rules (17 total): `checkGardenUpgrades`, `checkAccessoryPower`
   - `checkGardenUpgrades`: Garden Lv 7 milestone + crop upgrade leveling recommendations
   - `checkAccessoryPower`: critical blocker if MP ≥ 50 but no Power selected; low-prio if < 3 powers unlocked
@@ -88,13 +93,9 @@ Nothing. Clean state. Ready to continue.
 - When loaded from snapshot cache, still fetch `allProfiles` for the profile switcher
 - Currently when cache hit occurs, `allProfiles = []` so switcher doesn't show
 
-### 5. Better compare page
-- Add champion badges per category (who wins Farming, who wins Mining, etc.)
-- Add "Progression gap" analysis
-- Export comparison as image
+### 5. ~~Better compare page~~ ✅ Champion badges done; export-as-image still open
 
-### 6. Real-time price data on money page
-- Integrate live Bazaar + AH prices into income method calculations
+### 6. ~~Real-time price data on money page~~ ✅ Live price banner added
 
 ### 7. Bestiary tracker
 - Parse `member.bestiary` data
