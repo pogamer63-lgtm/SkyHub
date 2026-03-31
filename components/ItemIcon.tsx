@@ -11,7 +11,7 @@
  * Minecraft animation timing: 1 tick = 50 ms (20 ticks/s)
  */
 
-import { useRef, useEffect, CSSProperties } from 'react';
+import { useRef, useEffect, useState, CSSProperties } from 'react';
 import { ANIMATED_ITEMS } from '@/lib/data/animated-items';
 
 /** IDs that have a _model.png pre-rendered 3D preview */
@@ -175,7 +175,29 @@ export default function ItemIcon({ itemId, size = 20, className = '', useModel =
     );
   }
 
-  // 3. Static icon
+  // 3. Static icon with fallback
+  return <StaticIcon filename={filename} itemId={itemId} size={size} className={className} />;
+}
+
+function StaticIcon({ filename, itemId, size, className }: { filename: string; itemId: string; size: number; className: string }) {
+  const [failed, setFailed] = useState(false);
+  // Deterministic color from item ID for fallback
+  const colors = ['bg-slate-600', 'bg-indigo-700', 'bg-purple-700', 'bg-blue-700', 'bg-emerald-700', 'bg-amber-700', 'bg-red-700', 'bg-cyan-700'];
+  const colorIdx = itemId.charCodeAt(0) % colors.length;
+  const initial = itemId[0]?.toUpperCase() ?? '?';
+
+  if (failed) {
+    return (
+      <span
+        className={`inline-flex items-center justify-center shrink-0 rounded text-white font-bold ${colors[colorIdx]} ${className}`}
+        style={{ width: size, height: size, fontSize: size * 0.55 }}
+        title={itemId}
+      >
+        {initial}
+      </span>
+    );
+  }
+
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -185,7 +207,7 @@ export default function ItemIcon({ itemId, size = 20, className = '', useModel =
       height={size}
       className={`pixelated shrink-0 ${className}`}
       style={{ width: size, height: size }}
-      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+      onError={() => setFailed(true)}
     />
   );
 }

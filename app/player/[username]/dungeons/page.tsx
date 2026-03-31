@@ -265,6 +265,31 @@ export default async function DungeonsPage({ params, searchParams }: Props) {
         </div>
       )}
 
+      {/* Fastest Times */}
+      {Object.keys(dungeons.catacombs.fastestTimes).length > 0 && (
+        <div className="card p-5 mb-6">
+          <h2 className="font-semibold text-white mb-4">⚡ Fastest S+ Times</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {Object.entries(dungeons.catacombs.fastestTimes)
+              .sort(([a], [b]) => Number(a) - Number(b))
+              .map(([floor, ms]) => {
+                const totalSec = Math.floor((ms as number) / 1000);
+                const mins = Math.floor(totalSec / 60);
+                const secs = totalSec % 60;
+                const label = floor === '0' ? 'Entrance' : `Floor ${floor}`;
+                return (
+                  <div key={floor} className="rounded-lg border border-white/5 p-3 text-center">
+                    <div className="text-xs text-slate-500 mb-1">{label}</div>
+                    <div className="text-sm font-mono font-bold text-emerald-300">
+                      {mins}:{secs.toString().padStart(2, '0')}
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      )}
+
       {/* Class Levels */}
       <div className="card p-5">
         <h2 className="font-semibold text-white mb-4">👤 Class Levels</h2>
@@ -293,7 +318,10 @@ export default async function DungeonsPage({ params, searchParams }: Props) {
                       style={{ width: `${Math.min(100, (data.level / 50) * 100)}%` }}
                     />
                   </div>
-                  {info && <div className="text-xs text-slate-500 mt-1">{info.role}</div>}
+                  <div className="flex justify-between mt-1">
+                    {info && <div className="text-xs text-slate-500">{info.role}</div>}
+                    <div className="text-xs text-slate-600 ml-auto">{data.xp.toLocaleString()} XP</div>
+                  </div>
                 </div>
               );
             })}
