@@ -1,13 +1,19 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-03-31
-**Session status:** Phase 5 Part 4 COMPLETE ✅
+**Session status:** Phase 5 Part 5 COMPLETE ✅
 
 ---
 
 ## ✅ Completed (all phases)
 
-### Phase 5 — Part 4 (2026-03-31) — current session
+### Phase 5 — Part 5 (2026-03-31) — current session
+- [x] `lib/types/player.ts` + `lib/hypixel/parser.ts`: added `uniqueGolds`, `contestsParticipated` to FarmingProgress
+- [x] `farming/page.tsx`: Jacob's Farming panel (medals bronze→diamond, gold medal crop badges, contests count)
+- [x] `components/ItemIcon.tsx`: color fallback square for missing images (deterministic color + first-letter initial)
+- [x] `dungeons/page.tsx`: Fastest S+ Times grid + class XP shown per class
+
+### Phase 5 — Part 4 (2026-03-31)
 - [x] `app/compare/page.tsx`: Champion Badges panel (8 categories, color-coded, A/B win tallies)
 - [x] `app/player/[username]/money/page.tsx`: Live Bazaar price status banner (timestamp, item count, animate-pulse)
 - [x] `components/ItemIcon.tsx`: skip 1-frame animated items (render as static)
@@ -76,16 +82,9 @@ Nothing. Clean state. Ready to continue.
 
 ## 📋 Next Steps — Phase 5 Part 2 (in priority order)
 
-### 1. Better ItemIcon — detect missing images more elegantly
-- Currently static icons silently render nothing on missing image (onError hides)
-- Could add a fallback sprite (colored square with item ID initial letter)
-- Low priority since most items have textures
+### 1. ~~Better ItemIcon fallback~~ ✅ Color square fallback implemented
 
-### 2. Garden / Jacob planner improvements
-- Enhance `app/player/[username]/farming/page.tsx` with:
-  - Jacob contest calendar awareness (parse contest schedule)
-  - Garden visitor tracking
-  - Crop-specific reforge recommendations
+### 2. ~~Garden / Jacob planner improvements~~ ✅ Jacob medals + contest stats added
 
 ### 3. ~~Recommendation engine — 2 more rules~~ ✅ Done (now 17 modules)
 
