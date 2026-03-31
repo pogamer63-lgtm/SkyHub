@@ -160,7 +160,7 @@ export default function ItemIcon({ itemId, size = 20, className = '', useModel =
     );
   }
 
-  // 2. Animated sprite sheet
+  // 2. Animated sprite sheet (skip 1-frame "animations" — they're effectively static)
   const anim = ANIMATED_ITEMS[filename];
   if (anim && anim.frames > 1) {
     return (

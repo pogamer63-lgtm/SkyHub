@@ -24,7 +24,16 @@ interface StatRow {
   bVal: number | string;
   numeric: boolean;
   higherIsBetter: boolean;
+  category?: string;
   format?: (v: number) => string;
+}
+
+interface CategoryChampion {
+  label: string;
+  icon: string;
+  winner: 'a' | 'b' | 'tie';
+  aScore: number;
+  bScore: number;
 }
 
 function pct(a: number, b: number): string {
@@ -47,27 +56,43 @@ function buildStats(a: PlayerProfile, b: PlayerProfile): StatRow[] {
     Object.values(p.slayers).reduce((s, sl) => s + sl.xp, 0);
 
   return [
-    { label: 'SkyBlock Level', icon: '⭐', aVal: a.skyblockLevel, bVal: b.skyblockLevel, numeric: true, higherIsBetter: true },
-    { label: 'Skill Average', icon: '📊', aVal: +skillAvg(a).toFixed(1), bVal: +skillAvg(b).toFixed(1), numeric: true, higherIsBetter: true },
-    { label: 'Farming', icon: '🌾', aVal: a.skills.farming, bVal: b.skills.farming, numeric: true, higherIsBetter: true },
-    { label: 'Mining', icon: '⛏️', aVal: a.skills.mining, bVal: b.skills.mining, numeric: true, higherIsBetter: true },
-    { label: 'Combat', icon: '⚔️', aVal: a.skills.combat, bVal: b.skills.combat, numeric: true, higherIsBetter: true },
-    { label: 'Foraging', icon: '🪓', aVal: a.skills.foraging, bVal: b.skills.foraging, numeric: true, higherIsBetter: true },
-    { label: 'Fishing', icon: '🎣', aVal: a.skills.fishing, bVal: b.skills.fishing, numeric: true, higherIsBetter: true },
-    { label: 'Enchanting', icon: '📚', aVal: a.skills.enchanting, bVal: b.skills.enchanting, numeric: true, higherIsBetter: true },
-    { label: 'Alchemy', icon: '⚗️', aVal: a.skills.alchemy, bVal: b.skills.alchemy, numeric: true, higherIsBetter: true },
-    { label: 'Taming', icon: '🐾', aVal: a.skills.taming, bVal: b.skills.taming, numeric: true, higherIsBetter: true },
-    { label: 'Catacombs Level', icon: '🏰', aVal: a.dungeons.catacombs.level, bVal: b.dungeons.catacombs.level, numeric: true, higherIsBetter: true },
-    { label: 'Highest Floor', icon: '🗝️', aVal: a.dungeons.catacombs.highestFloor, bVal: b.dungeons.catacombs.highestFloor, numeric: true, higherIsBetter: true },
-    { label: 'MM Highest Floor', icon: '👑', aVal: a.dungeons.masterMode.highestFloor, bVal: b.dungeons.masterMode.highestFloor, numeric: true, higherIsBetter: true },
-    { label: 'Max Slayer Level', icon: '🗡️', aVal: maxSlayer(a), bVal: maxSlayer(b), numeric: true, higherIsBetter: true },
-    { label: 'Total Slayer XP', icon: '💀', aVal: totalSlayerXP(a), bVal: totalSlayerXP(b), numeric: true, higherIsBetter: true, format: n => n.toLocaleString() },
-    { label: 'Magical Power', icon: '💍', aVal: a.magicalPower, bVal: b.magicalPower, numeric: true, higherIsBetter: true },
-    { label: 'HOTM Level', icon: '⛰️', aVal: a.mining.hotmLevel, bVal: b.mining.hotmLevel, numeric: true, higherIsBetter: true },
-    { label: 'Garden Level', icon: '🌱', aVal: a.farming.gardenLevel, bVal: b.farming.gardenLevel, numeric: true, higherIsBetter: true },
-    { label: 'Fairy Souls', icon: '🧚', aVal: a.fairySouls, bVal: b.fairySouls, numeric: true, higherIsBetter: true },
-    { label: 'Coins (Purse)', icon: '💰', aVal: a.purseCoins, bVal: b.purseCoins, numeric: true, higherIsBetter: true, format: formatCoins },
+    { label: 'SkyBlock Level',   icon: '⭐',  aVal: a.skyblockLevel,                        bVal: b.skyblockLevel,                        numeric: true, higherIsBetter: true, category: 'Overall' },
+    { label: 'Skill Average',    icon: '📊',  aVal: +skillAvg(a).toFixed(1),                bVal: +skillAvg(b).toFixed(1),                numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Farming',          icon: '🌾',  aVal: a.skills.farming,                       bVal: b.skills.farming,                       numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Mining',           icon: '⛏️', aVal: a.skills.mining,                        bVal: b.skills.mining,                        numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Combat',           icon: '⚔️', aVal: a.skills.combat,                        bVal: b.skills.combat,                        numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Foraging',         icon: '🪓',  aVal: a.skills.foraging,                      bVal: b.skills.foraging,                      numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Fishing',          icon: '🎣',  aVal: a.skills.fishing,                       bVal: b.skills.fishing,                       numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Enchanting',       icon: '📚',  aVal: a.skills.enchanting,                    bVal: b.skills.enchanting,                    numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Alchemy',          icon: '⚗️', aVal: a.skills.alchemy,                       bVal: b.skills.alchemy,                       numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Taming',           icon: '🐾',  aVal: a.skills.taming,                        bVal: b.skills.taming,                        numeric: true, higherIsBetter: true, category: 'Skills' },
+    { label: 'Catacombs Level',  icon: '🏰',  aVal: a.dungeons.catacombs.level,             bVal: b.dungeons.catacombs.level,             numeric: true, higherIsBetter: true, category: 'Dungeons' },
+    { label: 'Highest Floor',    icon: '🗝️', aVal: a.dungeons.catacombs.highestFloor,      bVal: b.dungeons.catacombs.highestFloor,      numeric: true, higherIsBetter: true, category: 'Dungeons' },
+    { label: 'MM Highest Floor', icon: '👑',  aVal: a.dungeons.masterMode.highestFloor,     bVal: b.dungeons.masterMode.highestFloor,     numeric: true, higherIsBetter: true, category: 'Dungeons' },
+    { label: 'Max Slayer Level', icon: '🗡️', aVal: maxSlayer(a),                           bVal: maxSlayer(b),                           numeric: true, higherIsBetter: true, category: 'Slayer' },
+    { label: 'Total Slayer XP',  icon: '💀',  aVal: totalSlayerXP(a),                       bVal: totalSlayerXP(b),                       numeric: true, higherIsBetter: true, category: 'Slayer', format: n => n.toLocaleString() },
+    { label: 'Magical Power',    icon: '💍',  aVal: a.magicalPower,                         bVal: b.magicalPower,                         numeric: true, higherIsBetter: true, category: 'Accessories' },
+    { label: 'HOTM Level',       icon: '⛰️', aVal: a.mining.hotmLevel,                     bVal: b.mining.hotmLevel,                     numeric: true, higherIsBetter: true, category: 'Mining' },
+    { label: 'Garden Level',     icon: '🌱',  aVal: a.farming.gardenLevel,                  bVal: b.farming.gardenLevel,                  numeric: true, higherIsBetter: true, category: 'Farming' },
+    { label: 'Fairy Souls',      icon: '🧚',  aVal: a.fairySouls,                           bVal: b.fairySouls,                           numeric: true, higherIsBetter: true, category: 'Overall' },
+    { label: 'Coins (Purse)',    icon: '💰',  aVal: a.purseCoins,                           bVal: b.purseCoins,                           numeric: true, higherIsBetter: true, category: 'Wealth', format: formatCoins },
   ];
+}
+
+function buildChampions(stats: StatRow[], nameA: string, nameB: string): CategoryChampion[] {
+  const cats = ['Overall', 'Skills', 'Dungeons', 'Slayer', 'Accessories', 'Mining', 'Farming', 'Wealth'];
+  return cats.map(cat => {
+    const rows = stats.filter(r => r.category === cat && r.numeric);
+    if (rows.length === 0) return null;
+    let aScore = 0, bScore = 0;
+    for (const r of rows) {
+      const av = r.aVal as number, bv = r.bVal as number;
+      if (av > bv) aScore++;
+      else if (bv > av) bScore++;
+    }
+    const winner: 'a' | 'b' | 'tie' = aScore > bScore ? 'a' : bScore > aScore ? 'b' : 'tie';
+    return { label: cat, icon: rows[0].icon, winner, aScore, bScore };
+  }).filter(Boolean) as CategoryChampion[];
 }
 
 // ─── Async data loader ─────────────────────────────────────────────────────────
@@ -101,6 +126,7 @@ export default async function ComparePage({ searchParams }: Props) {
   const errorB = resultB && 'error' in resultB ? resultB.error : null;
 
   const stats = profileA && profileB ? buildStats(profileA, profileB) : null;
+  const champions = stats && profileA && profileB ? buildChampions(stats, profileA.username, profileB.username) : null;
 
   // Count wins
   const wins = stats ? stats.reduce(
@@ -169,6 +195,33 @@ export default async function ComparePage({ searchParams }: Props) {
               </div>
             </div>
           </div>
+
+          {/* Champion Badges */}
+          {champions && (
+            <div className="card p-5">
+              <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">Category Champions</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {champions.map(c => {
+                  const aWins = c.winner === 'a';
+                  const bWins = c.winner === 'b';
+                  const tie = c.winner === 'tie';
+                  return (
+                    <div key={c.label} className={`rounded-lg border px-3 py-2.5 text-center ${
+                      aWins ? 'border-indigo-500/30 bg-indigo-500/10' :
+                      bWins ? 'border-purple-500/30 bg-purple-500/10' :
+                      'border-white/5 bg-white/[0.02]'
+                    }`}>
+                      <div className="text-xs text-slate-500 mb-1">{c.label}</div>
+                      <div className={`text-sm font-bold ${aWins ? 'text-indigo-300' : bWins ? 'text-purple-300' : 'text-slate-400'}`}>
+                        {tie ? '🤝 Tie' : `🏆 ${aWins ? profileA!.username : profileB!.username}`}
+                      </div>
+                      <div className="text-xs text-slate-600 mt-0.5">{c.aScore}–{c.bScore}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Stats table */}
           <div className="card overflow-hidden">

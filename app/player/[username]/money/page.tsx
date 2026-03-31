@@ -440,11 +440,14 @@ export default async function MoneyPage({ params, searchParams }: Props) {
 
   // Fetch Bazaar prices
   let bazaarMap: Record<string, number> = {};
+  let bazaarFetchedAt: string | null = null;
+  let bazaarItemCount = 0;
   try {
     const prices = await getBazaarPrices();
-    // Flatten to item_id → sell price map
+    bazaarFetchedAt = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
     for (const [id, p] of Object.entries(prices)) {
       bazaarMap[id] = (p as { sellPrice?: number; buyPrice?: number }).sellPrice ?? 0;
+      bazaarItemCount++;
     }
   } catch { /* non-fatal */ }
 
@@ -666,6 +669,17 @@ export default async function MoneyPage({ params, searchParams }: Props) {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Live price banner */}
+      <div className="rounded-lg border border-emerald-500/15 bg-emerald-500/5 px-4 py-3 flex items-center justify-between gap-4 text-xs">
+        <div className="flex items-center gap-2 text-emerald-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          {bazaarFetchedAt
+            ? `Live Bazaar prices loaded at ${bazaarFetchedAt} — ${bazaarItemCount} items tracked`
+            : 'Bazaar prices unavailable — using fallback estimates'}
+        </div>
+        <span className="text-slate-600">Prices refresh on each page load</span>
       </div>
 
       {/* Disclaimer */}
