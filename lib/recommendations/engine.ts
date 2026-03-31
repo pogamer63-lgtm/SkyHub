@@ -727,6 +727,124 @@ function checkPetsProgression(profile: PlayerProfile): Recommendation[] {
   return recs;
 }
 
+function checkGardenUpgrades(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const farming = profile.farming;
+  const farmSkill = profile.skills.farming;
+
+  // Garden level milestone recommendations
+  if (farming.gardenLevel >= 3 && farming.gardenLevel < 7 && farmSkill >= 20) {
+    recs.push({
+      id: 'garden_level_7',
+      category: 'farming',
+      title: `Reach Garden Level 7 (currently ${farming.gardenLevel})`,
+      description: 'Garden Level 7 unlocks all 24 crop plots and significant Farming Fortune bonuses from garden milestones.',
+      whyItMatters: 'Each garden level unlocks more plots and provides passive Farming Fortune. Level 7 is the inflection point for serious farming setups.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'Farm crops to gain Garden XP',
+      estimatedBenefit: '+Farming Fortune, +plots, crop upgrade slots',
+      roiScore: 80,
+      urgencyScore: farming.gardenLevel < 5 ? 65 : 50,
+      progressionScore: 78,
+      requirementScore: 15,
+      confidenceScore: 88,
+      sourceTags: ['farming', 'garden', 'fortune'],
+      dependsOn: [],
+      unlocks: ['all_plots', 'garden_milestones', 'visitor_npcs'],
+      gameStage: ['mid', 'late'],
+      priority: 'medium',
+      type: 'progression',
+    });
+  }
+
+  // Crop upgrades: if farming is active but upgrades are low
+  const cropUpgradeTotal = Object.values(farming.cropUpgrades ?? {}).reduce((s, v) => s + v, 0);
+  if (farmSkill >= 25 && cropUpgradeTotal < 15 && farming.gardenLevel >= 3) {
+    recs.push({
+      id: 'crop_upgrades',
+      category: 'farming',
+      title: 'Level Up Crop Upgrades',
+      description: `Your total crop upgrade levels are ${cropUpgradeTotal}. Each crop upgrade tier gives +1 Farming Fortune for that crop and unlocks faster collection.`,
+      whyItMatters: 'Crop upgrades are one of the most efficient Farming Fortune sources per copper spent. Each level costs a fixed copper amount from garden visitors.',
+      estimatedCost: 100_000,
+      estimatedCostLabel: 'Copper from garden (grind)',
+      estimatedBenefit: `+${Math.max(1, 10 - cropUpgradeTotal)} Farming Fortune per crop`,
+      roiScore: 75,
+      urgencyScore: 55,
+      progressionScore: 70,
+      requirementScore: 10,
+      confidenceScore: 82,
+      sourceTags: ['farming', 'garden', 'fortune', 'crop-upgrades'],
+      dependsOn: [],
+      unlocks: ['farming_fortune'],
+      gameStage: ['mid', 'late'],
+      priority: 'low',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
+function checkAccessoryPower(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const mp = profile.accessories.magicalPower;
+  const selectedPower = profile.accessories.selectedPower;
+  const powers = profile.accessories.powers ?? [];
+
+  // No power selected
+  if (mp >= 50 && !selectedPower) {
+    recs.push({
+      id: 'select_power',
+      category: 'accessories',
+      title: 'Select an Accessory Power',
+      description: 'You have Magical Power but no Accessory Power selected. Go to your Accessory Bag and select a power from the Hex on the right.',
+      whyItMatters: 'Accessory Powers provide major stat bonuses based on your Magical Power. Not selecting one means leaving significant stats on the table.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'Free — just select it',
+      estimatedBenefit: '+Stats scaled by your Magical Power',
+      roiScore: 99,
+      urgencyScore: 95,
+      progressionScore: 85,
+      requirementScore: 0,
+      confidenceScore: 99,
+      sourceTags: ['accessories', 'magical-power', 'free'],
+      dependsOn: [],
+      unlocks: ['power_bonuses'],
+      gameStage: ['early', 'mid', 'late', 'endgame'],
+      priority: 'critical',
+      type: 'blocker',
+    });
+  }
+
+  // Has MP but very few unlocked powers
+  if (mp >= 200 && powers.length < 3) {
+    recs.push({
+      id: 'unlock_more_powers',
+      category: 'accessories',
+      title: 'Unlock More Accessory Powers',
+      description: `You have only ${powers.length} Accessory Power(s) unlocked. Powers like Sorrow, Ender, Bloodthirsty, and Warrior are strong picks for different builds.`,
+      whyItMatters: 'Unlocking more powers gives you flexibility to swap between builds (e.g. Tank vs Damage). Powers are unlocked by crafting their corresponding accessories.',
+      estimatedCost: 5_000_000,
+      estimatedCostLabel: '5M–50M per power (varies)',
+      estimatedBenefit: 'Build flexibility, optimal stats per activity',
+      roiScore: 65,
+      urgencyScore: 45,
+      progressionScore: 60,
+      requirementScore: 20,
+      confidenceScore: 75,
+      sourceTags: ['accessories', 'magical-power', 'powers'],
+      dependsOn: [],
+      unlocks: ['power_flexibility'],
+      gameStage: ['mid', 'late', 'endgame'],
+      priority: 'low',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
 function checkPetItems(profile: PlayerProfile): Recommendation[] {
   const recs: Recommendation[] = [];
 
@@ -902,6 +1020,8 @@ export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarP
     ...checkPetsProgression(profile),
     ...checkPetItems(profile),
     ...checkMuseumValue(profile),
+    ...checkGardenUpgrades(profile),
+    ...checkAccessoryPower(profile),
   ];
 
   // Filter by game stage relevance — include current stage + adjacent stages

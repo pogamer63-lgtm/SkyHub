@@ -500,6 +500,31 @@ export default async function FarmingPage({ params, searchParams }: Props) {
         </div>
       </div>
 
+      {/* Crop Upgrades */}
+      {Object.keys(profile.farming.cropUpgrades ?? {}).length > 0 && (
+        <div className="card p-5 mb-6">
+          <h2 className="font-semibold text-white mb-1 flex items-center gap-2">
+            🌿 Crop Upgrades
+            <span className="text-xs font-normal text-slate-500">+1 FF per level per crop</span>
+          </h2>
+          <p className="text-xs text-slate-500 mb-4">Upgraded with Copper from Garden visitors. Max level 10 per crop.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {Object.entries(profile.farming.cropUpgrades ?? {}).sort(([, a], [, b]) => b - a).map(([crop, level]) => (
+              <div key={crop} className="rounded-lg border border-white/5 p-3">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-xs text-slate-300 font-medium capitalize">{crop.replace(/_/g, ' ')}</span>
+                  <span className="text-xs font-mono text-emerald-400">+{level} FF</span>
+                </div>
+                <div className="h-1 rounded-full bg-white/5">
+                  <div className="h-full rounded-full bg-emerald-500/70" style={{ width: `${(level / 10) * 100}%` }} />
+                </div>
+                <div className="text-xs text-slate-600 mt-0.5">Level {level}/10</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Crop Milestones */}
       <div className="card p-5">
         <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
