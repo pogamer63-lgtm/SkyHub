@@ -255,13 +255,13 @@ function checkDungeonProgression(profile: PlayerProfile): Recommendation[] {
     });
   }
 
-  // F5 — Shadow Assassin armor unlock (critical mid-game milestone)
-  if (cat.level >= 8 && cat.highestFloor < 5) {
+  // F5 — Shadow Assassin unlock (entrance requires Cat 14; recommend when Cat 11+)
+  if (cat.level >= 11 && cat.highestFloor < 5) {
     recs.push({
       id: 'dungeon_floor5',
       category: 'dungeons',
-      title: 'Complete Floor 5 (Shadow Assassin Unlock)',
-      description: `You're Catacombs ${cat.level} but haven't completed Floor 5. Floor 5 is a critical milestone — it unlocks Shadow Assassin armor, one of the best pre-Necron sets.`,
+      title: 'Complete Floor 5 — Livid (Shadow Assassin Unlock)',
+      description: `You're Catacombs ${cat.level}. Floor 5 requires Cat 14 to enter (boss: Livid). It drops Shadow Assassin Armor and Livid Dagger — both are key mid-game gear.`,
       whyItMatters: 'Shadow Assassin Armor (from F5+) is a major power spike for mid-game. It is significantly better than Dragon armor and is the current meta recommendation before Necron.',
       estimatedCost: 2_000_000,
       estimatedCostLabel: '~2M (gear to safely clear F5)',
@@ -280,16 +280,17 @@ function checkDungeonProgression(profile: PlayerProfile): Recommendation[] {
     });
   }
 
-  if (cat.level >= 15 && cat.highestFloor < 6) {
+  // F6 — Sadan boss, entrance requires Cat 19; recommend when Cat 17+
+  if (cat.level >= 17 && cat.highestFloor < 6) {
     recs.push({
       id: 'dungeon_floor6',
       category: 'dungeons',
-      title: 'Progress to Floor 6 (Livid)',
-      description: `You're Catacombs ${cat.level} but haven't completed Floor 6. Floor 6 is the gateway to Necron armor parts and significantly better gear.`,
-      whyItMatters: 'Floor 6 (Livid) drops are essential for mid-game progression. Livid Dagger and Floor 6 gear are strong stepping stones toward F7.',
+      title: 'Progress to Floor 6 — Sadan (Necron Armor Pathway)',
+      description: `You're Catacombs ${cat.level}. Floor 6 requires Cat 19 to enter (boss: Sadan). It drops Wither armor pieces including Necron parts and the Giant Sword.`,
+      whyItMatters: 'Floor 6 (Sadan) is the gateway to Wither armor progression. Necron armor pieces and Giant Sword drop here — essential for F7 prep.',
       estimatedCost: 5_000_000,
       estimatedCostLabel: '~5M (gear improvements)',
-      estimatedBenefit: 'Livid Dagger, Wither armor pieces, Catacombs XP',
+      estimatedBenefit: 'Wither armor pieces (Necron parts), Giant Sword, Catacombs XP',
       roiScore: 80,
       urgencyScore: 78,
       progressionScore: 85,
