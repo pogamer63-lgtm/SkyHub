@@ -1,11 +1,31 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-04-01
-**Session status:** Phase 6 Meta Audit Pass 3 COMPLETE ✅ (NotebookLM)
+**Session status:** Phase 6 Meta Audit Pass 4 IN PROGRESS — wiki fetch complete, code fixes applied, NotebookLM Part A running
 
 ---
 
 ## ✅ Completed (all phases)
+
+### Phase 6 — Meta Audit Pass 4B/4C (2026-04-01) — Wiki Fetch + Code Fixes
+- [x] `wiki_content.md` (1233 lines): 15 wiki pages fetched via Fandom API (direct URLs blocked, API worked)
+  - Skills, SkyBlock Level, Slayer, Dungeons, HOTM, Magical Power, Pets, Garden, Farming Fortune, Hunting, Kuudra, Rift, Fairy Soul, Reforge, Minions + Money-Making
+- [x] **CRITICAL FIX**: Enderman unlock requires Wolf **Tier IV** (not T2 as coded) — `engine.ts` corrected
+- [x] **CRITICAL FIX**: Blaze now requires Enderman Level 3 prerequisite — `engine.ts` corrected + `dependsOn` added
+- [x] **CRITICAL FIX**: Dungeon floor entry requirements corrected across all 7 normal + 7 MM floors — `dungeons/page.tsx`
+  - Was: F2=Cat5, F3=Cat10, F4=Cat15, F5=Cat20, F6=Cat24, F7=Cat28
+  - Now: F2=Cat4, F3=Cat7, F4=Cat11, F5=Cat16, F6=Cat21, F7=Cat26 (wiki entrance reqs + buffer)
+- [x] Vampire Slayer rec: now requires SkyBlock Level 12 + explains Globulate Timecharm requirement
+- [x] `UPGRADE_RULES.json` v1.4: `dungeon_floor_entry_requirements`, `skills_max_levels` (all 13 skills with correct caps), `magical_power.formula` added
+- [x] `DISPUTED_FACTS.md`: 4 new resolved facts (Garden L15, Fairy Souls no stats, Rift access, no accessory reforges)
+- [x] `LAST_META_REFRESH.md`: Pass 4B entry added
+- [x] Build: ✅ PASSING (0 TS errors)
+
+### Phase 6 — Meta Audit Pass 4B (2026-04-01) — NotebookLM Economy & Content
+- [x] `research_pass4_economy.md` (610+ lines): Garden, Farming Fortune, Jacob's, Fishing, Foraging/Hunting, Kuudra, Rift, Money-making, Reforges, Enchants, Minions, Fairy Souls
+- [x] `lib/hypixel/parser.ts`: gardenTable corrected (max level 15, was 20)
+- [x] `lib/recommendations/engine.ts`: Fairy Souls description corrected (stat bonuses removed Sept 2022)
+- [x] `UPGRADE_RULES.json` v1.3: fairy_souls + rift_access sections; garden.levels.max = 15
 
 ### Phase 6 — Meta Audit Pass 3 (2026-04-01) — NotebookLM
 - [x] NotebookLM notebook created; 10 wiki sources added and processed
@@ -113,12 +133,18 @@
 
 ## 🔄 Currently In Progress
 
-Nothing. Clean state. Ready to continue.
+- NotebookLM Part A script (`scripts/notebooklm_pass4a.py`) running — 8 wiki text sources added to notebook, 12 questions pending
+- Results will be saved to `research_pass4_core.md`
+
+### Known Remaining Issues (from wiki research)
+- Elephant pet: +150 FF at L100; Mooshroom Cow: +110 FF at L100 — Elephant has more raw FF but Mooshroom Cow has other bonuses. `pets/page.tsx` currently lists Mooshroom Cow first. Add a note clarifying this tradeoff.
+- Foraging max level 54 (not 60) — affects skill display; gameplay naturally caps XP so no parsing error but should be documented in skills page
+- Skill XP table: level 50 threshold may differ by 200,000 XP from wiki (55,172,425 vs 55,372,425) — low priority, needs verification
 
 ### Deferred from Phase 6 Meta Audit (lower priority)
 - `gear/page.tsx`: armor progression descriptions still reference old path — update to Ender/Glacite → Strong Dragon → Shadow Assassin → Necron → Kuudra
-- `pets/page.tsx`: BIS pet recommendations still list old picks — update to Mooshroom Cow (farming), Black Cat (dungeons), Scatha (mining), Ammonite (fishing)
 - Museum milestone thresholds in `museum/page.tsx` are approximate — verify against live API once available
+- YouTube-based money-making research still pending (user requested: find recent YouTube videos and synthesize via NotebookLM)
 
 ---
 
