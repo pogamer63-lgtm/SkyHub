@@ -1,6 +1,6 @@
 # SkyHub — Disputed / Uncertain Facts
 
-**Last updated:** 2026-04-01
+**Last updated:** 2026-04-01 (Pass 2)
 
 Facts listed here are uncertain, disputed across sources, or subject to rapid meta changes.
 Before coding a rule around any item below, re-verify from an authoritative source.
@@ -66,6 +66,47 @@ Before coding a rule around any item below, re-verify from an authoritative sour
 
 ---
 
+---
+
+## New Disputes Identified (Pass 2 — 2026-04-01)
+
+### 11. Bazaar unlock level — Level 5 vs Level 7
+- **Claim A**: SkyBlock Level 5 unlocks the Bazaar (some older sources)
+- **Claim B**: SkyBlock Level 7 unlocks the Bazaar (2026 beginner guide explicitly states this)
+- **Note**: The code currently has Garden at Level 5 (correct). Bazaar may be at Level 7 — verify before coding any Bazaar-gate logic.
+- **Status**: Unresolved — verify in-game or against current API
+- **Impact**: recommendation engine Bazaar-related advice
+
+### 12. Ghost Farming profitability (30M/hour)
+- **Claim**: Ghost farming yields ~30M/hour with Soul Whip + Emerald Blade swap
+- **Counter**: Requires specific setup and Fishing 26; highly ping/RNG dependent
+- **Status**: Listed as "theoretical" in source material — treat as ceiling not floor
+- **Confidence**: Low-medium
+
+### 13. Pumpkin Minion money-making viability
+- **Claim**: Pumpkin Minions generate passive income
+- **Counter**: Community flagged this as "based on a bug" — may be patched at any time
+- **Status**: Do NOT build recommendation logic around this; mark as unreliable
+- **Confidence**: Low
+
+### 14. Foraging Update impact on meta
+- **Claim**: Foraging Update (Part I, 2025) was "largest update ever released" and introduced Hunting skill
+- **Status**: Confirmed shipped, but the full meta impact (new gear, new Hunting skill integration with other skills) is not fully documented in current research
+- **Recommendation**: When implementing foraging/hunting features, re-research this topic
+- **Confidence**: Low (topic not yet researched in depth)
+
+### 15. Ghost Farming Fishing 26 requirement
+- **Claim**: Ghost Farming requires Fishing 26
+- **Status**: Appears in one source only; mechanism unclear (possibly for a specific area unlock)
+- **Confidence**: Low — verify before implementing
+
+### 16. Backwater Bayou fishing meta
+- **Claim**: Backwater Bayou is a new fishing island with its own gear progression (Ichthyic → Finwave → Gilsplash)
+- **Status**: Shipping confirmed (2025 major update) but the specific armor tier list is from a single 2026 equipment thread
+- **Confidence**: Medium — armor names confirmed but order/relative power may have changed
+
+---
+
 ## Resolved (was uncertain, now confirmed)
 
 | Fact | Resolution |
@@ -75,3 +116,11 @@ Before coding a rule around any item below, re-verify from an authoritative sour
 | HOTM max tier | **Confirmed Tier 10** |
 | Revenant armor wear vs craft level | **Level 4 wear, Level 5 craft** |
 | F5 importance in dungeon path | **Confirmed critical** — Shadow Assassin unlock |
+| Vampire Slayer existence | **Confirmed** — 6th slayer; Rift-only; max tier 5; Erythrocyte currency |
+| Helianthus Armor stats | **Confirmed** — 150 FF total, requires Farming 50, drops from Moonflower/Sunflower/Wild Rose and Greenhouse Harvestable crops |
+| Dungeon class transition rule | **Confirmed** — Berserker early, transition on weapon acquisition (Terminator → Archer, Hyperion → Mage) |
+| Healer class viability | **Confirmed obsolete** at F6+ — modern party compositions don't use Healer |
+| Farming Fortune formula | **Confirmed** — every 100 FF = +100% drops; leftover FF = fractional chance |
+| Glacite armor in Glacite Tunnels | **Confirmed BAD** — community strongly warns against it; use Yog or Divan |
+| Suspicious Scrap excavation profitability | **Confirmed loses money** on average |
+| Nobody mithril mines for income | **Confirmed** — only for powder grind |

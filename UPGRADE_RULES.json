@@ -1,9 +1,10 @@
 {
   "_meta": {
-    "version": "1.0",
+    "version": "1.1",
     "last_updated": "2026-04-01",
     "description": "Structured upgrade rules derived from meta research. Used as reference for recommendation engine logic.",
-    "confidence_levels": ["high", "medium", "low"]
+    "confidence_levels": ["high", "medium", "low"],
+    "changelog": "v1.1 (2026-04-01 Pass 2): Added dungeon class meta, equipment accessories, money-making tiers, slayer Vampire, mining Glacite Tunnels details, farming Fortune formula, level gates, beginner mistakes"
   },
 
   "garden": {
@@ -137,12 +138,204 @@
   "bis_pets": {
     "farming_general": { "name": "Mooshroom Cow", "rarity": "LEGENDARY", "confidence": "medium" },
     "farming_pests": { "name": "Hedgehog", "rarity": "LEGENDARY", "confidence": "medium" },
-    "farming_old_bis": "Elephant (still strong, no longer clear BIS)",
+    "farming_old_bis": "Elephant (still strong, no longer clear BIS; best for max Farming Fortune)",
     "mining_general": { "name": "Scatha", "rarity": "LEGENDARY", "confidence": "medium" },
     "mining_glacite": { "name": "Glacite Golem", "rarity": "LEGENDARY", "confidence": "medium" },
     "combat_general": { "name": "Golden Dragon", "rarity": "LEGENDARY", "level": 200, "confidence": "medium" },
     "dungeons": { "name": "Black Cat", "rarity": "LEGENDARY", "confidence": "medium" },
     "fishing": { "name": "Ammonite", "rarity": "LEGENDARY", "confidence": "medium" },
     "alchemy": { "name": "Rabbit", "rarity": "LEGENDARY", "confidence": "medium" }
+  },
+
+  "dungeon_class_meta": {
+    "source": "Community poll + forum discussion, 2025",
+    "class_by_stage": [
+      { "stage": "early", "recommended": "Berserker", "reason": "Best DPS options available (AotD, Strong Dragon Armor), 64.6% community vote", "confidence": "high" },
+      { "stage": "mid", "recommended": "Archer", "reason": "Slight edge (27.7% vote) over Mage (24.6%) and Berserker (21.5%); Spirit Shortbow / Juju Bow", "confidence": "medium" },
+      { "stage": "late", "recommended": "Archer", "reason": "Dominant (49.2% vote); Terminator is the weapon trigger", "confidence": "high" },
+      { "stage": "endgame", "recommended": "Archer or Mage", "reason": "Terminator (Archer) or Hyperion (Mage); Mage requires expensive gear", "confidence": "high" }
+    ],
+    "transition_rule": "Play Berserker until you acquire Terminator (switch to Archer) or Hyperion (switch to Mage)",
+    "tank_note": "Situationally valuable on F7 for boss positioning; less critical at high Catacombs",
+    "healer_note": "Effectively obsolete at F6+; not needed in modern party compositions",
+    "confidence": "high"
+  },
+
+  "equipment_accessories": {
+    "necklace": [
+      { "tier": "early", "name": "Bone Necklace (fragged)", "confidence": "high" },
+      { "tier": "late", "name": "Rift Necklace", "confidence": "high" }
+    ],
+    "belt": [
+      { "tier": "general", "name": "Adaptive Belt (fragged)", "confidence": "high" },
+      { "tier": "mage", "name": "Implosion Belt", "confidence": "high" }
+    ],
+    "cloak": [
+      { "tier": "general", "name": "Shadow Assassin Cloak (fragged)", "confidence": "high" },
+      { "tier": "foraging", "name": "Ancestral Cloak", "confidence": "high" }
+    ],
+    "gloves": [
+      { "tier": "general", "name": "Soul Weaver Gloves", "confidence": "high" }
+    ],
+    "master_starred_note": "NOT cost-effective — described as 'the very last upgrade possible' with minimal stat gain",
+    "confidence": "high"
+  },
+
+  "armor_progression_detailed": {
+    "combat": [
+      { "tier": 1, "name": "Glacite Armor or Ender Armor", "stage": "early-mid", "confidence": "high" },
+      { "tier": 2, "name": "Strong Dragon Armor", "stage": "mid", "note": "Fierce reforge recommended", "confidence": "high" },
+      { "tier": 3, "name": "Shadow Assassin Armor", "stage": "post-F5", "note": "SA + Livid Dagger (Berserker) or SA + Spirit Sceptre (Mage)", "confidence": "high" },
+      { "tier": 4, "name": "Necron's Armor / Wither Armor sets", "stage": "late", "note": "Necron better inside dungeons due to scaling; outside dungeons barely worth price increase vs SA", "confidence": "high" },
+      { "tier": 5, "name": "Kuudra Infernal Armor", "stage": "endgame", "note": "Better raw stats than Necron; Necron retains value for dungeon bonuses", "confidence": "medium" }
+    ],
+    "farming": [
+      { "tier": 1, "name": "Lotus Equipment", "stage": "early farming", "confidence": "high" },
+      { "tier": 2, "name": "Pesthunter Equipment", "stage": "mid farming", "confidence": "high" },
+      { "tier": 3, "name": "Fermento Armor", "stage": "late farming", "note": "SkyMart Brochure reforge; requires Farming 40", "confidence": "high" },
+      { "tier": 4, "name": "Helianthus Armor", "stage": "endgame farming", "note": "Requires Farming 50; drops from Moonflower/Sunflower/Wild Rose (2+ Fermento/Helianthus pieces); also from Greenhouse Harvestable crops", "confidence": "high" }
+    ],
+    "mining": [
+      { "tier": 1, "name": "Sorrow Armor", "stage": "early mining", "confidence": "high" },
+      { "tier": 2, "name": "Yog Armor", "stage": "mid mining", "confidence": "high" },
+      { "tier": 3, "name": "Divan's Armor", "stage": "Glacite Tunnels", "note": "Full Recombed Jaded Divan with Perfect Topazes recommended", "confidence": "high" }
+    ],
+    "fishing": [
+      { "tier": 1, "name": "Ichthyic Armor", "stage": "early fishing", "confidence": "medium" },
+      { "tier": 2, "name": "Finwave Armor", "stage": "mid fishing", "confidence": "medium" },
+      { "tier": 3, "name": "Gilsplash Armor", "stage": "late fishing", "confidence": "medium" }
+    ]
+  },
+
+  "slayers": {
+    "total_count": 6,
+    "recommended_order": ["zombie", "wolf", "spider", "enderman", "blaze", "vampire"],
+    "zombie": {
+      "boss_name": "Revenant Horror",
+      "armor_equip_level": 4,
+      "armor_craft_level": 5,
+      "note": "Level 4 to WEAR Revenant armor, Level 5 to CRAFT chestplate. Do L1 first for Wand of Healing (16 Revenant Flesh).",
+      "old_code_value": "Level 5 unlocks armor",
+      "confidence": "high"
+    },
+    "spider": {
+      "boss_name": "Tarantula Broodfather",
+      "armor_equip_level": 4,
+      "confidence": "high"
+    },
+    "wolf": {
+      "boss_name": "Sven Packmaster",
+      "armor_equip_level": 4,
+      "note": "L2 unlocks Radiant Power Orb recipe",
+      "confidence": "high"
+    },
+    "enderman": {
+      "boss_name": "Voidgloom Seraph",
+      "armor_equip_level": 3,
+      "confidence": "medium"
+    },
+    "blaze": {
+      "boss_name": "Inferno Demonlord",
+      "armor_equip_level": 4,
+      "confidence": "medium"
+    },
+    "vampire": {
+      "boss_name": "Riftstalker Bloodfiend",
+      "location": "Rift — Stillgore Chateau",
+      "max_tier": 5,
+      "note": "T5 most profitable but requires ping <40ms. T4 viable if T5 too difficult, set RNG meter to The One books. New Erythrocyte currency from Vambus NPC.",
+      "priority": "last (Rift-only; requires Rift access)",
+      "confidence": "high"
+    }
+  },
+
+  "mining": {
+    "glacite_tunnels": {
+      "access_requirement": "HOTM Tier 7 + Secret Railroad Pass",
+      "secret_railroad_pass_recipe": "1 Flawless Ruby + 2 Refined Mithril + 8 Corleonite (30s forge)",
+      "minimum_breaking_power": 9,
+      "recommended_drill": "Titanium Drill DR-X555 minimum; DR-X655 for HOTM 10+",
+      "recommended_armor": "Yog or Divan (NOT Sorrow or Glacite armor)",
+      "recommended_armor_note": "Glacite armor is explicitly discouraged by community for use in Glacite Tunnels",
+      "recommended_drill_reforge": "Auspicious or Lustrous (NOT Glacial — that is a drill reforge but was misidentified as armor reforge in some guides)",
+      "mineshaft_spawn_chance": "0.05% (1 in 2000)",
+      "suspicious_scrap_drop_chance": "0.5% base (1 in 200); halves each find",
+      "suspicious_scrap_profitability": "Typically loses money when excavated",
+      "confidence": "high"
+    },
+    "hotm_powder_requirements": {
+      "normal_mining": { "mithril": "8M", "gemstone": "14M" },
+      "full_skyblock_xp": { "mithril": "12M", "gemstone": "20M", "glacite": "20M" },
+      "start_mineshaft_mining": { "mithril": "8M", "gemstone": "14M", "glacite": "24M" },
+      "max_glacite_perks": { "glacite": "34M" },
+      "confidence": "medium"
+    },
+    "hotm_priority_nodes": [
+      { "name": "Powder Buff", "tier_unlock": "HOTM 7", "priority": "high" },
+      { "name": "Mole", "tier_unlock": "HOTM 6", "priority": "high" },
+      { "name": "Explorer", "tier_unlock": "HOTM 6", "priority": "high" },
+      { "name": "Mining Fortune", "tier_unlock": "varies", "priority": "high" },
+      { "name": "Mining Fortune II", "tier_unlock": "varies", "priority": "high" }
+    ],
+    "mithril_mining_note": "Nobody mithril mines for income anymore — only for powder. Gemstone mining is the primary income method.",
+    "confidence": "high"
+  },
+
+  "farming_fortune": {
+    "formula": "Every 100 FF = +100% drops. Leftover FF = % chance for one more drop multiplier. Example: 250 FF = 100% chance for 3x drops + 50% chance for 4x drops.",
+    "key_enchantments": [
+      { "name": "Dedication IV", "effect": "+0.5 per garden milestone for that crop (hoes/axes only)", "note": "Multiplied by garden crop milestone; max with tier 4" },
+      { "name": "Pesterminator V", "effect": "+5 FF per armor piece = +20 total", "slots": "armor" },
+      { "name": "Green Thumb V", "effect": "+0.25 per unique visitor served per equipment piece; max +21/piece with 84 visitors = +84 total", "slots": "equipment" }
+    ],
+    "best_armor_for_ff": { "name": "Helianthus Armor", "ff_from_set": 150, "requirement": "Farming 50", "confidence": "high" },
+    "farming_fortune_note": "Farming Fortune has no effect on Private Island — only works in Garden",
+    "confidence": "high"
+  },
+
+  "level_gates": {
+    "source": "2026 beginner guide + wiki",
+    "gates": [
+      { "level": "Mining 5", "unlock": "Deep Caverns" },
+      { "level": "Mining 12", "unlock": "Dwarven Mines" },
+      { "level": "SkyBlock Level 7", "unlock": "Bazaar" },
+      { "level": "Combat 12", "unlock": "The End" },
+      { "level": "SkyBlock Level 5", "unlock": "Garden" }
+    ],
+    "note": "SkyBlock Level 7 unlocks Bazaar (NOT Level 5 as sometimes stated; Garden is Level 5)",
+    "confidence": "high"
+  },
+
+  "money_making": {
+    "progression_pathway": "Farming/Fishing/Ice Walkers → Bazaar Flip (1M start) → Zealots + Craft Flipping → Dungeons F5 + Gemstone Mining → Endgame Minions",
+    "methods": [
+      { "name": "Gemstone Mining", "coins_per_hour": "27-30M", "investment": "50M+", "stage": "late/endgame", "note": "Requires Divan armor + drill; Pristine stat prioritized over Mining Fortune", "confidence": "high" },
+      { "name": "Ghost Farming", "coins_per_hour": "~30M theoretical", "investment": "30M", "stage": "late", "note": "Soul Whip + Emerald Blade sword swap; requires Fishing 26", "confidence": "medium" },
+      { "name": "Dungeons F5", "coins_per_hour": "~20M", "investment": "dungeon gear", "stage": "mid-late", "note": "2.5 min runs; most reliable cash floor", "confidence": "high" },
+      { "name": "Frag Running", "coins_per_hour": "~15M", "investment": "120M", "stage": "endgame", "confidence": "medium" },
+      { "name": "Worm Fishing", "coins_per_hour": "~14M", "investment": "1M", "stage": "mid-late", "note": "Fishing 19+; Worm Membrane up to 100k each", "confidence": "medium" },
+      { "name": "Bazaar Flipping", "coins_per_hour": "10-50M (scales with capital)", "investment": "1M+", "stage": "all", "note": "Most capital-efficient for new players; zero ban risk; 1.25% tax", "confidence": "high" },
+      { "name": "Zealot Grinding", "coins_per_hour": "~10M", "investment": "2M", "stage": "mid", "note": "Frozen Diamond armor + Legendary Eman pet + Zealuck 5", "confidence": "high" },
+      { "name": "Rift Berberis", "coins_per_hour": "10-20M", "investment": "near zero", "stage": "early", "note": "Very accessible; get to 3rd Rift area", "confidence": "medium" },
+      { "name": "Pest Farming", "coins_per_hour": "varies", "investment": "low", "stage": "mid", "note": "Requires Farming 40", "confidence": "medium" },
+      { "name": "Automaton Grinding", "coins_per_hour": "~9M", "investment": "2M", "stage": "mid", "note": "HOTM 3 required; less competitive than Zealots", "confidence": "medium" },
+      { "name": "Farming (Netherwart)", "coins_per_hour": "~4M", "investment": "5M", "stage": "early-mid", "note": "Max T3 hoe + Legendary Elephant pet", "confidence": "medium" },
+      { "name": "Pumpkin Minions", "coins_per_hour": "passive", "investment": "varies", "stage": "mid", "note": "WARNING: Flagged as bug-based by community — may be patched", "confidence": "low" }
+    ]
+  },
+
+  "beginner_mistakes": {
+    "source": "2026 beginner guide + community consensus",
+    "mistakes": [
+      { "mistake": "Not banking coins", "consequence": "Deaths drop purse coins; losing progress", "fix": "Bank coins regularly" },
+      { "mistake": "Ignoring Magical Power progression", "consequence": "Massive underperformance; accessories are the main long-term power source", "fix": "Prioritize accessory bag upgrades" },
+      { "mistake": "Reforging addiction early", "consequence": "Coin waste before having good accessories", "fix": "Don't reforge until mid-game with stable income" },
+      { "mistake": "Enchanting basic diamond armor", "consequence": "Wasted enchanting resources", "fix": "Only enchant gear you'll keep for a while" },
+      { "mistake": "Poor island layout planning", "consequence": "No space for warps, chests, minions later", "fix": "Use stone slabs on main island; don't bridge to extensions" },
+      { "mistake": "Building economy around dragon RNG", "consequence": "Unreliable early income", "fix": "Use Bazaar flipping as stable income base" },
+      { "mistake": "Not pushing Redstone Collection", "consequence": "Missing accessory bag unlock (core QoL)", "fix": "Prioritize Redstone Minions early" },
+      { "mistake": "Skipping daily habits", "consequence": "Missed free XP and progress", "fix": "Experimentation Table, Dwarven Mines commissions (bonus HOTM XP), Chocolate Factory, Community Center" }
+    ],
+    "confidence": "high"
   }
 }
