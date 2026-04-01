@@ -81,9 +81,9 @@ const BIS_PETS: Array<{
     activity: 'Farming',
     emoji: '🌾',
     pets: [
-      { type: 'MOOSHROOM_COW', tier: 'LEGENDARY', reason: 'Current BIS — best Farming Fortune + coin multiplier combo' },
+      { type: 'MOOSHROOM_COW', tier: 'LEGENDARY', reason: 'Current meta pick — Squash buff + coin multiplier. Note: Elephant gives +150 FF vs Mooshroom Cow\'s +110 FF at max level.' },
+      { type: 'ELEPHANT', tier: 'LEGENDARY', reason: 'More raw Farming Fortune (+150 FF max vs +110 for Mooshroom Cow). Simpler to obtain, better if you only care about FF.' },
       { type: 'HEDGEHOG', tier: 'LEGENDARY', reason: 'BIS for pest control and pest-related Farming Fortune' },
-      { type: 'ELEPHANT', tier: 'LEGENDARY', reason: '+Farming Fortune per Farming level (strong, easier to obtain)' },
       { type: 'BEE', tier: 'LEGENDARY', reason: '+Farming Fortune, Honey production boost' },
     ],
   },
