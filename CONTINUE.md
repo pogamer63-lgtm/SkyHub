@@ -1,11 +1,18 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-04-01
-**Session status:** Phase 6 Meta Audit Pass 4D COMPLETE — fishing page bugs fixed (commit 32d8ada)
+**Session status:** Phase 6 Meta Audit Pass 4E COMPLETE — broad codebase audit, money/engine fixes (commit de49826)
 
 ---
 
 ## ✅ Completed (all phases)
+
+### Phase 6 — Meta Audit Pass 4E (2026-04-01) — Broad codebase audit
+
+- [x] **CRITICAL FIX**: `money/page.tsx` — 3 crop income estimates used `gardenLevel * 4` (gardenLevel gives no FF) → corrected to `plots * 3`
+- [x] **CRITICAL FIX**: `engine.ts` — crop upgrade recommendation said "+1 FF per tier, 10 tiers" → corrected to "+5 FF per tier, 9 tiers (max +45 FF, wiki-confirmed)"
+- [x] Verified correct: slayer XP breakpoints, tier counts, HOTM nodes, dungeon floor entry reqs, parser API keys, XP table
+- [x] Build: ✅ 0 TS errors (commit de49826)
 
 ### Phase 6 — Meta Audit Pass 4D (2026-04-01) — fishing/page.tsx bug fixes
 

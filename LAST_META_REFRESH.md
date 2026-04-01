@@ -251,6 +251,37 @@ Before modifying game-logic rules, check if a refresh is needed (> 30 days since
 
 ---
 
+## 2026-04-01 — Pass 4E: Broad codebase audit (money, engine, slayer, mining, dungeons, fishing)
+
+**Researcher**: Claude Sonnet 4.6 (automated)
+**Trigger**: Continued wiki verification pass — audited all remaining pages not previously checked
+**Pages reviewed**: money/page.tsx, dungeons/page.tsx, slayer/page.tsx, mining/page.tsx, collections/page.tsx, networth/page.tsx, bestiary/page.tsx, lib/recommendations/engine.ts
+
+### Critical Corrections Found This Pass
+
+| # | Correction | File Fixed |
+|---|-----------|-----------|
+| 1 | `farmingFortune` is always 0 in parser — fallback formula `gardenLevel*4` was wrong (gardenLevel gives no FF) | `money/page.tsx` — changed to `plots*3` in all 3 crop income estimates |
+| 2 | Crop upgrade recommendation said "+1 Farming Fortune per tier" with 10 tiers max | `engine.ts` — corrected to "+5 FF per tier, Tier I–IX (9 tiers max = +45 FF)" |
+
+### Verified Correct (no changes needed)
+- Slayer XP breakpoints all match wiki (Zombie, Spider, Wolf, Enderman, Blaze, Vampire)
+- Slayer tier counts correct (Zombie/Wolf/Spider/Enderman/Blaze: T1–T4; Vampire: T1–T5)
+- HOTM node definitions match UPGRADE_RULES.json confirmed list
+- Dungeon floor entry requirements already fixed (F1=Cat1, F2=Cat3 ... F7=Cat24; MM1=Cat24 ... MM7=Cat36)
+- Parser: `get('hunting')` → `exp['SKILL_HUNTING']` correct API key
+- `SKILL_XP_TABLE` 61 entries for level 0–60; level 50 = 55,172,425
+- Bestiary milestone kills array matches wiki pattern
+- Collections page minion slot thresholds reasonable (need live API to fully verify)
+- Networth page: pet/gear values are estimates, correctly labelled
+
+### Status (Pass 4E)
+- [x] money/page.tsx: gardenLevel → plots FF formula corrected (3 occurrences)
+- [x] engine.ts: crop upgrade description corrected (+5 FF/tier, 9 tiers)
+- [x] Build: ✅ 0 TS errors (commit de49826)
+
+---
+
 ## Next Scheduled Refresh
 
 **Recommended**: Within 30 days, or after any major SkyBlock patch announcement
