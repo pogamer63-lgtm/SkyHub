@@ -98,16 +98,9 @@ function getFishingFortuneSources(profile: PlayerProfile): FFishingSource[] {
     {
       name: 'Fishing Skill',
       current: profile.skills.fishing * 4,
-      max: 60 * 4,
+      max: 50 * 4,
       category: 'Skill',
-      tip: `Level ${profile.skills.fishing}/60 — each level gives +4 Fishing Fortune`,
-    },
-    {
-      name: 'Mining Skill (bonus)',
-      current: Math.floor(profile.skills.mining * 0.5),
-      max: Math.floor(60 * 0.5),
-      category: 'Skill',
-      tip: 'Mining skill also contributes +0.5 Fishing Fortune per level',
+      tip: `Level ${profile.skills.fishing}/50 — each level gives +4 HP (not Fishing Fortune)`,
     },
     {
       name: 'Pets (estimate)',

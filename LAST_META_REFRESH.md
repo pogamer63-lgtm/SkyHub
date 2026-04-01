@@ -232,6 +232,25 @@ Before modifying game-logic rules, check if a refresh is needed (> 30 days since
 
 ---
 
+## 2026-04-01 — Pass 4D: fishing/page.tsx bug fixes
+
+**Researcher**: Claude Sonnet 4.6 (automated)
+**Trigger**: Fishing page `getFishingFortuneSources` had bugs found during Pass 4C grep scan
+
+### Critical Corrections Found This Pass
+
+| # | Correction | File Fixed |
+|---|-----------|-----------|
+| 1 | Fishing max level 60 → 50 (line 101: `60 * 4` → `50 * 4`) | `fishing/page.tsx` |
+| 2 | Tip `/60` → `/50` (Fishing skill is capped at level 50) | `fishing/page.tsx` |
+| 3 | "each level gives +4 Fishing Fortune" → "+4 HP (not Fishing Fortune)" (Fishing gives HP, wiki-confirmed) | `fishing/page.tsx` |
+| 4 | Removed "Mining Skill (bonus)" source claiming Mining gives Fishing Fortune (Mining gives Mining Fortune + Defense, not Fishing Fortune) | `fishing/page.tsx` |
+
+### Status (Pass 4D)
+- [x] app/player/[username]/fishing/page.tsx: max level corrected, tip text corrected, wrong Mining bonus removed
+
+---
+
 ## Next Scheduled Refresh
 
 **Recommended**: Within 30 days, or after any major SkyBlock patch announcement
