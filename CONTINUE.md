@@ -1,11 +1,19 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-04-01
-**Session status:** Phase 6 Meta Audit Pass 4C COMPLETE — all wiki-verified fixes applied (commit c4c7556)
+**Session status:** Phase 6 Meta Audit Pass 4D COMPLETE — fishing page bugs fixed (commit 32d8ada)
 
 ---
 
 ## ✅ Completed (all phases)
+
+### Phase 6 — Meta Audit Pass 4D (2026-04-01) — fishing/page.tsx bug fixes
+
+- [x] **CRITICAL FIX**: Fishing max level was 60 → corrected to 50 (`getFishingFortuneSources`)
+- [x] **CRITICAL FIX**: "each level gives +4 Fishing Fortune" → "+4 HP (not Fishing Fortune)" (Fishing gives HP, not FF)
+- [x] **CRITICAL FIX**: Removed false "Mining Skill (bonus)" entry claiming Mining gives Fishing Fortune (Mining gives Mining Fortune + Defense)
+- [x] `LAST_META_REFRESH.md`: Pass 4D entry added
+- [x] Build: ✅ committed (32d8ada)
 
 ### Phase 6 — Meta Audit Pass 4C (2026-04-01) — Wiki Direct Verification
 
@@ -148,18 +156,15 @@
 
 ## 🔄 Currently In Progress
 
-- NotebookLM Part A script (`scripts/notebooklm_pass4a.py`) running — 8 wiki text sources added to notebook, 12 questions pending
-- Results will be saved to `research_pass4_core.md`
+*No tasks in progress.*
 
-### Known Remaining Issues (from wiki research)
-- Elephant pet: +150 FF at L100; Mooshroom Cow: +110 FF at L100 — Elephant has more raw FF but Mooshroom Cow has other bonuses. `pets/page.tsx` currently lists Mooshroom Cow first. Add a note clarifying this tradeoff.
-- Foraging max level 54 (not 60) — affects skill display; gameplay naturally caps XP so no parsing error but should be documented in skills page
-- Skill XP table: level 50 threshold may differ by 200,000 XP from wiki (55,172,425 vs 55,372,425) — low priority, needs verification
+### Known Remaining Issues
+- NotebookLM Part A (Pass 4A) still rate-limited — all 12 Q&A attempts fail consistently; data already covered by wiki_content.md + Pass 4B/4C direct research
+- YouTube money-making research pending — `scripts/notebooklm_youtube_money.py` ready; needs `notebooklm login` re-auth (auth expired)
+- Skill XP table: level 50 threshold may differ 200,000 XP from wiki (55,172,425 vs 55,372,425) — low priority, needs verification
 
 ### Deferred from Phase 6 Meta Audit (lower priority)
-- `gear/page.tsx`: armor progression descriptions still reference old path — update to Ender/Glacite → Strong Dragon → Shadow Assassin → Necron → Kuudra
 - Museum milestone thresholds in `museum/page.tsx` are approximate — verify against live API once available
-- YouTube-based money-making research still pending (user requested: find recent YouTube videos and synthesize via NotebookLM)
 
 ---
 
