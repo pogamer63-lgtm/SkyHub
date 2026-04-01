@@ -91,7 +91,7 @@ const INCOME_METHODS: IncomeMethod[] = [
     requirements: ['Farming 10+', 'Garden Level 1+'],
     isUnlocked: p => p.skills.farming >= 10 && p.farming.gardenLevel >= 1,
     estimateCoinsPerHr: (p, bz) => {
-      const ff = Math.max(p.farming.farmingFortune, p.skills.farming * 4 + p.farming.gardenLevel * 4);
+      const ff = Math.max(p.farming.farmingFortune, p.skills.farming * 4 + p.farming.plots * 3);
       const cropHr = CROP_BASE_PER_HR.WHEAT * (ff / CROP_FF_BASELINE);
       const price = bz[BZ.WHEAT] ?? 2;
       return Math.round(cropHr * price);
@@ -109,7 +109,7 @@ const INCOME_METHODS: IncomeMethod[] = [
     requirements: ['Farming 15+', 'Garden Level 3+'],
     isUnlocked: p => p.skills.farming >= 15 && p.farming.gardenLevel >= 3,
     estimateCoinsPerHr: (p, bz) => {
-      const ff = Math.max(p.farming.farmingFortune, p.skills.farming * 4 + p.farming.gardenLevel * 4);
+      const ff = Math.max(p.farming.farmingFortune, p.skills.farming * 4 + p.farming.plots * 3);
       const cropHr = CROP_BASE_PER_HR.SUGAR_CANE * (ff / CROP_FF_BASELINE);
       const price = bz[BZ.SUGAR_CANE] ?? 3;
       return Math.round(cropHr * price);
@@ -127,7 +127,7 @@ const INCOME_METHODS: IncomeMethod[] = [
     requirements: ['Farming 20+', 'Garden Level 5+'],
     isUnlocked: p => p.skills.farming >= 20 && p.farming.gardenLevel >= 5,
     estimateCoinsPerHr: (p, bz) => {
-      const ff = Math.max(p.farming.farmingFortune, p.skills.farming * 4 + p.farming.gardenLevel * 4);
+      const ff = Math.max(p.farming.farmingFortune, p.skills.farming * 4 + p.farming.plots * 3);
       const cropHr = CROP_BASE_PER_HR.NETHER_WART * (ff / CROP_FF_BASELINE);
       const price = bz[BZ.NETHER_WART] ?? 6;
       return Math.round(cropHr * price);
