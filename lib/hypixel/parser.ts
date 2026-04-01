@@ -107,7 +107,7 @@ function parseSlayers(member: SkyBlockMember): SlayerLevels {
     wolf: parseOne('wolf', [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000]),
     enderman: parseOne('enderman', [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000]),
     blaze: parseOne('blaze', [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000]),
-    vampire: parseOne('vampire', [20, 75, 240, 840, 2400]),
+    vampire: parseOne('vampire', [20, 75, 240, 840]), // max level 4 (wiki-confirmed)
   };
 }
 
