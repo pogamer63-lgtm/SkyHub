@@ -1022,6 +1022,131 @@ function checkCriticalBlockers(profile: PlayerProfile): Recommendation[] {
   return recs;
 }
 
+function checkDungeonClassMeta(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const cat = profile.dungeons.catacombs.level;
+  const selectedClass = profile.dungeons.selectedClass;
+  const highestFloor = profile.dungeons.catacombs.highestFloor;
+
+  // Early: push to Berserker if not already
+  if (cat >= 5 && cat < 20 && selectedClass !== 'berserk') {
+    recs.push({
+      id: 'dungeon_class_berserk_early',
+      category: 'dungeons',
+      title: 'Switch to Berserker Class (Early Game)',
+      description: `You're playing ${selectedClass} at Catacombs ${cat}. Early game, Berserker is the strongest class — best DPS with AotD and Strong Dragon Armor (64.6% community vote).`,
+      whyItMatters: 'Berserker dominates early dungeons. Switch to Archer once you have Terminator, or Mage with Hyperion. Until then, Berserker is the clearest choice.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'Free — just change class at NPC',
+      estimatedBenefit: 'Higher DPS, faster floor clears, more Catacombs XP/hr',
+      roiScore: 80,
+      urgencyScore: 60,
+      progressionScore: 72,
+      requirementScore: 0,
+      confidenceScore: 90,
+      sourceTags: ['dungeons', 'class', 'berserker'],
+      dependsOn: [],
+      unlocks: ['faster_dungeon_clears'],
+      gameStage: ['early', 'mid'],
+      priority: 'medium',
+      type: 'best_roi',
+    });
+  }
+
+  // Late: push to Archer if no class transition yet and has F6+
+  if (highestFloor >= 6 && cat >= 20 && selectedClass === 'berserk') {
+    recs.push({
+      id: 'dungeon_class_transition',
+      category: 'dungeons',
+      title: 'Plan Your Class Transition (Archer or Mage)',
+      description: 'At late game, Archer with Terminator (49.2% community vote) or Mage with Hyperion are dominant. Berserker is still viable but loses ground at higher floors.',
+      whyItMatters: 'The meta transition point is weapon-driven: get Terminator → switch to Archer; get Hyperion → switch to Mage. Healer is obsolete at F6+.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'Free class change; cost is in the weapon',
+      estimatedBenefit: 'Faster F7/MM clears, higher loot value per hour',
+      roiScore: 75,
+      urgencyScore: 55,
+      progressionScore: 78,
+      requirementScore: 40,
+      confidenceScore: 88,
+      sourceTags: ['dungeons', 'class', 'archer', 'mage', 'late-game'],
+      dependsOn: [],
+      unlocks: ['optimized_dungeon_clears'],
+      gameStage: ['late', 'endgame'],
+      priority: 'medium',
+      type: 'progression',
+    });
+  }
+
+  return recs;
+}
+
+function checkEquipmentSlots(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const avg = profile.skills.average ?? 0;
+  const cat = profile.dungeons.catacombs.level;
+
+  // Equipment slots (necklace/belt/cloak/gloves) — recommend if mid+ and presumably not equipped
+  // We can't read equipment from API directly without NBT, so suggest it for mid+ players
+  if (avg >= 20 || cat >= 10) {
+    recs.push({
+      id: 'equipment_slots',
+      category: 'combat',
+      title: 'Fill Your Equipment Slots',
+      description: 'Equipment slots (Necklace, Belt, Cloak, Gloves) provide stats separate from armor. Current meta: Bone Necklace, Adaptive Belt, Shadow Assassin Cloak, Soul Weaver Gloves — all fragged from dungeons.',
+      whyItMatters: 'Equipment slots are pure stat additions on top of your armor. Fragged equipment pieces from dungeons are the best early option and cost little.',
+      estimatedCost: 500_000,
+      estimatedCostLabel: '~500k (fragged equipment from AH)',
+      estimatedBenefit: '+Stats from 4 extra equipment slots',
+      roiScore: 85,
+      urgencyScore: 72,
+      progressionScore: 78,
+      requirementScore: 15,
+      confidenceScore: 90,
+      sourceTags: ['equipment', 'gear', 'mid-game'],
+      dependsOn: [],
+      unlocks: ['equipment_bonuses'],
+      gameStage: ['mid', 'late', 'endgame'],
+      priority: 'high',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
+function checkGlaciteTunnels(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const mining = profile.mining;
+
+  // HOTM 7 gate for Glacite Tunnels
+  if (mining.hotmLevel >= 5 && mining.hotmLevel < 7) {
+    recs.push({
+      id: 'hotm_7_glacite',
+      category: 'mining',
+      title: `Reach HOTM 7 for Glacite Tunnels (currently ${mining.hotmLevel})`,
+      description: 'HOTM 7 + Secret Railroad Pass unlocks Glacite Tunnels — the best mining income source. Mining below HOTM 7 is inefficient by community consensus.',
+      whyItMatters: 'Glacite Tunnels are significantly more profitable than surface mining. HOTM 7 is the access gate alongside the Secret Railroad Pass (crafted from Corleonite).',
+      estimatedCost: 0,
+      estimatedCostLabel: 'Mine to earn Powder, then spend it',
+      estimatedBenefit: 'Access to Glacite Tunnels (top mining income)',
+      roiScore: 88,
+      urgencyScore: 70,
+      progressionScore: 85,
+      requirementScore: 25,
+      confidenceScore: 92,
+      sourceTags: ['mining', 'hotm', 'glacite-tunnels'],
+      dependsOn: [],
+      unlocks: ['glacite_tunnels', 'divan_armor', 'gemstone_income'],
+      gameStage: ['mid', 'late'],
+      priority: 'high',
+      type: 'progression',
+    });
+  }
+
+  return recs;
+}
+
 // ─── Main Engine ───────────────────────────────────────────────────────────────
 
 export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarPrices): RecommendationSet {
@@ -1046,6 +1171,9 @@ export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarP
     ...checkMuseumValue(profile),
     ...checkGardenUpgrades(profile),
     ...checkAccessoryPower(profile),
+    ...checkDungeonClassMeta(profile),
+    ...checkEquipmentSlots(profile),
+    ...checkGlaciteTunnels(profile),
   ];
 
   // Filter by game stage relevance — include current stage + adjacent stages

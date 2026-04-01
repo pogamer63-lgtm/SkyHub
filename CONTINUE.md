@@ -1,13 +1,19 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-04-01
-**Session status:** Phase 6 Meta Audit COMPLETE ✅
+**Session status:** Phase 6 Meta Audit Pass 2 COMPLETE ✅
 
 ---
 
 ## ✅ Completed (all phases)
 
-### Phase 6 — Meta Audit (2026-04-01)
+### Phase 6 — Meta Audit Pass 2 (2026-04-01)
+- [x] Research Pass 2: 13 new sources, 8 new UPGRADE_RULES.json sections (v1.1)
+- [x] New engine rules: `checkDungeonClassMeta`, `checkEquipmentSlots`, `checkGlaciteTunnels` (20 modules total)
+- [x] Key findings: Vampire slayer (6th), Dungeon class transitions, Equipment slots meta, Glacite Tunnels requirements, Farming Fortune formula, money-making ladder, beginner mistakes
+- [x] NotebookLM-py confirmed installed; Google session expired — fallback direct web research used
+
+### Phase 6 — Meta Audit Pass 1 (2026-04-01)
 - [x] Created `META_SOURCES.md` — 13 sources, findings by category
 - [x] Created `UPGRADE_RULES.json` — structured rules with confidence levels
 - [x] Created `DISPUTED_FACTS.md` — uncertain/disputed facts, resolved facts
