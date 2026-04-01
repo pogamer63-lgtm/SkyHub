@@ -181,8 +181,8 @@ function checkSlayerProgression(profile: PlayerProfile, bazaar?: BazaarPrices): 
       id: 'slayer_wolf_4',
       category: 'slayer',
       title: 'Progress Wolf Slayer to Level 4',
-      description: `Wolf Slayer unlocks after Spider T2. You're at Wolf ${wolf.level}. Level 4 unlocks Werewolf Armor. Wolf T2 also unlocks Enderman Slayer.`,
-      whyItMatters: 'Wolf is third in the unlock chain (after Spider). Level 2 unlocks Enderman Slayer; Level 4 gives Werewolf Armor which has strong combat bonuses.',
+      description: `Wolf Slayer unlocks after Spider T2. You're at Wolf ${wolf.level}. Level 4 unlocks Werewolf Armor and — critically — Wolf T4 is required to unlock Enderman Slayer.`,
+      whyItMatters: 'Wolf is third in the unlock chain (after Spider). Wolf T4 is the gate to Enderman Slayer; Level 4 also gives Werewolf Armor which has strong combat bonuses.',
       estimatedCost: 2_500_000,
       estimatedCostLabel: '~2.5M coins',
       estimatedBenefit: 'Werewolf Armor, Radiant Power Orb recipe, unlocks Enderman Slayer',
@@ -200,13 +200,13 @@ function checkSlayerProgression(profile: PlayerProfile, bazaar?: BazaarPrices): 
     });
   }
 
-  if (enderman.level < 3 && wolf.level >= 2 && profile.skills.combat >= 20) {
+  if (enderman.level < 3 && wolf.level >= 4 && profile.skills.combat >= 20) {
     recs.push({
       id: 'slayer_enderman_3',
       category: 'slayer',
       title: 'Unlock Enderman Slayer Level 3',
-      description: `Enderman Slayer unlocks after Wolf T2. You're at Enderman ${enderman.level}. Level 3 unlocks Ender armor bonuses and Wither progression paths.`,
-      whyItMatters: 'Enderman slayer is the gateway to Wither armor progression. Requires Wolf T2 to unlock — not just Zombie T5 as previously stated.',
+      description: `Enderman Slayer unlocks after Wolf T4. You're at Enderman ${enderman.level}. Level 3 unlocks Ender armor bonuses and Wither progression paths.`,
+      whyItMatters: 'Enderman slayer is the gateway to Wither armor progression. Requires Wolf Tier IV to unlock (not just T2 as some guides state).',
       estimatedCost: 3_000_000,
       estimatedCostLabel: '~3M coins',
       estimatedBenefit: 'Wither armor pathway, better combat damage, Enderman rewards',
@@ -524,7 +524,7 @@ function checkLateGameProgression(profile: PlayerProfile): Recommendation[] {
   const recs: Recommendation[] = [];
   const cat = profile.dungeons.catacombs.level;
   const mp = profile.magicalPower;
-  const { blaze, vampire } = profile.slayers;
+  const { blaze, vampire, enderman } = profile.slayers;
 
   // Push to MM when F7 is cleared
   if (profile.dungeons.catacombs.highestFloor >= 7 && cat >= 28 && profile.dungeons.masterMode.highestFloor === 0) {
@@ -551,14 +551,14 @@ function checkLateGameProgression(profile: PlayerProfile): Recommendation[] {
     });
   }
 
-  // Blaze slayer for Crimson Isle access
-  if (blaze.level < 4 && profile.skills.combat >= 30 && cat >= 20) {
+  // Blaze slayer for Crimson Isle access — requires Enderman T3 to unlock
+  if (blaze.level < 4 && enderman.level >= 3 && profile.skills.combat >= 30 && cat >= 20) {
     recs.push({
       id: 'slayer_blaze_4',
       category: 'slayer',
       title: 'Push Blaze Slayer to Level 4',
-      description: 'Blaze Slayer Level 4 unlocks Crimson Isle faction quests and Mage Outfit drops. The Mage Outfit alone sells for 15M+.',
-      whyItMatters: 'Blaze Slayer is the gateway to Crimson Isle content and Kuudra progression. Mage Outfit drops are excellent income.',
+      description: 'Blaze Slayer unlocks after Enderman T3. Level 4 unlocks Crimson Isle faction quests and Mage Outfit drops. The Mage Outfit alone sells for 15M+.',
+      whyItMatters: 'Blaze Slayer is the gateway to Crimson Isle content and Kuudra progression. Requires Enderman T3 to unlock. Mage Outfit drops are excellent income.',
       estimatedCost: 5_000_000,
       estimatedCostLabel: '~5M in consumables',
       estimatedBenefit: 'Crimson Isle access, Mage Outfit drops (5M+ each), faction reputation',
@@ -568,7 +568,7 @@ function checkLateGameProgression(profile: PlayerProfile): Recommendation[] {
       requirementScore: 50,
       confidenceScore: 82,
       sourceTags: ['slayer', 'blaze', 'crimson-isle', 'late-game'],
-      dependsOn: [],
+      dependsOn: ['slayer_enderman_3'],
       unlocks: ['crimson_isle', 'kuudra_access', 'mage_outfit'],
       gameStage: ['late', 'endgame'],
       priority: 'medium',
@@ -576,14 +576,14 @@ function checkLateGameProgression(profile: PlayerProfile): Recommendation[] {
     });
   }
 
-  // Vampire slayer for late-game
-  if (vampire.level < 3 && cat >= 30) {
+  // Vampire slayer — requires Globulate Timecharm (in-Rift item, needs SkyBlock Level 12)
+  if (vampire.level < 3 && cat >= 30 && profile.skyblockLevel >= 12) {
     recs.push({
       id: 'slayer_vampire_3',
       category: 'slayer',
       title: 'Unlock Vampire Slayer Level 3',
-      description: 'Vampire Slayer Level 3 unlocks the Bat Person Armor and important accessories. It\'s one of the easier slayer progressions and unlocks valuable late-game items.',
-      whyItMatters: 'Vampire slayer provides unique accessories not available elsewhere. The Bat Person pet from vampire slayer is also highly valuable.',
+      description: 'Vampire Slayer requires the Globulate Timecharm (obtained in the Rift). Rift access opens at SkyBlock Level 12 via the Wizard Portal. Level 3 unlocks the RNG Meter and valuable accessories.',
+      whyItMatters: 'Vampire slayer is Rift-exclusive and uses Motes as currency. RNG Meter unlocks at T3, guaranteeing rare drops. Unique accessories and Bat Person pet are valuable.',
       estimatedCost: 3_000_000,
       estimatedCostLabel: '~3M in slayer XP',
       estimatedBenefit: 'Unique accessories, Bat Person pet access, late-game unlocks',
