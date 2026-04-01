@@ -17,9 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // ─── Minion Data ──────────────────────────────────────────────────────────────
 
-// Unique minions needed per slot unlock threshold (Hypixel SkyBlock mechanic)
-// Slots: 5 (0), 6 (5), 7 (15), 8 (30), 9 (50), 10 (75), 11 (100), 12 (125), 13 (150), 14 (175), 15 (200), 16+ (225)
-const MINION_SLOT_THRESHOLDS = [0, 5, 15, 30, 50, 75, 100, 125, 150, 175, 200, 225];
+// Unique minions needed per slot unlock threshold (wiki-confirmed, 2026-04-01)
+// Slots 5-25 from unique minions; +5 from Community Shop = 30 base; max 31 total
+// Thresholds: 0→5, 5→6, 15→7, 30→8, 50→9, 75→10, 100→11, 125→12, 150→13,
+//   175→14, 200→15, 225→16, 250→17, 275→18, 300→19, 325→20, 350→21, 375→22, 400→23, 450→24, 500→25
+const MINION_SLOT_THRESHOLDS = [0, 5, 15, 30, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 450, 500];
 
 function getMinionSlots(uniqueMinions: number): number {
   let slots = 5; // start at 5
