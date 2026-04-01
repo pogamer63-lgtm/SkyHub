@@ -16,8 +16,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // ─── Skill Meta ───────────────────────────────────────────────────────────────
 
-const MAX_SKILL_LEVEL = 60;
-const MAX_SPECIAL_LEVEL = 25; // runecrafting, social
+const MAX_SKILL_LEVEL = 60; // farming, mining, combat, enchanting, taming
+const MAX_FORAGING_LEVEL = 54; // Foraging Update Part I raised cap from 50 to 54
+const MAX_MED_LEVEL = 50; // fishing, alchemy, carpentry, dungeoneering
+const MAX_SPECIAL_LEVEL = 25; // runecrafting, social, hunting
 
 interface SkillMeta {
   key: keyof PlayerProfile['skills'];
@@ -61,7 +63,7 @@ const SKILLS: SkillMeta[] = [
     bonuses: ['+0.5 Crit Chance per level', '+1% Damage at milestones', 'Unlocks stronger mob areas'],
   },
   {
-    key: 'foraging', xpKey: 'foraging_xp', name: 'Foraging', emoji: '🌲', maxLevel: MAX_SKILL_LEVEL,
+    key: 'foraging', xpKey: 'foraging_xp', name: 'Foraging', emoji: '🌲', maxLevel: MAX_FORAGING_LEVEL,
     bestMethods: [
       { method: 'Dark Oak (Park)', xpPerHour: '200k–350k', note: 'Best early with treecapitator', cost: 'cheap' },
       { method: 'Spruce auto-farm', xpPerHour: '150k–300k', note: 'AFK friendly', cost: 'cheap' },
@@ -70,7 +72,7 @@ const SKILLS: SkillMeta[] = [
     bonuses: ['+1 Speed per 2 levels', 'Farming upgrade paths unlock', '+Strength bonus at milestones'],
   },
   {
-    key: 'fishing', xpKey: 'fishing_xp', name: 'Fishing', emoji: '🎣', maxLevel: MAX_SKILL_LEVEL,
+    key: 'fishing', xpKey: 'fishing_xp', name: 'Fishing', emoji: '🎣', maxLevel: MAX_MED_LEVEL,
     bestMethods: [
       { method: 'Open ocean (AFK)', xpPerHour: '30k–60k', note: 'Slowest but passive', cost: 'free' },
       { method: 'Sea Creature farming', xpPerHour: '80k–150k', note: 'Good with Dolphin pet', cost: 'cheap' },
@@ -89,7 +91,7 @@ const SKILLS: SkillMeta[] = [
     bonuses: ['+1 Intelligence per level', 'Stronger enchants at higher levels', 'More enchantment options unlock'],
   },
   {
-    key: 'alchemy', xpKey: 'alchemy_xp', name: 'Alchemy', emoji: '⚗️', maxLevel: MAX_SKILL_LEVEL,
+    key: 'alchemy', xpKey: 'alchemy_xp', name: 'Alchemy', emoji: '⚗️', maxLevel: MAX_MED_LEVEL,
     bestMethods: [
       { method: 'Brew potions in bulk', xpPerHour: '50k–150k', note: 'Cheap ingredients from Bazaar', cost: 'cheap' },
       { method: 'Water Breathing / Swiftness spam', xpPerHour: '100k–200k', note: 'Cheapest method', cost: 'cheap' },
