@@ -210,9 +210,9 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
   const garden = member.garden_player_data ?? {};
   const jacob = member.jacobs_farming ?? {};
 
-  // Garden level from XP
+  // Garden level from XP — max level is 15 (wiki-confirmed, updated April 2026)
   const gardenXP = garden.garden_experience ?? 0;
-  const gardenTable = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500, 6600, 7800, 9100, 10500, 12000, 13600, 15300, 17100, 19000, 21000];
+  const gardenTable = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500, 6600, 7800, 9100, 10500, 12000];
   let gardenLevel = 0;
   for (let i = 0; i < gardenTable.length; i++) {
     if (gardenXP >= gardenTable[i]) gardenLevel = i;

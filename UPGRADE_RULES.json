@@ -4,7 +4,32 @@
     "last_updated": "2026-04-01",
     "description": "Structured upgrade rules derived from meta research. Used as reference for recommendation engine logic.",
     "confidence_levels": ["high", "medium", "low"],
-    "changelog": "v1.2 (2026-04-01 Pass 3): Added hunting_skill, foraging_update, greenhouse_mutations, hotm_t10_nodes, vampire_slayer_mechanics, swappable_pet_items, backwater_bayou sections; corrected slayer recommended_order (Spider before Wolf); Bazaar unlock confirmed Level 7"
+    "changelog": "v1.3 (2026-04-01 Pass 4B): Garden max level corrected to 15 (was 20); Fairy Souls confirmed NO stat bonuses since Sept 2022 (now SkyBlock XP + Backpack slots); Rift access confirmed SkyBlock Level 12; Accessories cannot be reforged (replaced by Accessory Powers since Crimson Isle update); Crop upgrades confirmed 9 tiers (+5 FF each) | v1.2 (2026-04-01 Pass 3): slayer order, Bazaar Level 7, Hunting skill, HOTM T10"
+  },
+
+  "fairy_souls": {
+    "total_count": 267,
+    "exchange_npc": "Tia the Fairy (Wilderness)",
+    "exchange_group_size": 5,
+    "rewards": {
+      "skyblock_xp_per_exchange": 10,
+      "backpack_slots": "Unlocked at exchanges #1,2,4,6,8,10,13,16,19,22,25,28,31,34,37,41"
+    },
+    "stat_bonuses": "REMOVED September 2022. Old system gave +HP/Defense/Strength/Speed. Now only SkyBlock XP + Backpack slots.",
+    "confidence": "high",
+    "source": "Hypixel SkyBlock Wiki — Fairy Soul, confirmed via NotebookLM Pass 4B"
+  },
+
+  "rift_access": {
+    "requirement": "SkyBlock Level 12",
+    "entry_point": "Wizard Portal in the Wilderness",
+    "access_item": "Rift Prism (from Dimensional Infusion or inventory/accessory bag)",
+    "rift_time": "480 seconds (8 minutes) starting time — depletes while in Rift",
+    "isolated_stats": true,
+    "note": "Standard stats, gear, and potions do NOT function in the Rift. Separate stat system.",
+    "vampire_slayer_location": "Stillgore Chateau",
+    "motes_currency": "Primary Rift currency — used for NPCs, items, upgrades",
+    "confidence": "high"
   },
 
   "garden": {
@@ -16,7 +41,8 @@
       "confidence": "high"
     },
     "levels": {
-      "max": 20,
+      "max": 15,
+      "old_code_value": 20,
       "xp_table": [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500, 6600, 7800, 9100, 10500, 12000, 13600, 15300, 17100, 19000, 21000],
       "confidence": "high"
     },

@@ -1,6 +1,6 @@
 # SkyHub — Disputed / Uncertain Facts
 
-**Last updated:** 2026-04-01 (Pass 3)
+**Last updated:** 2026-04-01 (Pass 4B)
 
 Facts listed here are uncertain, disputed across sources, or subject to rapid meta changes.
 Before coding a rule around any item below, re-verify from an authoritative source.
@@ -167,3 +167,7 @@ Before coding a rule around any item below, re-verify from an authoritative sour
 | Greenhouse confirmed mutation crops (Pass 3) | **Confirmed** — Sunflower, Moonflower, Wild Rose are documented mutations with 256x yield, 15 growth cycles; Soggybud/Bambloom NOT found in Greenhouse wiki |
 | Hunting skill max level (Pass 3) | **Confirmed Level 25** — leveling rewards table ends at Level XXV |
 | Vampire Slayer RNG Meter (Pass 3) | **Confirmed** — unlocks at T3, fills via T3-T5 boss XP, guarantees selected rare item once full |
+| Garden max level (Pass 4B) | **Confirmed Level 15** — wiki table ends at Level 15; code had 20 levels, now corrected in parser.ts |
+| Fairy Souls stat bonuses (Pass 4B) | **Confirmed REMOVED September 2022** — now give SkyBlock XP (+10/exchange of 5) + Backpack slot unlocks only; engine.ts description corrected |
+| Rift access method (Pass 4B) | **Confirmed SkyBlock Level 12 via Wizard Portal** — NOT via Timecharm as previously assumed; Timecharm is an in-Rift mechanic |
+| Accessories reforging (Pass 4B) | **Confirmed REMOVED** since Crimson Isle update — accessories now use Accessory Powers system instead of reforges |

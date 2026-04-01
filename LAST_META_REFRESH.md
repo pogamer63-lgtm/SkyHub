@@ -140,6 +140,50 @@ Before modifying game-logic rules, check if a refresh is needed (> 30 days since
 
 ---
 
+## 2026-04-01 — Pass 4B: NotebookLM — Economy & Content (Garden, Farming, Fishing, Foraging, Kuudra, Rift, Money-making, Reforges, Enchants, Minions, Fairy Souls)
+
+**Researcher**: Claude Sonnet 4.6 (automated, via NotebookLM pass4 script)
+**Trigger**: Continuation of Pass 4 research; Core Systems notebook sources still pending
+**Sources used**: Notebook B (Economy & Content) — 10 Fandom wiki pages added as text sources
+**Output file**: `research_pass4_economy.md`
+
+### New Topics Researched This Pass
+
+| Topic | Findings | Confidence |
+|-------|----------|-----------|
+| Garden system full | 15 levels (NOT 20), Copper/Visitor system, pests, plots, crop upgrades | High |
+| Farming Fortune formula | Every 100 FF = +100% drops; sources: enchants, pets, tools, Jacob perks, Bestiary | High |
+| Jacob's Contests | Medal tiers Bronze→Diamond; Unique Golds track; perks: Turbowheat/Extra Plots etc. | High |
+| Fishing system | Sea creature types, trophy fishing, Backwater Bayou, fishing fortune sources | High |
+| Foraging + Hunting skill | Level 50→54, Galatea, Hunting Level 25 cap, 5 hunting methods | High |
+| Kuudra full | 5 tiers (Basic→Infernal), Aurora→Molten armor, Mage/Barbarian factions, Crimson Essence | High |
+| Rift access | **SkyBlock Level 12 via Wizard Portal** (not Timecharm); Motes currency; Vampire Slayer | High |
+| Money-making 2026 | Full ranked table: Ghost Farming, Kuudra T5, Dungeons, Bazaar flipping, farming crops | High |
+| Reforges best | Combat: Renowned/Forceful; Farming: Blessed; Mining: Refined; Accessories: Silky/Lucky/Itchy | High |
+| Enchantments | Sword: Sharpness 7, Smite 7, Critical 6, Telekinesis; Armor: Protection 7, Growth 7, etc. | High |
+| Minions best | Clay, Lapis, Mushroom, Sugar Cane for passive income; Diamond + Super Compactor meta | High |
+| Fairy Souls | **267 total; stat bonuses REMOVED September 2022** — now SkyBlock XP + Backpack slots only | High |
+
+### Critical Corrections Found This Pass
+
+| # | Correction | File Fixed |
+|---|-----------|-----------|
+| 1 | Garden max level is 15, NOT 20 | `lib/hypixel/parser.ts` — gardenTable truncated |
+| 2 | Fairy Souls DO NOT give stat bonuses (removed Sept 2022) | `lib/recommendations/engine.ts` — description fixed |
+| 3 | Rift accessed via SkyBlock Level 12 Wizard Portal, NOT Timecharm | `UPGRADE_RULES.json` — rift_access section added |
+| 4 | Accessories cannot be reforged (Crimson Isle era change) | `UPGRADE_RULES.json` — noted in equipment_accessories section |
+
+### Status (Pass 4B)
+- [x] research_pass4_economy.md: Full Q&A output saved (610+ lines)
+- [x] lib/hypixel/parser.ts: gardenTable corrected to 16 entries (max level 15)
+- [x] lib/recommendations/engine.ts: Fairy Souls description corrected
+- [x] UPGRADE_RULES.json: fairy_souls + rift_access sections added; garden.levels.max = 15; version → 1.3
+- [x] DISPUTED_FACTS.md: 4 new resolved facts added (garden 15 levels, fairy souls, rift access, no reforges)
+- [ ] Part A (Core Systems) notebook still needs sources — pending (Fandom URL failures require add_text approach)
+- [ ] Committed
+
+---
+
 ## Next Scheduled Refresh
 
 **Recommended**: Within 30 days, or after any major SkyBlock patch announcement
