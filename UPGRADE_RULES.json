@@ -76,6 +76,17 @@
   },
 
   "dungeons": {
+    "floor_entry_requirements": {
+      "source": "Hypixel SkyBlock Wiki — Dungeons page, confirmed 2026-04-01",
+      "confidence": "high",
+      "normal": {
+        "F1": 1, "F2": 3, "F3": 5, "F4": 9, "F5": 14, "F6": 19, "F7": 24
+      },
+      "master_mode": {
+        "MM1": 24, "MM2": 26, "MM3": 28, "MM4": 30, "MM5": 32, "MM6": 34, "MM7": 36
+      },
+      "note": "These are Catacombs level ENTRANCE requirements. Previous code had these too high (e.g. F3 coded as Cat 10, actual is Cat 5)."
+    },
     "critical_path": {
       "floors": ["F1", "F3", "F5", "F6", "F7", "M1", "M3", "M5", "M6", "M7"],
       "confidence": "high",
@@ -133,10 +144,23 @@
     }
   },
 
+  "skills_max_levels": {
+    "source": "Hypixel SkyBlock Wiki — Skills page, confirmed 2026-04-01",
+    "confidence": "high",
+    "farming": 60, "mining": 60, "combat": 60, "enchanting": 60, "taming": 60,
+    "foraging": 54,
+    "fishing": 50, "alchemy": 50, "carpentry": 50,
+    "dungeoneering": 50,
+    "hunting": 25, "runecrafting": 25, "social": 25,
+    "note": "Foraging cap is 54 (not 60) due to Foraging Update Part I. Skills average excludes Social, Runecrafting, Dungeoneering."
+  },
+
   "magical_power": {
     "scaling": "logarithmic",
     "hard_breakpoints": false,
     "community_reference_tiers": [250, 500, 750, 1000],
+    "formula": "Stats Multiplier = 29.97 × (ln(0.0019 × MP + 1))^1.2",
+    "formula_source": "Hypixel SkyBlock Wiki — Magical Power page, confirmed 2026-04-01",
     "hegemony_artifact": {
       "effect": "Doubles selected Power bonus",
       "requirement": "Must have a Power selected"
