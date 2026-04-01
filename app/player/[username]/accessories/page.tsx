@@ -249,18 +249,34 @@ export default async function AccessoriesPage({ params, searchParams }: Props) {
         </div>
       )}
 
-      {/* MP Milestones */}
+      {/* MP Milestones + Tuning Points */}
       <div className="card p-5">
-        <h2 className="font-semibold text-white mb-4">⚡ MP Milestones</h2>
+        <h2 className="font-semibold text-white mb-1">⚡ MP Progress</h2>
+        <p className="text-xs text-slate-500 mb-4">
+          Every <span className="text-purple-300">10 MP = +1 Tuning Point</span> to spend on specific stats (Strength, Crit Damage, etc.).
+          Max MP is <span className="text-purple-300">1,963</span> (outside dungeons) — 196 Tuning Points at cap.
+        </p>
+
+        {/* Tuning Points earned */}
+        <div className="flex items-center gap-3 mb-4 rounded-lg bg-purple-500/10 border border-purple-500/20 p-3">
+          <div className="text-purple-300 font-bold text-lg">{Math.floor(totalMP / 10)}</div>
+          <div>
+            <div className="text-xs text-white font-medium">Tuning Points earned</div>
+            <div className="text-xs text-slate-500">{totalMP} MP ÷ 10 = {Math.floor(totalMP / 10)} points · max 196 at 1,963 MP</div>
+          </div>
+        </div>
+
         <div className="space-y-2">
-          {[100, 200, 300, 400, 500, 600, 700].map(target => {
+          {[250, 500, 750, 1000, 1250, 1500, 1963].map(target => {
             const reached = totalMP >= target;
             const progress = Math.min(100, (totalMP / target) * 100);
+            const tuningPts = Math.floor(target / 10);
             return (
               <div key={target} className={reached ? 'opacity-50' : ''}>
                 <div className="flex justify-between text-xs mb-1">
                   <span className={reached ? 'text-emerald-400' : 'text-slate-400'}>
-                    {reached ? '✓ ' : ''}{target} MP
+                    {reached ? '✓ ' : ''}{target} MP{target === 1963 ? ' (max)' : ''}
+                    <span className="text-slate-600 ml-1">— {tuningPts} Tuning Pts</span>
                   </span>
                   <span className="text-slate-500">
                     {reached ? 'Reached' : `${totalMP}/${target} (${(progress).toFixed(0)}%)`}
@@ -277,7 +293,7 @@ export default async function AccessoriesPage({ params, searchParams }: Props) {
           })}
         </div>
         <p className="mt-3 text-xs text-slate-500">
-          Each MP milestone unlocks stronger stat scaling from your accessories.
+          MP scales stats logarithmically — early MP gains (0→500) give far more power than late gains (1500→1963).
         </p>
       </div>
 

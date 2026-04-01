@@ -158,12 +158,22 @@
   "magical_power": {
     "scaling": "logarithmic",
     "hard_breakpoints": false,
-    "community_reference_tiers": [250, 500, 750, 1000],
+    "community_reference_tiers": [250, 500, 750, 1000, 1250, 1500, 1963],
+    "max_mp_outside_dungeons": 1963,
+    "max_mp_inside_dungeons": 2203,
+    "unique_accessories_total": 136,
     "formula": "Stats Multiplier = 29.97 × (ln(0.0019 × MP + 1))^1.2",
     "formula_source": "Hypixel SkyBlock Wiki — Magical Power page, confirmed 2026-04-01",
+    "tuning_points": {
+      "rate": "1 Tuning Point per 10 MP",
+      "max_outside_dungeons": 196,
+      "use": "Spent in Tuning menu to directly increase specific stats (Strength, Crit Damage, Intelligence, etc.)",
+      "note": "Allows customization of stat distribution beyond the passive power multiplier"
+    },
+    "skyblock_xp_from_mp": "1 SkyBlock XP per 1 MP gained",
     "hegemony_artifact": {
-      "effect": "Doubles selected Power bonus",
-      "requirement": "Must have a Power selected"
+      "effect": "Doubles its own MP contribution (double rarity value)",
+      "requirement": "High value upgrade — get early"
     },
     "critical_blocker": {
       "condition": "MP >= 50 but no Power selected",
@@ -171,7 +181,7 @@
     },
     "old_code_thresholds": [200, 400],
     "confidence": "high",
-    "note": "There are no hard mechanical breakpoints at 200/400. The 250/500/750/1000 are community reference points for progression milestones."
+    "note": "No hard mechanical breakpoints. Early MP (0→500) gives far more scaling than late MP (1500→1963) due to logarithmic formula."
   },
 
   "armor_progression": {
