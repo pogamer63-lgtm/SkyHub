@@ -429,7 +429,7 @@ function checkMiningProgression(profile: PlayerProfile): Recommendation[] {
       dependsOn: [],
       unlocks: ['mining_nodes', 'powder_system', 'hotm_abilities'],
       gameStage: ['early', 'mid'],
-      priority: mining.hotmLevel === 0 ? 'high' : 'medium',
+      priority: mining.hotmLevel <= 1 ? 'high' : 'medium',
       type: 'progression',
     });
   }

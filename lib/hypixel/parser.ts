@@ -188,9 +188,10 @@ function parseMining(member: SkyBlockMember): MiningProgress {
   const exp = mc.experience ?? 0;
   // HOTM level from XP
   const hotmTable = [0, 3000, 12000, 37000, 97000, 197000, 347000, 557000, 847000, 1247000];
+  // 1-indexed: hotmLevel 1 = T1, 10 = T10 (so "< 7" check = below T7, etc.)
   let hotmLevel = 0;
   for (let i = 0; i < hotmTable.length; i++) {
-    if (exp >= hotmTable[i]) hotmLevel = i;
+    if (exp >= hotmTable[i]) hotmLevel = i + 1;
     else break;
   }
 
