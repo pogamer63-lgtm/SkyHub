@@ -130,8 +130,8 @@ function checkSlayerProgression(profile: PlayerProfile, bazaar?: BazaarPrices): 
       id: 'slayer_zombie_5',
       category: 'slayer',
       title: 'Complete Zombie Slayer Level 5',
-      description: `You're at Zombie Slayer ${zombie.level}. Reaching level 5 unlocks Revenant armor, which is a huge early-mid game upgrade. Costs roughly 1-2M coins in slayer XP to complete.`,
-      whyItMatters: 'Zombie Slayer Level 5 unlocks Revenant Armor — one of the best early progression sets. It also unlocks the Revenant Horror boss for consistent combat XP.',
+      description: `You're at Zombie Slayer ${zombie.level}. Reaching level 4 lets you wear Revenant Armor; level 5 lets you craft the chestplate. A huge early-mid game power spike.`,
+      whyItMatters: 'Zombie Slayer Level 4 unlocks equipping Revenant Armor — one of the best early-game sets. Level 5 unlocks crafting the chestplate for the full set bonus.',
       estimatedCost: zombieCost,
       estimatedCostLabel: zombieCostLabel,
       estimatedBenefit: 'Revenant Armor access, strong defense boost, better combat XP',
@@ -204,13 +204,38 @@ function checkDungeonProgression(profile: PlayerProfile): Recommendation[] {
     });
   }
 
+  // F5 — Shadow Assassin armor unlock (critical mid-game milestone)
+  if (cat.level >= 8 && cat.highestFloor < 5) {
+    recs.push({
+      id: 'dungeon_floor5',
+      category: 'dungeons',
+      title: 'Complete Floor 5 (Shadow Assassin Unlock)',
+      description: `You're Catacombs ${cat.level} but haven't completed Floor 5. Floor 5 is a critical milestone — it unlocks Shadow Assassin armor, one of the best pre-Necron sets.`,
+      whyItMatters: 'Shadow Assassin Armor (from F5+) is a major power spike for mid-game. It is significantly better than Dragon armor and is the current meta recommendation before Necron.',
+      estimatedCost: 2_000_000,
+      estimatedCostLabel: '~2M (gear to safely clear F5)',
+      estimatedBenefit: 'Shadow Assassin Armor access, major defense/crit boost, F6/F7 viability',
+      roiScore: 87,
+      urgencyScore: 85,
+      progressionScore: 90,
+      requirementScore: 35,
+      confidenceScore: 92,
+      sourceTags: ['dungeons', 'mid-game', 'f5', 'shadow-assassin'],
+      dependsOn: ['dungeon_floor3'],
+      unlocks: ['shadow_assassin_armor', 'f6_access'],
+      gameStage: ['mid'],
+      priority: 'high',
+      type: 'progression',
+    });
+  }
+
   if (cat.level >= 15 && cat.highestFloor < 6) {
     recs.push({
       id: 'dungeon_floor6',
       category: 'dungeons',
       title: 'Progress to Floor 6 (Livid)',
       description: `You're Catacombs ${cat.level} but haven't completed Floor 6. Floor 6 is the gateway to Necron armor parts and significantly better gear.`,
-      whyItMatters: 'Floor 6 (Livid) drops are essential for mid-game progression. Livid Dagger and Floor 6 gear are strong stepping stones.',
+      whyItMatters: 'Floor 6 (Livid) drops are essential for mid-game progression. Livid Dagger and Floor 6 gear are strong stepping stones toward F7.',
       estimatedCost: 5_000_000,
       estimatedCostLabel: '~5M (gear improvements)',
       estimatedBenefit: 'Livid Dagger, Wither armor pieces, Catacombs XP',
@@ -220,7 +245,7 @@ function checkDungeonProgression(profile: PlayerProfile): Recommendation[] {
       requirementScore: 50,
       confidenceScore: 87,
       sourceTags: ['dungeons', 'mid-game', 'f6'],
-      dependsOn: [],
+      dependsOn: ['dungeon_floor5'],
       unlocks: ['necron_armor', 'livid_dagger', 'f7_prep'],
       gameStage: ['mid', 'late'],
       priority: 'high',
@@ -245,16 +270,17 @@ function checkMagicalPower(profile: PlayerProfile, bazaar?: BazaarPrices): Recom
     ? `~${formatCoins(cheapAccessoryCost)} (Bazaar accessories)`
     : '~2M coins (cheap accessories)';
 
-  if (mp < 200) {
+  // MP scales logarithmically — no hard breakpoints, but community uses 250/500/750/1000 as reference tiers
+  if (mp < 250) {
     recs.push({
-      id: 'magical_power_200',
+      id: 'magical_power_250',
       category: 'accessories',
-      title: 'Reach 200 Magical Power',
-      description: `You have ${mp} Magical Power. Reaching 200 MP is a key early milestone that significantly boosts your stats from talisman synergies.`,
-      whyItMatters: 'Magical Power multiplies your stats from accessories. Low MP means you are wasting a huge stat multiplier that costs relatively little to fill.',
+      title: 'Grow Your Magical Power (Early Goal: 250)',
+      description: `You have ${mp} Magical Power. MP scales logarithmically — every point helps, with 250 being a common early-game milestone. Fill missing common/uncommon accessories first.`,
+      whyItMatters: 'Magical Power multiplies your stats from accessories. Each additional MP point gives diminishing returns, but early MP is cheap and impactful.',
       estimatedCost: cheapAccessoryCost,
       estimatedCostLabel: cheapAccessoryLabel,
-      estimatedBenefit: '+15-25% to all stats from MP scaling',
+      estimatedBenefit: 'Proportional stat scaling gains from each accessory added',
       roiScore: 90,
       urgencyScore: 85,
       progressionScore: 88,
@@ -269,23 +295,23 @@ function checkMagicalPower(profile: PlayerProfile, bazaar?: BazaarPrices): Recom
     });
   }
 
-  if (mp >= 200 && mp < 400) {
+  if (mp >= 250 && mp < 500) {
     recs.push({
-      id: 'magical_power_400',
+      id: 'magical_power_500',
       category: 'accessories',
-      title: 'Reach 400 Magical Power',
-      description: `You're at ${mp} MP. Reaching 400 MP opens up significantly stronger power stat scaling and lets you use better Reforge Stones effectively.`,
-      whyItMatters: '400 MP is the mid-game talisman target. Getting there requires filling in uncommon/rare accessories, which also individually provide useful stats.',
+      title: 'Grow Your Magical Power (Mid Goal: 500)',
+      description: `You're at ${mp} MP. 500 MP is the mid-game reference tier. MP scaling is logarithmic, so each additional accessory still helps even without hitting a specific threshold.`,
+      whyItMatters: 'More MP always helps. Filling rare/epic accessories towards 500 also provides individual stat bonuses beyond the MP multiplier.',
       estimatedCost: 10_000_000,
       estimatedCostLabel: '~10M coins',
-      estimatedBenefit: '+20-30% additional stat scaling over current',
+      estimatedBenefit: 'Proportional stat scaling; rare accessories also add individual stats',
       roiScore: 82,
       urgencyScore: 75,
       progressionScore: 80,
       requirementScore: 15,
       confidenceScore: 88,
       sourceTags: ['accessories', 'magical-power', 'mid-game'],
-      dependsOn: ['magical_power_200'],
+      dependsOn: ['magical_power_250'],
       unlocks: ['better_power_scaling', 'reforge_efficiency'],
       gameStage: ['mid', 'late'],
       priority: 'high',
@@ -309,7 +335,7 @@ function checkFarmingProgression(profile: PlayerProfile): Recommendation[] {
       description: 'The Garden is Hypixel SkyBlock\'s dedicated farming area. It provides massive Farming Fortune bonuses, crop-specific upgrades, and is essential for farming progression.',
       whyItMatters: 'Garden provides access to Farming Fortune sources unavailable elsewhere. Even at low levels, the Garden gives you better farming efficiency and crop upgrades.',
       estimatedCost: 0,
-      estimatedCostLabel: 'Free to unlock (need SB Level 12)',
+      estimatedCostLabel: 'Free to unlock (need SkyBlock Level 5)',
       estimatedBenefit: '+Farming Fortune, crop upgrades, NPC commissions',
       roiScore: 85,
       urgencyScore: 70,
@@ -524,24 +550,24 @@ function checkLateGameProgression(profile: PlayerProfile): Recommendation[] {
     });
   }
 
-  // High MP milestone
-  if (mp >= 400 && mp < 600) {
+  // High MP push (late-game reference tier: 750)
+  if (mp >= 500 && mp < 750) {
     recs.push({
-      id: 'magical_power_600',
+      id: 'magical_power_750',
       category: 'accessories',
-      title: 'Reach 600 Magical Power',
-      description: `You're at ${mp} MP. 600 MP is the late-game talisman target. Epic and Legendary accessories dramatically increase your power scaling.`,
-      whyItMatters: '600 MP unlocks the full potential of your accessory reforges and power stones. It\'s a significant damage/defense multiplier.',
+      title: 'Grow Your Magical Power (Late Goal: 750)',
+      description: `You're at ${mp} MP. 750 MP is the late-game reference tier. Epic and Legendary accessories each add significant MP. Scaling is logarithmic — every point still matters.`,
+      whyItMatters: 'Epic/Legendary accessories provide the most MP per coin. Pushing towards 750 via the accessory upgrade chains maximizes your stat multiplier.',
       estimatedCost: 40_000_000,
       estimatedCostLabel: '~40M (epic/legendary accessories)',
-      estimatedBenefit: '+25-40% additional stat scaling, access to higher-tier power stones',
+      estimatedBenefit: 'Proportional stat scaling gains; legendary accessories also have strong individual stats',
       roiScore: 80,
       urgencyScore: 68,
       progressionScore: 82,
       requirementScore: 30,
       confidenceScore: 85,
       sourceTags: ['accessories', 'magical-power', 'late-game'],
-      dependsOn: ['magical_power_400'],
+      dependsOn: ['magical_power_500'],
       unlocks: ['full_power_scaling', 'late_reforges'],
       gameStage: ['late', 'endgame'],
       priority: 'medium',
@@ -909,29 +935,27 @@ function checkPetItems(profile: PlayerProfile): Recommendation[] {
 
 function checkMuseumValue(profile: PlayerProfile): Recommendation[] {
   const recs: Recommendation[] = [];
-  const mp = profile.accessories.magicalPower;
-
-  // Museum MP is valuable — recommend donating if they have nothing donated yet
-  // We can't know museum value without the raw profile, but we can infer from MP
-  // If player has high-tier gear but seems to be missing museum MP (rough heuristic)
-  if ((profile.skyblockLevel ?? 0) >= 100 && mp < 400) {
+  // Post-patch 0.20.7: Museum gives Bits Multiplier + Bank Interest (NOT Magical Power).
+  // 30 milestones, each = +1% Bits Multiplier, +2% Bank Interest Rate.
+  // Recommend donating for mid+ players since Bits and Bank interest compound over time.
+  if ((profile.skyblockLevel ?? 0) >= 60) {
     recs.push({
       id: 'museum_donate',
-      category: 'accessories',
+      category: 'general',
       title: 'Donate Items to the Museum',
-      description: 'The Museum rewards Magical Power for donating valuable items. Even donating old weapons and armor sets you\'ve replaced can net significant MP.',
-      whyItMatters: 'Museum donations provide permanent Magical Power bonuses at value milestones. Items like old dragon armor sets, weapons, and fishing rods all count.',
+      description: 'The Museum grants up to 30 milestones from donated item value. Each milestone gives +1% Bits Multiplier and +2% Bank Interest Rate — up to +30% Bits and +60% Bank.',
+      whyItMatters: 'Bits buy valuable items from Elizabeth (Cookie, Booster Cookie, etc.). Bank Interest compounds passively. Donating old weapons/armor you\'ve replaced is essentially free progress.',
       estimatedCost: 0,
-      estimatedCostLabel: 'Free (use items you already have)',
-      estimatedBenefit: '+1–10 Magical Power from existing items',
-      roiScore: 90,
-      urgencyScore: 60,
+      estimatedCostLabel: 'Free (donate items you no longer use)',
+      estimatedBenefit: '+Bits Multiplier, +Bank Interest Rate per milestone',
+      roiScore: 85,
+      urgencyScore: 50,
       progressionScore: 65,
       requirementScore: 0,
-      confidenceScore: 70,
-      sourceTags: ['museum', 'magical-power', 'free'],
+      confidenceScore: 88,
+      sourceTags: ['museum', 'bits', 'bank', 'free'],
       dependsOn: [],
-      unlocks: ['museum_mp'],
+      unlocks: ['museum_milestones', 'bits_income'],
       gameStage: ['mid', 'late', 'endgame'],
       priority: 'medium',
       type: 'cheapest',

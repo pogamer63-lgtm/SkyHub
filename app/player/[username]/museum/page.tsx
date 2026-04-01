@@ -16,18 +16,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // ─── Museum Knowledge Base ────────────────────────────────────────────────────
+// NOTE: Museum was overhauled in patch 0.20.7.
+// NEW system: 30 milestones based on total donated value.
+// Each milestone: +1% Bits Multiplier + +2% Bank Interest Rate.
+// Museum NO LONGER gives Magical Power.
 
 type MuseumCategory = 'Weapons' | 'Armor' | 'Rarities' | 'Fishing' | 'Other';
 
 interface MuseumItem {
-  id: string;               // SkyBlock item ID
+  id: string;
   name: string;
   category: MuseumCategory;
-  value: number;            // Museum appraisal value (coins)
+  value: number;
   notes?: string;
 }
 
-// Notable items that can be donated to the museum
 const NOTABLE_MUSEUM_ITEMS: MuseumItem[] = [
   // ── Weapons ──
   { id: 'HYPERION',              name: 'Hyperion',              category: 'Weapons', value: 180_000_000 },
@@ -35,14 +38,14 @@ const NOTABLE_MUSEUM_ITEMS: MuseumItem[] = [
   { id: 'ASTRAEA',               name: 'Astraea',               category: 'Weapons', value: 150_000_000 },
   { id: 'SCYLLA',                name: 'Scylla',                category: 'Weapons', value: 120_000_000 },
   { id: 'RAGNAROK',              name: 'Ragnarök',              category: 'Weapons', value: 100_000_000 },
-  { id: 'NECRON_BLADE',          name: 'Necron\'s Blade',       category: 'Weapons', value: 80_000_000 },
+  { id: 'NECRON_BLADE',          name: "Necron's Blade",        category: 'Weapons', value: 80_000_000 },
   { id: 'ASPECT_OF_THE_DRAGONS', name: 'Aspect of the Dragons', category: 'Weapons', value: 3_000_000 },
   { id: 'LIVID_DAGGER',          name: 'Livid Dagger',          category: 'Weapons', value: 30_000_000 },
   { id: 'SHADOW_FURY',           name: 'Shadow Fury',           category: 'Weapons', value: 50_000_000 },
   { id: 'TERMINATOR',            name: 'Terminator',            category: 'Weapons', value: 200_000_000 },
-  { id: 'GIANT_SWORD',           name: 'Giant\'s Sword',        category: 'Weapons', value: 200_000_000 },
-  { id: 'MIDAS_SWORD',           name: 'Midas\' Sword',         category: 'Weapons', value: 50_000_000 },
-  { id: 'MIDAS_STAFF',           name: 'Midas\' Staff',         category: 'Weapons', value: 50_000_000 },
+  { id: 'GIANT_SWORD',           name: "Giant's Sword",         category: 'Weapons', value: 200_000_000 },
+  { id: 'MIDAS_SWORD',           name: "Midas' Sword",          category: 'Weapons', value: 50_000_000 },
+  { id: 'MIDAS_STAFF',           name: "Midas' Staff",          category: 'Weapons', value: 50_000_000 },
   { id: 'PIGMAN_SWORD',          name: 'Pigman Sword',          category: 'Weapons', value: 5_000_000 },
   { id: 'REAPER_SCYTHE',         name: 'Reaper Scythe',         category: 'Weapons', value: 80_000_000 },
   { id: 'WITHER_CLOAK_SWORD',    name: 'Wither Cloak Sword',    category: 'Weapons', value: 200_000_000 },
@@ -50,16 +53,16 @@ const NOTABLE_MUSEUM_ITEMS: MuseumItem[] = [
   { id: 'BLOOD_REAPER',          name: 'Blood Reaper',          category: 'Weapons', value: 60_000_000 },
   { id: 'VOIDEDGE_KATANA',       name: 'Voidedge Katana',       category: 'Weapons', value: 50_000_000 },
   // ── Armor sets ──
-  { id: 'NECRON_HELMET',         name: 'Necron\'s Armor Set',   category: 'Armor',   value: 300_000_000, notes: 'Full set required' },
-  { id: 'GOLDOR_HELMET',         name: 'Goldor\'s Armor Set',   category: 'Armor',   value: 150_000_000, notes: 'Full set required' },
-  { id: 'STORM_HELMET',          name: 'Storm\'s Armor Set',    category: 'Armor',   value: 100_000_000, notes: 'Full set required' },
-  { id: 'MAXOR_HELMET',          name: 'Maxor\'s Armor Set',    category: 'Armor',   value: 100_000_000, notes: 'Full set required' },
-  { id: 'SADAN_HELMET',          name: 'Sadan\'s Helmet',       category: 'Armor',   value: 100_000_000 },
+  { id: 'NECRON_HELMET',         name: "Necron's Armor Set",    category: 'Armor',   value: 300_000_000, notes: 'Full set required' },
+  { id: 'GOLDOR_HELMET',         name: "Goldor's Armor Set",    category: 'Armor',   value: 150_000_000, notes: 'Full set required' },
+  { id: 'STORM_HELMET',          name: "Storm's Armor Set",     category: 'Armor',   value: 100_000_000, notes: 'Full set required' },
+  { id: 'MAXOR_HELMET',          name: "Maxor's Armor Set",     category: 'Armor',   value: 100_000_000, notes: 'Full set required' },
+  { id: 'SADAN_HELMET',          name: "Sadan's Helmet",        category: 'Armor',   value: 100_000_000 },
   { id: 'SUPERIOR_DRAGON_HELMET',name: 'Superior Dragon Armor', category: 'Armor',   value: 20_000_000,  notes: 'Full set required' },
   { id: 'CRIMSON_HELMET',        name: 'Crimson Armor Set',     category: 'Armor',   value: 50_000_000,  notes: 'Full set required' },
   { id: 'TERROR_HELMET',         name: 'Terror Armor Set',      category: 'Armor',   value: 200_000_000, notes: 'Full set required' },
   { id: 'FERVOR_HELMET',         name: 'Fervor Armor Set',      category: 'Armor',   value: 200_000_000, notes: 'Full set required' },
-  { id: 'MOLTEN_HELMET',         name: 'Molten Armor Set',      category: 'Armor',   value: 1_000_000_000, notes: 'Full set required' },
+  { id: 'MOLTEN_TERROR_HELMET',  name: 'Molten Armor Set',      category: 'Armor',   value: 1_000_000_000, notes: 'Full set required' },
   // ── Rarities ──
   { id: 'COINS_TALISMAN',        name: 'Coins Talisman',        category: 'Rarities', value: 1_000_000 },
   { id: 'AMBER_MATERIAL',        name: 'Amber Material',        category: 'Rarities', value: 5_000_000 },
@@ -72,21 +75,17 @@ const NOTABLE_MUSEUM_ITEMS: MuseumItem[] = [
   { id: 'AUGER_ROD',             name: 'Auger Rod',             category: 'Fishing',  value: 5_000_000 },
 ];
 
-// Museum value reward tiers (SkyBlock wiki)
-const VALUE_TIERS = [
-  { value: 0,               label: 'Starter',      reward: 'Museum unlocked' },
-  { value: 2_500_000,       label: 'Apprentice',   reward: '+1 Magical Power' },
-  { value: 7_500_000,       label: 'Journeyman',   reward: '+1 Magical Power' },
-  { value: 20_000_000,      label: 'Artisan',      reward: '+1 Magical Power' },
-  { value: 50_000_000,      label: 'Expert',       reward: '+1 Magical Power' },
-  { value: 100_000_000,     label: 'Master',       reward: '+2 Magical Power' },
-  { value: 250_000_000,     label: 'Grandmaster',  reward: '+2 Magical Power' },
-  { value: 500_000_000,     label: 'Champion',     reward: '+2 Magical Power' },
-  { value: 1_000_000_000,   label: 'Legend',       reward: '+3 Magical Power' },
-  { value: 2_500_000_000,   label: 'Mythic',       reward: '+3 Magical Power' },
-  { value: 5_000_000_000,   label: 'Divine',       reward: '+4 Magical Power' },
-  { value: 10_000_000_000,  label: 'Transcendent', reward: '+4 Magical Power' },
+// Museum milestone thresholds (post-patch 0.20.7, 30 milestones total, approximate community values)
+// Each milestone: +1% Bits Multiplier, +2% Bank Interest Rate
+const MILESTONE_THRESHOLDS = [
+  0, 2_500_000, 7_500_000, 15_000_000, 25_000_000, 40_000_000,
+  60_000_000, 90_000_000, 130_000_000, 180_000_000, 250_000_000,
+  350_000_000, 500_000_000, 700_000_000, 1_000_000_000, 1_400_000_000,
+  1_900_000_000, 2_500_000_000, 3_300_000_000, 4_300_000_000, 5_500_000_000,
+  7_000_000_000, 9_000_000_000, 11_000_000_000, 14_000_000_000, 18_000_000_000,
+  23_000_000_000, 30_000_000_000, 40_000_000_000, 55_000_000_000, 75_000_000_000,
 ];
+const MAX_MILESTONES = 30;
 
 function formatValue(n: number): string {
   if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`;
@@ -95,12 +94,13 @@ function formatValue(n: number): string {
   return n.toLocaleString();
 }
 
-function totalMPFromTiers(value: number): number {
-  return VALUE_TIERS.reduce((sum, tier, i) => {
-    if (value < tier.value) return sum;
-    const mpMatch = tier.reward.match(/\+(\d+) Magical Power/);
-    return sum + (mpMatch ? parseInt(mpMatch[1]) : 0);
-  }, 0);
+function milestonesReached(value: number): number {
+  let count = 0;
+  for (const threshold of MILESTONE_THRESHOLDS) {
+    if (value >= threshold) count++;
+  }
+  // milestone 0 is the "unlocked" state, so subtract 1
+  return Math.min(Math.max(count - 1, 0), MAX_MILESTONES);
 }
 
 export default async function MuseumPage({ params, searchParams }: Props) {
@@ -157,8 +157,8 @@ export default async function MuseumPage({ params, searchParams }: Props) {
     return '';
   }).filter(Boolean);
 
-  // Total donated count (items + special armor sets)
   const totalDonated = donatedItems.size + specialItems.length;
+  const hasMuseumData = museumData !== undefined;
 
   // Estimate museum value from donated notable items
   let estimatedValue = 0;
@@ -166,10 +166,13 @@ export default async function MuseumPage({ params, searchParams }: Props) {
     if (donatedItems.has(item.id)) estimatedValue += item.value;
   }
 
-  const hasMuseumData = museumData !== undefined;
-  const mpFromMuseum = totalMPFromTiers(estimatedValue);
+  const milestones = milestonesReached(estimatedValue);
+  const bitsBonus = milestones; // +1% per milestone
+  const bankBonus = milestones * 2; // +2% per milestone
 
-  // Categorize notable items by donated / missing — deduplicate by ID
+  // Next milestone threshold
+  const nextMilestoneThreshold = MILESTONE_THRESHOLDS[milestones + 1] ?? null;
+
   const categories: MuseumCategory[] = ['Weapons', 'Armor', 'Fishing', 'Rarities', 'Other'];
   const seenDonated = new Set<string>();
   const seenMissing = new Set<string>();
@@ -186,9 +189,9 @@ export default async function MuseumPage({ params, searchParams }: Props) {
     return { cat, donated, missing };
   });
 
-  // Next reward tier
-  const currentTierIdx = VALUE_TIERS.findIndex(t => estimatedValue < t.value) - 1;
-  const nextTier = VALUE_TIERS[currentTierIdx + 1] ?? null;
+  const progressPct = nextMilestoneThreshold
+    ? Math.min(100, (estimatedValue / nextMilestoneThreshold) * 100)
+    : 100;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -204,68 +207,80 @@ export default async function MuseumPage({ params, searchParams }: Props) {
         </span>
       </div>
 
+      {/* System note */}
+      <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4 mb-6 text-sm text-blue-300">
+        <span className="font-medium">Museum (post-patch 0.20.7):</span> Donations unlock up to 30 milestones.
+        Each milestone grants <span className="text-yellow-300">+1% Bits Multiplier</span> and{' '}
+        <span className="text-emerald-300">+2% Bank Interest Rate</span>.
+        Museum no longer gives Magical Power.
+      </div>
+
       {!hasMuseumData && (
         <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 mb-6 text-sm text-amber-300">
-          ⚠ Museum data not available in API response. This profile may not have a museum, or the API didn't return museum data.
-          Showing estimated data based on known items only.
+          Museum data not available in API response. Showing estimates from known donated items only.
         </div>
       )}
 
-      {/* Summary */}
+      {/* Summary stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
         <div className="card p-4 text-center">
           <div className="text-2xl font-bold text-yellow-300">{formatValue(estimatedValue)}</div>
-          <div className="text-xs text-slate-500 mt-1">Museum Value</div>
-          <div className="text-xs text-slate-600">estimated</div>
+          <div className="text-xs text-slate-500 mt-1">Est. Museum Value</div>
         </div>
         <div className="card p-4 text-center">
           <div className="text-2xl font-bold text-white">{totalDonated}</div>
           <div className="text-xs text-slate-500 mt-1">Items Donated</div>
         </div>
         <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-purple-300">+{mpFromMuseum}</div>
-          <div className="text-xs text-slate-500 mt-1">Magical Power</div>
-          <div className="text-xs text-slate-600">from museum</div>
+          <div className="text-2xl font-bold text-yellow-300">+{bitsBonus}%</div>
+          <div className="text-xs text-slate-500 mt-1">Bits Multiplier</div>
+          <div className="text-xs text-slate-600">{milestones}/{MAX_MILESTONES} milestones</div>
         </div>
         <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-emerald-300">{VALUE_TIERS[currentTierIdx < 0 ? 0 : currentTierIdx]?.label ?? '—'}</div>
-          <div className="text-xs text-slate-500 mt-1">Current Tier</div>
+          <div className="text-2xl font-bold text-emerald-300">+{bankBonus}%</div>
+          <div className="text-xs text-slate-500 mt-1">Bank Interest</div>
+          <div className="text-xs text-slate-600">{milestones}/{MAX_MILESTONES} milestones</div>
         </div>
       </div>
 
-      {/* Value Progress */}
+      {/* Milestone progress */}
       <div className="card p-5 mb-6">
-        <h2 className="font-semibold text-white mb-4">⚡ Museum Value Tiers</h2>
-        <div className="space-y-2">
-          {VALUE_TIERS.slice(1).map(tier => {
-            const reached = estimatedValue >= tier.value;
-            const progress = Math.min(100, (estimatedValue / tier.value) * 100);
-            const mpMatch = tier.reward.match(/\+(\d+) Magical Power/);
-            return (
-              <div key={tier.label} className={reached ? 'opacity-50' : ''}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className={`font-medium ${reached ? 'text-emerald-400' : 'text-slate-300'}`}>
-                    {reached ? '✓ ' : ''}{tier.label}
-                    {mpMatch && <span className="ml-1 text-purple-400">{tier.reward}</span>}
-                  </span>
-                  <span className="text-slate-500">
-                    {reached ? 'Reached' : `${formatValue(estimatedValue)} / ${formatValue(tier.value)}`}
-                  </span>
-                </div>
-                <div className="h-1 rounded-full bg-white/5">
-                  <div
-                    className={`h-full rounded-full ${reached ? 'bg-emerald-500' : 'bg-yellow-500'}`}
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-              </div>
-            );
-          })}
+        <h2 className="font-semibold text-white mb-3">Museum Milestones</h2>
+        <div className="flex gap-1 flex-wrap mb-3">
+          {Array.from({ length: MAX_MILESTONES }, (_, i) => (
+            <div
+              key={i}
+              className={`w-6 h-6 rounded text-xs flex items-center justify-center font-bold ${
+                i < milestones
+                  ? 'bg-yellow-500 text-black'
+                  : 'bg-white/5 text-slate-600'
+              }`}
+              title={`Milestone ${i + 1}: +${i + 1}% Bits, +${(i + 1) * 2}% Bank Interest`}
+            >
+              {i + 1}
+            </div>
+          ))}
         </div>
-        {nextTier && (
-          <p className="mt-3 text-xs text-slate-500">
-            Next tier: {nextTier.label} at {formatValue(nextTier.value)} — need {formatValue(nextTier.value - estimatedValue)} more value
-          </p>
+        {nextMilestoneThreshold && (
+          <>
+            <div className="flex justify-between text-xs text-slate-400 mb-1">
+              <span>Milestone {milestones + 1}</span>
+              <span>{formatValue(estimatedValue)} / {formatValue(nextMilestoneThreshold)}</span>
+            </div>
+            <div className="h-2 rounded-full bg-white/5">
+              <div
+                className="h-full rounded-full bg-yellow-500 transition-all"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
+            <p className="text-xs text-slate-500 mt-2">
+              Need {formatValue(nextMilestoneThreshold - estimatedValue)} more museum value for next milestone
+              (→ +{milestones + 1}% Bits, +{(milestones + 1) * 2}% Bank Interest)
+            </p>
+          </>
+        )}
+        {!nextMilestoneThreshold && (
+          <p className="text-xs text-emerald-400">All 30 milestones reached — max Bits/Bank bonuses!</p>
         )}
       </div>
 
@@ -299,7 +314,7 @@ export default async function MuseumPage({ params, searchParams }: Props) {
 
           {missing.length > 0 && (
             <div>
-              <div className="text-xs text-slate-400 mb-1 font-medium">Missing</div>
+              <div className="text-xs text-slate-400 mb-1 font-medium">Missing (notable)</div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {missing.map(item => (
                   <div key={item.id} className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2">
@@ -318,7 +333,7 @@ export default async function MuseumPage({ params, searchParams }: Props) {
       ))}
 
       <p className="text-xs text-slate-600 text-center mt-2">
-        Museum value is estimated from a curated list of known high-value items. Actual in-game value may differ.
+        Museum value is estimated from donated notable items. Milestone thresholds are approximate. Actual in-game value from API is authoritative.
       </p>
     </div>
   );

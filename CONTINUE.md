@@ -1,13 +1,30 @@
 # SkyHub — Continuation State
 
-**Last updated:** 2026-03-31
-**Session status:** Phase 5 Part 5 COMPLETE ✅
+**Last updated:** 2026-04-01
+**Session status:** Phase 6 Meta Audit COMPLETE ✅
 
 ---
 
 ## ✅ Completed (all phases)
 
-### Phase 5 — Part 5 (2026-03-31) — current session
+### Phase 6 — Meta Audit (2026-04-01)
+- [x] Created `META_SOURCES.md` — 13 sources, findings by category
+- [x] Created `UPGRADE_RULES.json` — structured rules with confidence levels
+- [x] Created `DISPUTED_FACTS.md` — uncertain/disputed facts, resolved facts
+- [x] Created `LAST_META_REFRESH.md` — audit log with fix status
+- [x] `lib/recommendations/engine.ts`:
+  - Garden unlock: "SB Level 12" → "SkyBlock Level 5"
+  - Revenant armor: "Level 5 unlocks armor" → "Level 4 wear / Level 5 craft"
+  - MP thresholds: 200/400 replaced with 250/500/750 (logarithmic, no hard breakpoints)
+  - Dungeon path: added F5 milestone (Shadow Assassin unlock) before F6
+  - `checkMuseumValue`: removed MP-from-museum language; updated to Bits/Bank reward system
+- [x] `app/player/[username]/museum/page.tsx`: Complete rewrite for post-patch 0.20.7:
+  - Removed all Magical Power-from-museum logic and VALUE_TIERS
+  - Added 30-milestone system (+1% Bits Multiplier, +2% Bank Interest per milestone)
+  - Visual milestone grid (30 cells) + progress bar to next milestone
+  - Kept item donation tracking (weapons/armor/fishing/rarities still relevant)
+
+### Phase 5 — Part 5 (2026-03-31)
 - [x] `lib/types/player.ts` + `lib/hypixel/parser.ts`: added `uniqueGolds`, `contestsParticipated` to FarmingProgress
 - [x] `farming/page.tsx`: Jacob's Farming panel (medals bronze→diamond, gold medal crop badges, contests count)
 - [x] `components/ItemIcon.tsx`: color fallback square for missing images (deterministic color + first-letter initial)
@@ -77,6 +94,11 @@
 ## 🔄 Currently In Progress
 
 Nothing. Clean state. Ready to continue.
+
+### Deferred from Phase 6 Meta Audit (lower priority)
+- `gear/page.tsx`: armor progression descriptions still reference old path — update to Ender/Glacite → Strong Dragon → Shadow Assassin → Necron → Kuudra
+- `pets/page.tsx`: BIS pet recommendations still list old picks — update to Mooshroom Cow (farming), Black Cat (dungeons), Scatha (mining), Ammonite (fishing)
+- Museum milestone thresholds in `museum/page.tsx` are approximate — verify against live API once available
 
 ---
 
