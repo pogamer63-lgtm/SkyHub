@@ -228,7 +228,7 @@ Before modifying game-logic rules, check if a refresh is needed (> 30 days since
 - [x] app/player/[username]/farming/page.tsx: Crop upgrades, Jacob perk, garden plots, pet FF all corrected
 - [x] LAST_META_REFRESH.md: Pass 4C entry added
 - [x] UPGRADE_RULES.json: farming_fortune section updated with correct FF sources, pet values, perk max levels
-- [ ] Committed
+- [x] Committed (c4c7556)
 
 ---
 

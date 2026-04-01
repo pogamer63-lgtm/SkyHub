@@ -1,11 +1,26 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-04-01
-**Session status:** Phase 6 Meta Audit Pass 4 IN PROGRESS — wiki fetch complete, code fixes applied, NotebookLM Part A running
+**Session status:** Phase 6 Meta Audit Pass 4C COMPLETE — all wiki-verified fixes applied (commit c4c7556)
 
 ---
 
 ## ✅ Completed (all phases)
+
+### Phase 6 — Meta Audit Pass 4C (2026-04-01) — Wiki Direct Verification
+
+- [x] **CRITICAL FIX**: Fishing skill bonus was "+4 Fishing Fortune/level" → corrected to "+4 HP/level" (wiki: HP bonus, not FF)
+- [x] **CRITICAL FIX**: Mining skill bonus was "+0.5 Fishing Fortune/level" → corrected to "+4 Mining Fortune/level, +1 Defense/level"
+- [x] **CRITICAL FIX**: Foraging skill bonus was "Farming upgrade paths unlock" → corrected to "+4 Foraging Fortune/level, +Strength/level"
+- [x] **NEW SKILL**: Hunting added to SkillLevels type, parser, and skills page (max level 25; Foraging Update June 2025)
+- [x] **CRITICAL FIX**: Crop upgrades max was 10 levels (+1 FF) → corrected to 9 tiers (+5 FF each = +45 FF max per crop)
+- [x] **CRITICAL FIX**: Jacob Extra FF perk max was 4 tiers → corrected to 15 tiers (+60 FF total)
+- [x] **CRITICAL FIX**: Garden FF source was gardenLevel×4 (wrong concept) → corrected to plots×3 (wiki: +3 FF per plot, 24 plots = +72 FF)
+- [x] **CRITICAL FIX**: Elephant pet multiplier was ×0.3 (gives 30 at level 100) → corrected to ×1.5 (+150 at level 100, wiki-confirmed)
+- [x] Mooshroom Cow pet added to farming FF detection: +1/level+10 = +110 FF max
+- [x] `UPGRADE_RULES.json` v1.4+: farming_fortune section updated with all sources
+- [x] `LAST_META_REFRESH.md`: Pass 4C entry added
+- [x] Build: ✅ PASSING (0 TS errors, commit c4c7556)
 
 ### Phase 6 — Meta Audit Pass 4B/4C (2026-04-01) — Wiki Fetch + Code Fixes
 - [x] `wiki_content.md` (1233 lines): 15 wiki pages fetched via Fandom API (direct URLs blocked, API worked)
