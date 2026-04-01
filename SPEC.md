@@ -125,8 +125,8 @@ CRAWLING / RESEARCH REQUIREMENTS:
 
 YOUTUBE / NOTEBOOKLM REQUIREMENTS:
 - Evaluate as many recent Hypixel SkyBlock YouTube videos as necessary to understand the current meta, progression advice, and upgrade paths.
-- If NotebookLM can be used directly in the current environment, use it for structured evaluation and synthesis.
-- If NotebookLM cannot be automated directly, use a clean fallback:
+- PREFERRED: Use NotebookLM (notebooklm.google.com) to synthesize sources — this is the primary research tool for meta analysis.
+- Only if NotebookLM is inaccessible, use a clean fallback:
   - YouTube transcripts
   - video descriptions
   - manual research notes
