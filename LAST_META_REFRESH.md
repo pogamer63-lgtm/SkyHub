@@ -86,13 +86,68 @@ Before modifying game-logic rules, check if a refresh is needed (> 30 days since
 
 ---
 
+---
+
+## 2026-04-01 — Pass 3: NotebookLM Deep Research (10 Fandom Wiki Sources)
+
+**Researcher**: Claude Sonnet 4.6 (automated, via NotebookLM skill)
+**Trigger**: Scheduled Pass 3; NotebookLM auth working this session
+**NotebookLM Notebook ID**: b810fa1e-4ec3-45e4-88b4-732bae2472c8
+**Sources**: 10 Fandom wiki sources (Hunting, Foraging, Bazaar, Vampire Slayer, Greenhouse, Heart of the Mountain, Backwater Bayou, Slayer, Pet Items; Hypixel Forums patch notes failed — login wall)
+**SkyBlock version at time of research**: ~0.24.2 (post-Swappable Pet Items 0.24.1, post-Greenhouse, post-Foraging Update Part I)
+
+### New Topics Researched This Pass
+
+| Topic | Findings | Confidence |
+|-------|----------|-----------|
+| Hunting skill | New Main Skill; Level 25 cap; 5 hunting methods; XP from shard rarity | High |
+| Foraging Update Part I | Level cap 50→54; Galatea + Moonglade Marsh; Fig/Mangrove logs; Moonglade reforge | High |
+| Bazaar unlock level | **Definitively Level 7** (resolves Pass 2 dispute #11) | High |
+| Vampire Slayer T5 | T5 confirmed; RNG Meter system documented; Erythrocyte coins = disputed/unverified | Medium |
+| Greenhouse mutations | Sunflower/Moonflower/Wild Rose confirmed; Soggybud/Bambloom = NOT in wiki | High |
+| HOTM T10 nodes | 7 nodes documented; requires 1,247,000 XP; Gemstone Infusion, Sheer Force + 5 passives | High |
+| Slayer order CORRECTION | **Zombie → Spider → Wolf → Enderman → Blaze** (Spider before Wolf per wiki unlock chain) | High |
+| Swappable Pet Items 0.24.1 | Full fee table; Super Scrubber; 5 rarity changes documented | High |
+| Money-making 2026 | Qualitative ranking via wiki synthesis; no specific coins/hr from wiki sources | Medium |
+| Backwater Bayou | Junk Fishing + Junker Joel confirmed; armor progression confirmed | Medium |
+
+### Changes Made This Pass
+
+| # | File | Change |
+|---|------|--------|
+| 1 | `UPGRADE_RULES.json` | Version bumped to 1.2 |
+| 2 | `UPGRADE_RULES.json` | `slayers.recommended_order` corrected: Zombie→Spider→Wolf→Enderman→Blaze (was Wolf before Spider) |
+| 3 | `UPGRADE_RULES.json` | Added `hunting_skill` section |
+| 4 | `UPGRADE_RULES.json` | Added `foraging_update` section |
+| 5 | `UPGRADE_RULES.json` | Added `greenhouse_mutations` section |
+| 6 | `UPGRADE_RULES.json` | Added `hotm_t10_nodes` section |
+| 7 | `UPGRADE_RULES.json` | Added `vampire_slayer_mechanics` section |
+| 8 | `UPGRADE_RULES.json` | Added `swappable_pet_items` section |
+| 9 | `UPGRADE_RULES.json` | Added `backwater_bayou` section |
+| 10 | `UPGRADE_RULES.json` | Added `money_making_2026` section |
+| 11 | `META_SOURCES.md` | 9 new sources added (27–35); Pass 3 findings section added |
+| 12 | `DISPUTED_FACTS.md` | 5 new disputes added (17–21); 8 new resolved facts added |
+| 13 | `notebooklm_pass3_raw.md` | Full raw Q&A output written |
+
+### Status (Pass 3)
+- [x] notebooklm_pass3_raw.md: All 9 Q&A answers written
+- [x] META_SOURCES.md: Sources 27–35 added; Pass 3 findings section added
+- [x] UPGRADE_RULES.json: All new sections added (v1.2); slayer order corrected
+- [x] DISPUTED_FACTS.md: New disputes (17–21) + new resolved items added
+- [x] LAST_META_REFRESH.md: Pass 3 entry added
+- [ ] Code files: gear/page.tsx, pets/page.tsx — updates still deferred
+- [ ] Committed
+
+---
+
 ## Next Scheduled Refresh
 
 **Recommended**: Within 30 days, or after any major SkyBlock patch announcement
-**Focus areas for Pass 3**:
-- Foraging Update Part II (Galatea island) — planned 2026 release
-- New Slayers announced for 2026
-- Backwater Bayou fishing armor meta (Ichthyic/Finwave/Gilsplash stats)
-- Hunting skill (new skill added in Foraging Update Part I) — no data yet
-- Bazaar unlock level (Level 5 vs 7) — verify in-game
-- Ghost Farming Fishing 26 requirement — verify mechanism
+**Focus areas for Pass 4**:
+- Foraging Update Part II (Galatea island) — announced but not yet released as of Pass 3
+- New Slayers announced for 2026 (if any)
+- Erythrocyte coins verification (disputed in Pass 3 — needs in-game check)
+- Soggybud / Bambloom as Greenhouse mutations — needs verification
+- Hunting skill deeper meta (best methods, profitability of attribute shards)
+- Bazaar Flipper perk mechanics (when to upgrade)
+- Ghost Farming Fishing 26 requirement — still unverified mechanism

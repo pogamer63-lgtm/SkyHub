@@ -1,7 +1,7 @@
 # SkyHub — Meta Research Sources
 
-**Last refreshed:** 2026-04-01 (Pass 2 — NotebookLM session expired; direct web research used)
-**Researcher:** Claude Sonnet 4.6 (automated web research)
+**Last refreshed:** 2026-04-01 (Pass 3 — NotebookLM deep research, 10 wiki sources)
+**Researcher:** Claude Sonnet 4.6 (automated NotebookLM research)
 
 ---
 
@@ -35,6 +35,15 @@
 | 24 | Helianthus Armor — Fandom wiki | hypixel-skyblock.fandom.com/wiki/Helianthus_Armor | 2026-04-01 | High |
 | 25 | Vampire Slayer comprehensive guide | hypixel.net/threads/comprehensive-vampire-slayer-guide.5799801 | 2026-04-01 | Medium |
 | 26 | Helianthus Armor changes thread | hypixel.net/threads/fermento-helianthus-armour-changes.6032821 | 2026-04-01 | High |
+| 27 | Hunting skill wiki | hypixel-skyblock.fandom.com/wiki/Hunting | 2026-04-01 (Pass 3) | High |
+| 28 | Foraging skill wiki | hypixel-skyblock.fandom.com/wiki/Foraging | 2026-04-01 (Pass 3) | High |
+| 29 | Bazaar wiki | hypixel-skyblock.fandom.com/wiki/Bazaar | 2026-04-01 (Pass 3) | High |
+| 30 | Vampire Slayer wiki | hypixel-skyblock.fandom.com/wiki/Vampire_Slayer | 2026-04-01 (Pass 3) | High |
+| 31 | Greenhouse wiki | hypixel-skyblock.fandom.com/wiki/Greenhouse | 2026-04-01 (Pass 3) | High |
+| 32 | Heart of the Mountain wiki | hypixel-skyblock.fandom.com/wiki/Heart_of_the_Mountain | 2026-04-01 (Pass 3) | High |
+| 33 | Backwater Bayou wiki | hypixel-skyblock.fandom.com/wiki/Backwater_Bayou | 2026-04-01 (Pass 3) | High |
+| 34 | Slayer wiki | hypixel-skyblock.fandom.com/wiki/Slayer | 2026-04-01 (Pass 3) | High |
+| 35 | Pet Items wiki | hypixel-skyblock.fandom.com/wiki/Pet_Item | 2026-04-01 (Pass 3) | High |
 
 ---
 
@@ -98,6 +107,89 @@ OLD path in code (Zombie Soldier → Hardened Diamond → Perfect → Superior D
 | Dungeons | Black Cat (LEGENDARY) | S+ rank speed boost |
 | Fishing | Ammonite (LEGENDARY) | Best fishing pet |
 | Alchemy | Rabbit (LEGENDARY) | Brew time reduction |
+
+---
+
+## Pass 3 Findings (2026-04-01 — NotebookLM Deep Research, 10 Fandom Wiki Sources)
+
+### Hunting Skill (NEW — Foraging Update Part I, June 23 2025)
+- **Main Skill** for capturing **Attribute Shards** from mobs
+- Methods: Forest Hunting (Abysmal Lasso), Water Hunting (Basic Fishing Net), Combat Hunting (Huntaxe + Pocket Black Hole), Salt Hunts, Trap Hunts (passive)
+- **XP table**: Common +75, Uncommon +150, Rare +300, Epic +500, Legendary +1,000 per shard captured
+- **Max level: XXV (25)** — table details rewards up to this level
+- **Per-level rewards**: +1 Hunter Fortune + increasing Charming % (0.04% at L1, 1% at L25) + coins (225k at L25)
+- Linked to Foraging via Lushlilac/Tender Wood/Vinesap collection milestones
+
+### Foraging Update Part I (June 23, 2025)
+- Foraging **max level raised from 50 to 54** — 4 extra levels unlock via Fig Log IX, Mangrove Log IX, and Agatha's Shop coupons
+- Level 54 gives +94 Strength and +216 Foraging Fortune total
+- New areas: **Galatea** (Foraging 25+), **Moonglade Marsh** (with Ancient Ruins, Forest Temple, Murkwater Outpost, Tangleburg, Verdant Summit)
+- New logs: **Fig Logs** (+15 XP), **Mangrove Logs** (+20 XP)
+- New reforge: **Moonglade** for axes (Foraging Fortune + up to +6 Foraging Wisdom by rarity)
+- New enchants: **Forest Pledge III-V**, **Woodsplitter I-V** (on Bazaar)
+- New currencies: Agatha's Coupons, Starlyn Prizes, Lushlilac Bonbons
+
+### Bazaar Unlock Level — RESOLVED
+- **Definitively Level 7** (confirmed by Bazaar wiki page)
+- Wiki explicitly lists SkyBlock Level 7 as the unlock requirement
+- Ironman/Stranded profiles: severely restricted (Booster Cookies only)
+- Bingo profiles: cannot use Bazaar at all
+
+### Vampire Slayer Tier 5 — Updated
+- T5 boss confirmed exists; Sangria Dye (5% chance) is T5-exclusive
+- Riftstalker Bloodfiend has NO minibosses (unique among slayers)
+- **"Ping mechanic"** not documented as such in wiki; likely refers to the "critical attack" warning sound/visual when player stands still
+- **RNG Meter**: Unlocked at T3, fills from T3-T5 XP, guarantees selected rare item when full
+- **"Erythrocyte coins"**: NOT found in wiki sources — Vampire Slayer uses Motes (quest currency) and Coven Seals/Bloodbadges (crafting). Term may be community slang or from a different update context.
+
+### Greenhouse Mutations — Confirmed Details
+- Mutations grow when specific crops are arranged in specific patterns; detected with **Crop Analyzer**
+- Harvesting mutations drops **Ethereal Vines** (needed for extra Greenhouse plots / 2nd + 3rd Greenhouse)
+- Confirmed mutation crops (from wiki table):
+  - **Sunflower**: 256x yield, 15 growth cycles, effect = Bonus Drops (extra loot pool)
+  - **Moonflower**: 256x yield, 15 growth cycles, effect = Bonus Drops (extra loot pool)
+  - **Wild Rose**: 256x yield, 15 growth cycles, effect = Effect Spread (spreads buffs to adjacent crops)
+- **Soggybud**: NOT mentioned in wiki sources
+- **Bambloom**: Only appears as "Bambloom Shard" in Bazaar — crop mechanics undocumented
+- Farming Fortune: Not named that directly; delivered as "Harvest Boost" (+20%) or "Improved Harvest Boost" (+30%)
+- Rare harvest bounties: Overgrown Grass (reforge stone that gives FF), Iridium, Evergreen Chips
+
+### HOTM Tier 10 Nodes — Confirmed
+- Requires **1,247,000 cumulative HotM XP** to reach T10
+- 7 total nodes: 2 active pickaxe abilities (choose 1) + 5 passive perks
+- Active (120s cooldown, choose one):
+  - **Gemstone Infusion**: +100% gemstone effectiveness for 20-30s
+  - **Sheer Force**: +200 Mining Spread for 20-30s
+- Passive:
+  - **Mining Master**: +0.1 to +1.1 Pristine
+  - **Crystalline**: +0.5% to +25.5% Gemstone Crystal mineshaft chance
+  - **Gifts from the Departed**: +0.2% to +20.2% extra item from Frozen Corpse
+  - **Dead Man's Chest**: +1% to +51% extra Frozen Corpse per mineshaft
+  - **Vanguard Seeker**: +1% to +51% Vanguard Corpse chance
+- T10 also unlocks: Core of the Mountain L10 (+2 Tokens), Daily Grind/Powder at +5,000 each
+
+### Slayer Progression Order — CORRECTION
+- **Wiki-confirmed order**: Zombie → **Spider** → **Wolf** → Enderman → Blaze
+- The Pass 2 community guide said Zombie → Wolf → Spider — this is WRONG per wiki unlock chain
+- Wiki requirements: Zombie T2 unlocks Spider, Spider T2 unlocks Wolf, Wolf T4 unlocks Enderman, Enderman T3 unlocks Blaze
+- Auto-Slayer unlocks at Level 6 in Zombie/Spider/Wolf
+- Level 7 in Zombie/Wolf/Spider = 4% cheaper quests
+- Level 8 = Bartender Mixins unlocked
+
+### Swappable Pet Items (Patch 0.24.1 — January 27, 2026)
+- Pet items now **refundable** when replaced (previously destroyed)
+- Fee by rarity of NEW item: Common 25k, Uncommon 50k, Rare 100k, Epic 250k, Legendary 500k, Mythic 1M, Divine 2.5M
+- **Super Scrubber** (from Plumber Joe): removes item without replacing; fee still applies; scrubber consumed
+- Rarity changes in 0.24.1:
+  - All Skills Exp Super-Boost: COMMON → UNCOMMON
+  - Brown Bandana: RARE → EPIC
+  - Dwarf Turtle Shelmet: RARE → EPIC
+  - Quick Claw: EPIC → LEGENDARY
+  - Washed-up Souvenir: LEGENDARY → EPIC
+
+### Backwater Bayou — Additional Details (Pass 3)
+- Junk Fishing mechanic: **Junker Joel** NPC trades "Junk" items (Rusty Coins, Moby-Ducks) for rewards
+- Fishing armor confirmed: Ichthyic → Finwave → Gilsplash progression
 
 ---
 

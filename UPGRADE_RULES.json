@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "version": "1.1",
+    "version": "1.2",
     "last_updated": "2026-04-01",
     "description": "Structured upgrade rules derived from meta research. Used as reference for recommendation engine logic.",
     "confidence_levels": ["high", "medium", "low"],
-    "changelog": "v1.1 (2026-04-01 Pass 2): Added dungeon class meta, equipment accessories, money-making tiers, slayer Vampire, mining Glacite Tunnels details, farming Fortune formula, level gates, beginner mistakes"
+    "changelog": "v1.2 (2026-04-01 Pass 3): Added hunting_skill, foraging_update, greenhouse_mutations, hotm_t10_nodes, vampire_slayer_mechanics, swappable_pet_items, backwater_bayou sections; corrected slayer recommended_order (Spider before Wolf); Bazaar unlock confirmed Level 7"
   },
 
   "garden": {
@@ -209,7 +209,8 @@
 
   "slayers": {
     "total_count": 6,
-    "recommended_order": ["zombie", "wolf", "spider", "enderman", "blaze", "vampire"],
+    "recommended_order": ["zombie", "spider", "wolf", "enderman", "blaze", "vampire"],
+    "recommended_order_note": "CORRECTED in Pass 3: wiki unlock chain requires Zombie T2 → Spider, Spider T2 → Wolf (not Wolf before Spider as some community guides state). Vampire is separate via Rift/Timecharm unlock.",
     "zombie": {
       "boss_name": "Revenant Horror",
       "armor_equip_level": 4,
@@ -243,8 +244,10 @@
       "boss_name": "Riftstalker Bloodfiend",
       "location": "Rift — Stillgore Chateau",
       "max_tier": 5,
-      "note": "T5 most profitable but requires ping <40ms. T4 viable if T5 too difficult, set RNG meter to The One books. New Erythrocyte currency from Vambus NPC.",
-      "priority": "last (Rift-only; requires Rift access)",
+      "note": "T5 most profitable. RNG Meter unlocks at T3 and guarantees chosen item after filling. Currency is Motes (Rift-wide) and Coven Seals/Bloodbadges (NOT 'Erythrocyte' — that term was unconfirmed and removed).",
+      "rng_meter_unlock": "Tier 3",
+      "currency": "Motes + Coven Seals / Bloodbadges",
+      "priority": "last (Rift-only; requires Rift access via Timecharm)",
       "confidence": "high"
     }
   },
@@ -337,5 +340,201 @@
       { "mistake": "Skipping daily habits", "consequence": "Missed free XP and progress", "fix": "Experimentation Table, Dwarven Mines commissions (bonus HOTM XP), Chocolate Factory, Community Center" }
     ],
     "confidence": "high"
+  },
+
+  "hunting_skill": {
+    "source": "hypixel-skyblock.fandom.com/wiki/Hunting (Pass 3, 2026-04-01)",
+    "added_patch": "June 23, 2025 (Foraging Update Part I)",
+    "category": "Main Skill (listed under Foraging)",
+    "max_level": 25,
+    "max_level_note": "Leveling rewards table ends at Level XXV; no explicit higher cap stated",
+    "xp_per_shard": {
+      "COMMON": 75,
+      "UNCOMMON": 150,
+      "RARE": 300,
+      "EPIC": 500,
+      "LEGENDARY": 1000
+    },
+    "xp_note": "XP also gained from David Hunterborough Trap/Salt Hunt milestones and Lushlilac IV, Tender Wood VIII, Vinesap VIII collection milestones",
+    "per_level_rewards": {
+      "hunter_fortune": "+1 per level",
+      "charming_percent": "0.04% at L1, scales to 1% at L25",
+      "coins_at_max": 225000
+    },
+    "methods": [
+      { "name": "Forest Hunting", "tool": "Abysmal Lasso (or better)", "note": "Cast lasso, wait for stamina meter to deplete, then REEL" },
+      { "name": "Water Hunting", "tool": "Basic Fishing Net (or better)", "note": "Some aquatic mobs instant-catch; others need Pull stat to deplete health" },
+      { "name": "Combat Hunting", "tool": "Worn Huntaxe - Genesis + Small Pocket Black Hole", "note": "Damage mob below 10% health, then absorb with Pocket Black Hole" },
+      { "name": "Salt Hunts", "tool": "Salts (consumable)", "note": "Small chance to charm defeated mobs on activation" },
+      { "name": "Trap Hunts", "tool": "Huntraps", "note": "Passive capture over time in specific locations" }
+    ],
+    "confidence": "high"
+  },
+
+  "foraging_update": {
+    "source": "hypixel-skyblock.fandom.com/wiki/Foraging (Pass 3, 2026-04-01)",
+    "release_date": "June 23, 2025",
+    "name": "Foraging Update Part I",
+    "foraging_max_level": {
+      "old_max": 50,
+      "new_max": 54,
+      "note": "Levels 51-54 unlocked via: Fig Log IX (+1), Mangrove Log IX (+1), Agatha's Shop at Milestone 4 (+2 via Agatha's Coupons/Starlyn Prizes)",
+      "level_54_stats": "+94 Strength, +216 Foraging Fortune"
+    },
+    "new_areas": [
+      { "name": "Galatea", "unlock_requirement": "Foraging Level 25", "purpose": "New high-XP log source" },
+      { "name": "Moonglade Marsh", "sub_areas": ["Ancient Ruins", "Forest Temple", "Murkwater Outpost", "Tangleburg", "Verdant Summit"] }
+    ],
+    "new_logs": [
+      { "name": "Fig Log", "xp": 15, "collection": "Fig Log IX required for +1 level cap" },
+      { "name": "Mangrove Log", "xp": 20, "collection": "Mangrove Log IX required for +1 level cap" }
+    ],
+    "new_resources": ["Figstone", "Mangcore", "Vinesap", "Tender Wood", "Sea Lumies", "Lushlilac", "Candycomb", "Oceandy", "Deep Roots"],
+    "new_currencies": ["Agatha's Coupons", "Starlyn Prizes", "Lushlilac Bonbons"],
+    "new_reforge": { "name": "Moonglade", "applies_to": "Axes", "stats": "Foraging Fortune + up to +6 Foraging Wisdom (by rarity)" },
+    "new_enchantments": ["Forest Pledge III-V", "Woodsplitter I-V"],
+    "hunting_skill_added": true,
+    "confidence": "high"
+  },
+
+  "greenhouse_mutations": {
+    "source": "hypixel-skyblock.fandom.com/wiki/Greenhouse (Pass 3, 2026-04-01)",
+    "unlock_requirement": "Garden Level VII",
+    "detection_tool": "Crop Analyzer",
+    "mechanism": "Specific crop arrangements in Greenhouse plots trigger mutation crops to grow",
+    "key_drop": "Ethereal Vines (required to unlock additional plots and 2nd/3rd Greenhouse)",
+    "confirmed_mutations": [
+      { "name": "Sunflower", "base_yield": "256x Sunflower", "growth_cycles": 15, "effect": "Bonus Drops (extra loot pool rolls)" },
+      { "name": "Moonflower", "base_yield": "256x Moonflower", "growth_cycles": 15, "effect": "Bonus Drops (extra loot pool rolls)" },
+      { "name": "Wild Rose", "base_yield": "256x Wild Rose", "growth_cycles": 15, "effect": "Effect Spread (spreads buffs/debuffs to adjacent crops)" }
+    ],
+    "unconfirmed_mutations": ["Soggybud (not found in wiki)", "Bambloom (only Bambloom Shard on Bazaar — crop mechanics undocumented)"],
+    "farming_fortune_delivery": {
+      "note": "Greenhouse crops don't use 'Farming Fortune' label directly",
+      "harvest_boost": "+20% crop yield",
+      "improved_harvest_boost": "+30% crop yield",
+      "harvest_bounty_drops": ["Overgrown Grass (reforge stone for FF)", "Iridium", "Evergreen Chips"]
+    },
+    "confidence": "high"
+  },
+
+  "hotm_t10_nodes": {
+    "source": "hypixel-skyblock.fandom.com/wiki/Heart_of_the_Mountain (Pass 3, 2026-04-01)",
+    "xp_required": 1247000,
+    "total_new_nodes": 7,
+    "active_abilities": {
+      "note": "Both unlocked, but only ONE can be equipped at a time. Both have 120s cooldown.",
+      "abilities": [
+        {
+          "name": "Gemstone Infusion",
+          "effect": "+100% effectiveness of every Gemstone in drill slots",
+          "duration_seconds": "20-30 (scales with level)"
+        },
+        {
+          "name": "Sheer Force",
+          "effect": "+200 Mining Spread",
+          "duration_seconds": "20-30 (scales with level)"
+        }
+      ]
+    },
+    "passive_perks": [
+      { "name": "Mining Master", "effect": "+0.1 to +1.1 Pristine (at max level including Blue Cheese bonus)" },
+      { "name": "Crystalline", "effect": "+0.5% to +25.5% chance of Gemstone Crystal mineshaft" },
+      { "name": "Gifts from the Departed", "effect": "+0.2% to +20.2% chance of extra item from Frozen Corpse" },
+      { "name": "Dead Man's Chest", "effect": "+1% to +51% chance to spawn 1 extra Frozen Corpse per mineshaft" },
+      { "name": "Vanguard Seeker", "effect": "+1% to +51% chance of Vanguard Corpse in Glacite Mineshaft" }
+    ],
+    "additional_rewards": {
+      "core_of_mountain_l10": "+2 Tokens of the Mountain (requires T10)",
+      "daily_grind_at_t10": "+5,000 powder per day",
+      "daily_powder_at_t10": "+5,000 powder per day"
+    },
+    "confidence": "high"
+  },
+
+  "vampire_slayer_mechanics": {
+    "source": "hypixel-skyblock.fandom.com/wiki/Vampire_Slayer (Pass 3, 2026-04-01)",
+    "boss_name": "Riftstalker Bloodfiend",
+    "unique_trait": "Only slayer with NO minibosses",
+    "t5_exclusive_drop": { "name": "Sangria Dye", "rarity": "RARE", "chance": "5%", "source": "T5 only" },
+    "rng_meter": {
+      "unlock": "Defeat Tier III boss of that boss type",
+      "fills_from": "XP earned from Tier III, IV, and V bosses",
+      "mechanic": "Select a specific rare item; once meter fills, that item is GUARANTEED to drop next kill",
+      "confidence": "high"
+    },
+    "erythrocyte_coins": {
+      "status": "DISPUTED — not found in wiki sources",
+      "wiki_currency": "Motes (used to start quests); Coven Seals and Bloodbadges (crafting drops)",
+      "recommendation": "Do not implement until verified in-game"
+    },
+    "ping_mechanic": {
+      "status": "Not documented by this name in wiki",
+      "likely_refers_to": "Critical attack mechanic: standing still triggers a green number + up arrow + sound = incoming heavy hit warning",
+      "community_claim": "T5 requires ping <40ms (not wiki-verified)"
+    },
+    "confidence": "medium"
+  },
+
+  "swappable_pet_items": {
+    "source": "hypixel-skyblock.fandom.com/wiki/Pet_Item (Pass 3, 2026-04-01)",
+    "patch": "0.24.1",
+    "patch_date": "January 27, 2026",
+    "mechanic": "Replacing a pet item now REFUNDS the previous item (previously destroyed on replacement)",
+    "swap_fee_by_rarity": {
+      "COMMON": 25000,
+      "UNCOMMON": 50000,
+      "RARE": 100000,
+      "EPIC": 250000,
+      "LEGENDARY": 500000,
+      "MYTHIC": 1000000,
+      "DIVINE": 2500000
+    },
+    "fee_note": "Fee is based on rarity of the NEW item being applied, not the one being removed",
+    "super_scrubber": {
+      "source": "Plumber Joe NPC",
+      "effect": "Removes current pet item without applying a new one",
+      "cost": "Same rarity-based fee; scrubber is consumed on use"
+    },
+    "rarity_changes_in_patch": [
+      { "item": "All Skills Exp Super-Boost", "old_rarity": "COMMON", "new_rarity": "UNCOMMON" },
+      { "item": "Brown Bandana", "old_rarity": "RARE", "new_rarity": "EPIC" },
+      { "item": "Dwarf Turtle Shelmet", "old_rarity": "RARE", "new_rarity": "EPIC" },
+      { "item": "Quick Claw", "old_rarity": "EPIC", "new_rarity": "LEGENDARY" },
+      { "item": "Washed-up Souvenir", "old_rarity": "LEGENDARY", "new_rarity": "EPIC" }
+    ],
+    "confidence": "high"
+  },
+
+  "backwater_bayou": {
+    "source": "hypixel-skyblock.fandom.com/wiki/Backwater_Bayou (Pass 3, 2026-04-01)",
+    "type": "Fishing Island",
+    "release": "2025 (major update)",
+    "fishing_armor_progression": [
+      { "tier": 1, "name": "Ichthyic Armor", "stage": "early fishing", "confidence": "medium" },
+      { "tier": 2, "name": "Finwave Armor", "stage": "mid fishing", "confidence": "medium" },
+      { "tier": 3, "name": "Gilsplash Armor", "stage": "late fishing", "confidence": "medium" }
+    ],
+    "junk_fishing": {
+      "mechanic": "Catch items classified as 'Junk' while fishing",
+      "junk_examples": ["Rusty Coins", "Moby-Ducks"],
+      "npc": "Junker Joel (trades Junk items for rewards)",
+      "money_potential": "Included in Pass 3 money-making sources; no specific coins/hr estimate available"
+    },
+    "confidence": "medium"
+  },
+
+  "money_making_2026": {
+    "source": "NotebookLM synthesis of wiki sources (Pass 3, 2026-04-01)",
+    "note": "Wiki sources do not provide specific coins/hr estimates. These are qualitative rankings based on source mentions. Use Pass 2 money_making section for actual coins/hr figures.",
+    "top_methods_qualitative": [
+      { "rank": 1, "name": "Gemstone Mining (HotM T10)", "reason": "Gemstone Infusion ability, Pristine grinding, mineshaft looting with Dead Man's Chest + Vanguard Seeker" },
+      { "rank": 2, "name": "Bazaar/NPC Flipping", "reason": "Bazaar Flipper perk (1% tax, 28 orders), Advanced Mode for margins" },
+      { "rank": 3, "name": "Slayer + RNG Meter", "reason": "Targeted rare drops (Warden Heart, Scythe Blade); T5 dyes (Matcha, Brick Red) high-value" },
+      { "rank": 4, "name": "Greenhouse Harvest Bounties", "reason": "Rare drops: Overgrown Grass, Iridium, Evergreen Chips; requires Garden Level VII" },
+      { "rank": 5, "name": "Hunting (Attribute Shards)", "reason": "New skill; Legendary shards expected high Bazaar value; Abysmal Lasso + Huntraps passive" },
+      { "rank": 6, "name": "Junk Fishing (Backwater Bayou)", "reason": "Junker Joel trades; unconventional but cited as viable in 2025-2026" }
+    ],
+    "cross_reference": "See money_making section (from Pass 2) for historical coins/hr estimates with investment levels"
   }
 }

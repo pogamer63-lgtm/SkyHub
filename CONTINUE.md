@@ -1,11 +1,25 @@
 # SkyHub — Continuation State
 
 **Last updated:** 2026-04-01
-**Session status:** Phase 6 Meta Audit Pass 2 COMPLETE ✅
+**Session status:** Phase 6 Meta Audit Pass 3 COMPLETE ✅ (NotebookLM)
 
 ---
 
 ## ✅ Completed (all phases)
+
+### Phase 6 — Meta Audit Pass 3 (2026-04-01) — NotebookLM
+- [x] NotebookLM notebook created; 10 wiki sources added and processed
+- [x] 9 targeted questions answered via NotebookLM chat
+- [x] `notebooklm_pass3_raw.md` — full Q&A saved
+- [x] **CRITICAL FIX**: Slayer unlock chain corrected — Spider before Wolf (was wrong in Pass 2)
+  - Correct chain: Zombie T2 → Spider → Spider T2 → Wolf → Wolf T2 → Enderman → Enderman T2 → Blaze
+  - `engine.ts`: Added `checkSlayerProgression` rules for Spider (L4) and Wolf (L4) with correct unlock dependencies
+- [x] **Bazaar unlock level RESOLVED**: Definitively Level 7 (wiki-confirmed, was disputed)
+- [x] **"Erythrocyte currency" CORRECTED**: Not confirmed in wiki; Vampire Slayer uses Motes + Coven Seals/Bloodbadges
+- [x] New findings documented: Hunting skill (max L25), Foraging Update scope, HOTM T10 nodes (7 nodes), Swappable Pet Items fee table, Greenhouse mutations (Sunflower/Moonflower/Wild Rose confirmed; Soggybud/Bambloom unconfirmed)
+- [x] `UPGRADE_RULES.json` v1.2: hunting_skill, foraging_update, greenhouse, hotm_t10_nodes, vampire_slayer_mechanics, money_making_2026 sections added; slayer order corrected; vampire currency corrected
+- [x] `DISPUTED_FACTS.md`: Bazaar level resolved, 5 new disputes (17–21), 8 new resolved facts
+- [x] `META_SOURCES.md`: 9 new sources (27–35), Pass 3 findings section
 
 ### Phase 6 — Meta Audit Pass 2 (2026-04-01)
 - [x] Research Pass 2: 13 new sources, 8 new UPGRADE_RULES.json sections (v1.1)

@@ -149,23 +149,74 @@ function checkSlayerProgression(profile: PlayerProfile, bazaar?: BazaarPrices): 
     });
   }
 
-  if (enderman.level < 3 && profile.skills.combat >= 20 && zombie.level >= 5) {
+  // Correct unlock chain (wiki-confirmed): Zombie T2 → Spider, Spider T2 → Wolf, Wolf T2 → Enderman, Enderman T2 → Blaze
+  // Spider must come before Wolf — some community guides had this backwards
+
+  if (spider.level < 4 && zombie.level >= 2 && profile.skills.combat >= 15) {
+    recs.push({
+      id: 'slayer_spider_4',
+      category: 'slayer',
+      title: 'Progress Spider Slayer to Level 4',
+      description: `Spider Slayer unlocks after Zombie T2. You're at Spider ${spider.level}. Level 4 unlocks Tarantula Armor — and Spider T2 is required before you can unlock Wolf Slayer.`,
+      whyItMatters: 'Spider Slayer is the second slayer in the unlock chain (Zombie → Spider → Wolf). Skipping it means Wolf Slayer stays locked. Tarantula Armor at L4 is also a solid mid-game set.',
+      estimatedCost: 2_000_000,
+      estimatedCostLabel: '~2M coins',
+      estimatedBenefit: 'Tarantula Armor, Spider Slayer rewards, unlocks Wolf Slayer',
+      roiScore: 80,
+      urgencyScore: 75,
+      progressionScore: 82,
+      requirementScore: 25,
+      confidenceScore: 92,
+      sourceTags: ['slayer', 'spider', 'progression'],
+      dependsOn: ['slayer_zombie_5'],
+      unlocks: ['tarantula_armor', 'wolf_slayer_unlock'],
+      gameStage: ['early', 'mid'],
+      priority: zombie.level >= 5 && spider.level < 2 ? 'high' : 'medium',
+      type: 'progression',
+    });
+  }
+
+  if (wolf.level < 4 && spider.level >= 2 && profile.skills.combat >= 18) {
+    recs.push({
+      id: 'slayer_wolf_4',
+      category: 'slayer',
+      title: 'Progress Wolf Slayer to Level 4',
+      description: `Wolf Slayer unlocks after Spider T2. You're at Wolf ${wolf.level}. Level 4 unlocks Werewolf Armor. Wolf T2 also unlocks Enderman Slayer.`,
+      whyItMatters: 'Wolf is third in the unlock chain (after Spider). Level 2 unlocks Enderman Slayer; Level 4 gives Werewolf Armor which has strong combat bonuses.',
+      estimatedCost: 2_500_000,
+      estimatedCostLabel: '~2.5M coins',
+      estimatedBenefit: 'Werewolf Armor, Radiant Power Orb recipe, unlocks Enderman Slayer',
+      roiScore: 76,
+      urgencyScore: 68,
+      progressionScore: 78,
+      requirementScore: 30,
+      confidenceScore: 90,
+      sourceTags: ['slayer', 'wolf', 'progression'],
+      dependsOn: ['slayer_spider_4'],
+      unlocks: ['werewolf_armor', 'enderman_slayer_unlock'],
+      gameStage: ['mid'],
+      priority: 'medium',
+      type: 'progression',
+    });
+  }
+
+  if (enderman.level < 3 && wolf.level >= 2 && profile.skills.combat >= 20) {
     recs.push({
       id: 'slayer_enderman_3',
       category: 'slayer',
       title: 'Unlock Enderman Slayer Level 3',
-      description: `Enderman Slayer level 3 unlocks Midas Staff and Wither armor progression paths. You need Combat ${profile.skills.combat}/20 — you're there!`,
-      whyItMatters: 'Enderman slayer is the gateway to Wither armor progression. Level 3 gives you access to key late-game items.',
+      description: `Enderman Slayer unlocks after Wolf T2. You're at Enderman ${enderman.level}. Level 3 unlocks Ender armor bonuses and Wither progression paths.`,
+      whyItMatters: 'Enderman slayer is the gateway to Wither armor progression. Requires Wolf T2 to unlock — not just Zombie T5 as previously stated.',
       estimatedCost: 3_000_000,
       estimatedCostLabel: '~3M coins',
-      estimatedBenefit: 'Wither armor pathway, better combat damage',
+      estimatedBenefit: 'Wither armor pathway, better combat damage, Enderman rewards',
       roiScore: 78,
       urgencyScore: 72,
       progressionScore: 82,
       requirementScore: 40,
-      confidenceScore: 88,
+      confidenceScore: 92,
       sourceTags: ['slayer', 'enderman', 'mid-game'],
-      dependsOn: ['slayer_zombie_5'],
+      dependsOn: ['slayer_wolf_4'],
       unlocks: ['enderman_rewards', 'wither_progression'],
       gameStage: ['mid', 'late'],
       priority: 'high',

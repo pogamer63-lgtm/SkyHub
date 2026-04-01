@@ -1,6 +1,6 @@
 # SkyHub — Disputed / Uncertain Facts
 
-**Last updated:** 2026-04-01 (Pass 2)
+**Last updated:** 2026-04-01 (Pass 3)
 
 Facts listed here are uncertain, disputed across sources, or subject to rapid meta changes.
 Before coding a rule around any item below, re-verify from an authoritative source.
@@ -107,6 +107,42 @@ Before coding a rule around any item below, re-verify from an authoritative sour
 
 ---
 
+---
+
+## New Disputes and Corrections (Pass 3 — 2026-04-01)
+
+### 17. Slayer order: Zombie → Wolf → Spider vs Zombie → Spider → Wolf
+- **Pass 2 community guides said**: Zombie → Wolf → Spider → Enderman → Blaze
+- **Wiki unlock requirements say**: Zombie T2 unlocks Spider; Spider T2 unlocks Wolf (NOT the other way)
+- **Correct order per wiki**: Zombie → Spider → Wolf → Enderman → Blaze
+- **Status**: CORRECTED — wiki is authoritative for unlock requirements; community guides may have been describing an efficiency order (not the unlock order), but the unlock chain is definitive
+- **Impact**: UPGRADE_RULES.json `recommended_order` array needs correction
+
+### 18. Erythrocyte coins — do they exist?
+- **Claim (Pass 2)**: "New Erythrocyte currency from Vambus NPC"
+- **NotebookLM wiki research**: No mention of "Erythrocyte coins" in Vampire Slayer wiki page; the currency for Vampire Slayer is Motes (to start quests)
+- **Status**: Unresolved — may be community slang, a future update reference, or misinformation from the Pass 2 community forum
+- **Impact**: Do not implement Erythrocyte coin logic until verified in-game or from patch notes
+
+### 19. Vampire Slayer "ping requirement" for T5
+- **Claim (Pass 2)**: T5 requires ping <40ms
+- **Wiki research**: Ping mechanic not documented in wiki; likely refers to the "critical attack" mechanic (stand still = get hit)
+- **Status**: Unresolved — ping sensitivity is a real community concern for Vampire Slayer but not officially documented
+- **Impact**: Low — this is gameplay advice, not data we'd code into the engine
+
+### 20. Bambloom and Soggybud crops
+- **Claim (Pass 2)**: Listed as new Greenhouse crop types alongside Moonflower/Sunflower/Wild Rose
+- **Wiki research**: Soggybud not in Greenhouse wiki; Bambloom only appears as "Bambloom Shard" in Bazaar
+- **Status**: Partially confirmed — Sunflower, Moonflower, Wild Rose confirmed mutations; Soggybud/Bambloom may be from a different area or future update
+- **Impact**: Don't code Soggybud/Bambloom as Greenhouse mutations without further verification
+
+### 21. Hunting skill max level — Level 25 vs higher cap
+- **Wiki**: Leveling rewards table goes up to Level XXV (25). No explicit statement of max level beyond this.
+- **Status**: Level 25 appears to be the current cap, but could expand in future updates
+- **Confidence**: Medium — table ends at 25, no "true max" statement found
+
+---
+
 ## Resolved (was uncertain, now confirmed)
 
 | Fact | Resolution |
@@ -124,3 +160,10 @@ Before coding a rule around any item below, re-verify from an authoritative sour
 | Glacite armor in Glacite Tunnels | **Confirmed BAD** — community strongly warns against it; use Yog or Divan |
 | Suspicious Scrap excavation profitability | **Confirmed loses money** on average |
 | Nobody mithril mines for income | **Confirmed** — only for powder grind |
+| Bazaar unlock level (Pass 3) | **Confirmed Level 7** — Bazaar wiki page explicitly states SkyBlock Level 7 |
+| Slayer order correction (Pass 3) | **Confirmed Zombie → Spider → Wolf → Enderman → Blaze** per wiki unlock chain (not Wolf before Spider as some community guides state) |
+| Swappable Pet Items fee structure (Pass 3) | **Confirmed** — tiered fee by rarity of new item applied; Super Scrubber removes without replacing |
+| HOTM T10 node list (Pass 3) | **Confirmed** — 7 nodes at T10: Gemstone Infusion + Sheer Force (active, 120s CD), Mining Master, Crystalline, Gifts from the Departed, Dead Man's Chest, Vanguard Seeker (passive); requires 1,247,000 HotM XP |
+| Greenhouse confirmed mutation crops (Pass 3) | **Confirmed** — Sunflower, Moonflower, Wild Rose are documented mutations with 256x yield, 15 growth cycles; Soggybud/Bambloom NOT found in Greenhouse wiki |
+| Hunting skill max level (Pass 3) | **Confirmed Level 25** — leveling rewards table ends at Level XXV |
+| Vampire Slayer RNG Meter (Pass 3) | **Confirmed** — unlocks at T3, fills via T3-T5 boss XP, guarantees selected rare item once full |
