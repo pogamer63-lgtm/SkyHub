@@ -30,23 +30,25 @@ interface GearTierEntry {
 // Maps item ID fragments → tier info (fragments match if item ID *contains* the key)
 const ARMOR_TIER_DB: Record<string, GearTierEntry> = {
   // ── Early ──
-  ZOMBIE_SOLDIER:      { tier: 1, stage: 'Early', set: 'Zombie Soldier',    upgradeSet: 'Hardened Diamond', upgradeNote: 'Farm Zombie Slayer T1/T2', upgradeCost: '20k–50k' },
-  FAIRY:               { tier: 1, stage: 'Early', set: 'Fairy Armor',       upgradeSet: 'Hardened Diamond', upgradeNote: 'Basic protection, no damage', upgradeCost: '20k–50k' },
-  HARDENED_DIAMOND:    { tier: 2, stage: 'Early', set: 'Hardened Diamond',  upgradeSet: 'Perfect Armor', upgradeNote: 'Best early-game survivability', upgradeCost: '100k–200k' },
-  GLACITE:             { tier: 2, stage: 'Early', set: 'Glacite',           upgradeSet: 'Perfect Armor', upgradeNote: 'Mining-focused armor', upgradeCost: '100k' },
-  MINERAL:             { tier: 2, stage: 'Early', set: 'Mineral',           upgradeSet: 'Perfect Armor', upgradeNote: 'Mining set', upgradeCost: '100k' },
-  SKELET:              { tier: 2, stage: 'Early', set: 'Skeleton Master',   upgradeSet: 'Perfect Armor', upgradeNote: 'Farming-viable early armor', upgradeCost: '80k' },
+  ZOMBIE_SOLDIER:      { tier: 1, stage: 'Early', set: 'Zombie Soldier',    upgradeSet: 'Glacite / Ender Armor', upgradeNote: 'Farm Zombie Slayer T1/T2 to start', upgradeCost: '20k–50k' },
+  FAIRY:               { tier: 1, stage: 'Early', set: 'Fairy Armor',       upgradeSet: 'Glacite / Ender Armor', upgradeNote: 'Basic protection only — upgrade soon', upgradeCost: '20k–50k' },
+  HARDENED_DIAMOND:    { tier: 2, stage: 'Early', set: 'Hardened Diamond',  upgradeSet: 'Glacite / Ender Armor', upgradeNote: 'Solid early survivability', upgradeCost: '20k–50k' },
+  GLACITE:             { tier: 2, stage: 'Early', set: 'Glacite Armor',     upgradeSet: 'Strong Dragon', upgradeNote: 'Good early-mid armor; upgrade to Strong Dragon next', upgradeCost: '50k–100k' },
+  ENDER:               { tier: 2, stage: 'Early', set: 'Ender Armor',       upgradeSet: 'Strong Dragon', upgradeNote: 'Good early-mid combat armor; upgrade to Strong Dragon next', upgradeCost: '50k–100k' },
+  MINERAL:             { tier: 2, stage: 'Early', set: 'Mineral',           upgradeSet: 'Glacite / Ender Armor', upgradeNote: 'Mining set', upgradeCost: '100k' },
+  SKELET:              { tier: 2, stage: 'Early', set: 'Skeleton Master',   upgradeSet: 'Glacite / Ender Armor', upgradeNote: 'Farming-viable early armor', upgradeCost: '80k' },
   // ── Mid ──
-  PERFECT:             { tier: 3, stage: 'Mid', set: 'Perfect Armor',       upgradeSet: 'Strong/Wise Dragon', upgradeNote: 'Craft from Flawless Gemstones. Very good early-mid.', upgradeCost: '500k–2M' },
-  STRONG_DRAGON:       { tier: 3, stage: 'Mid', set: 'Strong Dragon',       upgradeSet: 'Superior Dragon', upgradeNote: 'Great for combat + slayer. Upgrade to Superior.', upgradeCost: '1M–3M' },
-  WISE_DRAGON:         { tier: 3, stage: 'Mid', set: 'Wise Dragon',         upgradeSet: 'Superior Dragon', upgradeNote: 'Magic find. Good for mage.', upgradeCost: '500k–1M' },
-  UNSTABLE_DRAGON:     { tier: 3, stage: 'Mid', set: 'Unstable Dragon',    upgradeSet: 'Superior Dragon', upgradeNote: 'Crit damage. Popular for mid-game.', upgradeCost: '1M–2M' },
-  YOUNG_DRAGON:        { tier: 3, stage: 'Mid', set: 'Young Dragon',        upgradeSet: 'Superior Dragon', upgradeNote: 'Speed focus. Niche but fun.', upgradeCost: '300k' },
-  SUPERIOR_DRAGON:     { tier: 4, stage: 'Mid', set: 'Superior Dragon',     upgradeSet: 'Necron\'s Armor', upgradeNote: 'Best all-around dragon set. Huge stats.', upgradeCost: '8M–15M' },
+  PERFECT:             { tier: 3, stage: 'Mid', set: 'Perfect Armor',       upgradeSet: 'Strong Dragon', upgradeNote: 'Craft from Flawless Gemstones. Solid mid-game.', upgradeCost: '500k–2M' },
+  STRONG_DRAGON:       { tier: 3, stage: 'Mid', set: 'Strong Dragon',       upgradeSet: 'Shadow Assassin', upgradeNote: 'Current meta: Strong Dragon → Shadow Assassin after F5. Fierce reforge recommended.', upgradeCost: '1M–3M' },
+  WISE_DRAGON:         { tier: 3, stage: 'Mid', set: 'Wise Dragon',         upgradeSet: 'Shadow Assassin', upgradeNote: 'Magic find / Mage builds. Upgrade to SA after F5.', upgradeCost: '500k–1M' },
+  UNSTABLE_DRAGON:     { tier: 3, stage: 'Mid', set: 'Unstable Dragon',    upgradeSet: 'Shadow Assassin', upgradeNote: 'Crit damage. Upgrade to SA after F5.', upgradeCost: '1M–2M' },
+  YOUNG_DRAGON:        { tier: 3, stage: 'Mid', set: 'Young Dragon',        upgradeSet: 'Shadow Assassin', upgradeNote: 'Speed focus. Upgrade to SA after F5.', upgradeCost: '300k' },
+  SUPERIOR_DRAGON:     { tier: 3, stage: 'Mid', set: 'Superior Dragon',     upgradeSet: 'Shadow Assassin', upgradeNote: 'Strong all-around. Still upgrade to Shadow Assassin after F5.', upgradeCost: '8M–15M' },
+  SHADOW:              { tier: 4, stage: 'Mid', set: 'Shadow Assassin',     upgradeSet: "Necron's Armor", upgradeNote: "Current meta post-F5: Shadow Assassin is the best mid-game set. Upgrade to Necron's for F7+.", upgradeCost: '5M–15M' },
   CHEAP_TUXEDO:        { tier: 2, stage: 'Early', set: 'Cheap Tuxedo',      upgradeSet: 'Tuxedo', upgradeNote: 'Fishing set', upgradeCost: '50k' },
   TUXEDO:              { tier: 3, stage: 'Mid', set: 'Tuxedo',              upgradeSet: 'Diver', upgradeNote: 'Fishing armor', upgradeCost: '200k' },
   // ── Late ──
-  NECRON:              { tier: 5, stage: 'Late', set: 'Necron\'s Armor',    upgradeSet: 'Goldor / Storm / Maxor', upgradeNote: 'F7 drop. Best dungeon armor. Top-tier.', upgradeCost: '50M+' },
+  NECRON:              { tier: 5, stage: 'Late', set: "Necron's Armor",     upgradeSet: 'Kuudra Infernal', upgradeNote: 'F7 drop. Best dungeon armor (set bonus scales). For non-dungeon endgame, Kuudra Infernal has better raw stats.', upgradeCost: '50M+' },
   MAXOR:               { tier: 5, stage: 'Late', set: 'Maxor\'s Armor',     upgradeSet: 'Storm\'s Armor', upgradeNote: 'HP focus. F7 drop.', upgradeCost: '30M+' },
   STORM:               { tier: 5, stage: 'Late', set: 'Storm\'s Armor',     upgradeSet: 'Goldor / Necron', upgradeNote: 'Intelligence focus. F7.', upgradeCost: '30M+' },
   GOLDOR:              { tier: 5, stage: 'Late', set: 'Goldor\'s Armor',    upgradeSet: 'Necron\'s Armor', upgradeNote: 'Defense focus. F7.', upgradeCost: '30M+' },
@@ -55,6 +57,7 @@ const ARMOR_TIER_DB: Record<string, GearTierEntry> = {
   TERROR:              { tier: 6, stage: 'Endgame', set: 'Terror Armor',    upgradeSet: 'Molten / Fervor', upgradeNote: 'Kuudra T4. Excellent mage/berserk.', upgradeCost: '50M–200M' },
   FERVOR:              { tier: 6, stage: 'Endgame', set: 'Fervor Armor',    upgradeSet: 'Molten', upgradeNote: 'Kuudra T4. Great for archers.', upgradeCost: '50M+' },
   MOLTEN:              { tier: 7, stage: 'Endgame', set: 'Molten Armor',    upgradeNote: 'Kuudra T5. Best-in-slot for most builds.', upgradeCost: '200M+' },
+  INFERNAL_AURORA:     { tier: 7, stage: 'Endgame', set: 'Kuudra Infernal', upgradeNote: 'Endgame: better raw stats than Necron outside dungeons. Necron retains value for dungeon set bonuses.', upgradeCost: '500M+' },
   WARDEN:              { tier: 7, stage: 'Endgame', set: 'Warden Helmet',   upgradeNote: 'MM7 exclusive helmet.', upgradeCost: '100M+' },
 };
 
