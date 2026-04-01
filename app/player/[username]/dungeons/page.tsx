@@ -24,24 +24,27 @@ interface FloorInfo {
   notes: string;
 }
 
+// Entrance requirements (wiki): F1=Cat1, F2=Cat3, F3=Cat5, F4=Cat9, F5=Cat14, F6=Cat19, F7=Cat24
+// minCatLevel shown as "recommended" = entrance req + small buffer
 const FLOORS: FloorInfo[] = [
-  { floor: 1, name: 'Floor 1',  boss: 'Bonzo',        minCatLevel: 1,  keyGear: 'Bonzo Staff',           notes: 'Starter floor. Easy intro to dungeons.' },
-  { floor: 2, name: 'Floor 2',  boss: 'Scarf',        minCatLevel: 5,  keyGear: "Scarf's Studies (accessory)", notes: 'Learn puzzle mechanics. Scarf drops useful accessories.' },
-  { floor: 3, name: 'Floor 3',  boss: 'Professor',    minCatLevel: 10, keyGear: 'Giant Sword shards',    notes: 'Key early-game milestone. Professor is a skill check.' },
-  { floor: 4, name: 'Floor 4',  boss: 'Thorn',        minCatLevel: 15, keyGear: 'Spirit Sceptre',        notes: 'Thorn is easy. Spirit Sceptre is a great weapon.' },
-  { floor: 5, name: 'Floor 5',  boss: 'Livid',        minCatLevel: 20, keyGear: 'Livid Dagger',          notes: 'F5 loot is great. Livid requires coordination.' },
-  { floor: 6, name: 'Floor 6',  boss: 'Sadan',        minCatLevel: 24, keyGear: 'Giant Sword, Necron armor parts', notes: 'F6 unlocks Wither armor progression. Major milestone.' },
-  { floor: 7, name: 'Floor 7',  boss: 'Necron',       minCatLevel: 28, keyGear: 'Necron armor, Hyperion', notes: 'Endgame dungeon content. Best gear in the game.' },
+  { floor: 1, name: 'Floor 1',  boss: 'Bonzo',        minCatLevel: 1,  keyGear: 'Bonzo Staff',                    notes: 'Starter floor. Easy intro to dungeons. (Entrance: Cat 1)' },
+  { floor: 2, name: 'Floor 2',  boss: 'Scarf',        minCatLevel: 4,  keyGear: "Scarf's Studies (accessory)",    notes: 'Learn puzzle mechanics. Scarf drops useful accessories. (Entrance: Cat 3)' },
+  { floor: 3, name: 'Floor 3',  boss: 'Professor',    minCatLevel: 7,  keyGear: 'Giant Sword shards',             notes: 'Key early-game milestone. Professor is a skill check. (Entrance: Cat 5)' },
+  { floor: 4, name: 'Floor 4',  boss: 'Thorn',        minCatLevel: 11, keyGear: 'Spirit Sceptre',                notes: 'Thorn is easy. Spirit Sceptre is a great weapon. (Entrance: Cat 9)' },
+  { floor: 5, name: 'Floor 5',  boss: 'Livid',        minCatLevel: 16, keyGear: 'Livid Dagger, Shadow Assassin armor', notes: 'Shadow Assassin drops here — major gear milestone. (Entrance: Cat 14)' },
+  { floor: 6, name: 'Floor 6',  boss: 'Sadan',        minCatLevel: 21, keyGear: 'Giant Sword, Necron armor parts', notes: 'F6 unlocks Wither armor progression. (Entrance: Cat 19)' },
+  { floor: 7, name: 'Floor 7',  boss: 'Necron',       minCatLevel: 26, keyGear: 'Necron armor, Hyperion',         notes: 'Endgame dungeon content. Best gear in the game. (Entrance: Cat 24)' },
 ];
 
+// MM entrance requirements: MM1=Cat24, MM2=Cat26, MM3=Cat28, MM4=Cat30, MM5=Cat32, MM6=Cat34, MM7=Cat36
 const MASTER_FLOORS: FloorInfo[] = [
-  { floor: 1, name: 'MM Floor 1', boss: 'Bonzo (MM)',   minCatLevel: 30, keyGear: 'Crimson essence',  notes: 'Master Mode starts here. Requires F7 clear.' },
-  { floor: 2, name: 'MM Floor 2', boss: 'Scarf (MM)',   minCatLevel: 32, keyGear: 'Crimson armor',    notes: '' },
-  { floor: 3, name: 'MM Floor 3', boss: 'Professor (MM)', minCatLevel: 34, keyGear: '',               notes: '' },
-  { floor: 4, name: 'MM Floor 4', boss: 'Thorn (MM)',   minCatLevel: 36, keyGear: '',                 notes: '' },
-  { floor: 5, name: 'MM Floor 5', boss: 'Livid (MM)',   minCatLevel: 38, keyGear: 'Warden Helmet',    notes: '' },
-  { floor: 6, name: 'MM Floor 6', boss: 'Sadan (MM)',   minCatLevel: 40, keyGear: 'Plasma',           notes: '' },
-  { floor: 7, name: 'MM Floor 7', boss: 'Necron (MM)',  minCatLevel: 43, keyGear: 'Storm/Goldor/Necron armor', notes: 'Endgame. Best-in-slot armor.' },
+  { floor: 1, name: 'MM Floor 1', boss: 'Bonzo (MM)',     minCatLevel: 24, keyGear: 'Crimson Essence',               notes: 'Master Mode starts here. Requires F7 clear. (Entrance: Cat 24)' },
+  { floor: 2, name: 'MM Floor 2', boss: 'Scarf (MM)',     minCatLevel: 27, keyGear: 'Crimson armor',                 notes: '(Entrance: Cat 26)' },
+  { floor: 3, name: 'MM Floor 3', boss: 'Professor (MM)', minCatLevel: 29, keyGear: '',                              notes: '(Entrance: Cat 28)' },
+  { floor: 4, name: 'MM Floor 4', boss: 'Thorn (MM)',     minCatLevel: 31, keyGear: '',                              notes: '(Entrance: Cat 30)' },
+  { floor: 5, name: 'MM Floor 5', boss: 'Livid (MM)',     minCatLevel: 33, keyGear: 'Warden Helmet',                 notes: '(Entrance: Cat 32)' },
+  { floor: 6, name: 'MM Floor 6', boss: 'Sadan (MM)',     minCatLevel: 35, keyGear: 'Plasma',                        notes: '(Entrance: Cat 34)' },
+  { floor: 7, name: 'MM Floor 7', boss: 'Necron (MM)',    minCatLevel: 37, keyGear: 'Storm/Goldor/Necron armor',     notes: 'Endgame. Best-in-slot armor. (Entrance: Cat 36)' },
 ];
 
 const CLASS_NAMES: Record<string, { emoji: string; role: string }> = {
