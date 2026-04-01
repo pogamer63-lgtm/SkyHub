@@ -21,14 +21,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** FF per farming skill level */
 const FF_PER_SKILL_LEVEL = 4;
 
-/** FF per garden level */
-const FF_PER_GARDEN_LEVEL = 4;
+/** FF per garden plot unlocked (wiki: +3 FF per plot, max +72 with all 24 plots) */
+const FF_PER_PLOT = 3;
+const MAX_PLOTS = 24;
 
 /** Jacob's Farming Fortune perk: FF per perk level */
 const FF_PER_JACOB_FF_PERK = 4;
 
-/** Max Jacob FF perk level */
-const JACOB_FF_PERK_MAX = 4;
+/** Max Jacob FF perk level (Anita's Extra Farming Fortune: 15 tiers × +4 FF = +60 FF max, wiki-confirmed) */
+const JACOB_FF_PERK_MAX = 15;
 
 /**
  * Crop milestone FF contribution.
@@ -162,16 +163,16 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
     upgradeHint: skills.farming < 60 ? `Level ${skills.farming} → ${skills.farming + 1} gives +${FF_PER_SKILL_LEVEL} FF` : 'Maxed',
   });
 
-  // 2. Garden Level
-  const gardenFF = farming.gardenLevel * FF_PER_GARDEN_LEVEL;
+  // 2. Garden Plots (wiki: +3 FF per plot, 24 plots max = +72 FF total)
+  const plotFF = (farming.plots ?? 0) * FF_PER_PLOT;
   sources.push({
-    name: 'Garden Level',
+    name: 'Garden Plots',
     category: 'Garden',
-    current: gardenFF,
-    max: 15 * FF_PER_GARDEN_LEVEL,
-    notes: `Level ${farming.gardenLevel}/15`,
-    upgradeHint: farming.gardenLevel < 15 ? `Level up Garden for +${FF_PER_GARDEN_LEVEL} FF` : 'Maxed',
-    upgradeCost: 'Garden XP (farm crops)',
+    current: plotFF,
+    max: MAX_PLOTS * FF_PER_PLOT,
+    notes: `${farming.plots ?? 0}/${MAX_PLOTS} plots unlocked`,
+    upgradeHint: (farming.plots ?? 0) < MAX_PLOTS ? `Unlock more plots for +${FF_PER_PLOT} FF each` : 'All plots unlocked',
+    upgradeCost: 'Compost (farm → compost → plots)',
   });
 
   // 3. Jacob's Farming Fortune Perk
@@ -219,10 +220,15 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
     let petNote = '';
 
     if (petType === 'ELEPHANT') {
-      // Elephant gives FF based on farming level: +1 FF per 2 farming levels at base
-      petFF = Math.floor(activePet.level * 0.3); // rough estimate
+      // Elephant: +1.5 FF per level (wiki-confirmed), max +150 at level 100
+      petFF = Math.floor(activePet.level * 1.5);
       petNote = `Elephant Lv ${activePet.level} (${activePet.tier})`;
+    } else if (petType === 'MOOSHROOM_COW') {
+      // Mooshroom Cow: +1 FF per level + 10, max +110 at level 100 (wiki-confirmed)
+      petFF = activePet.level + 10;
+      petNote = `Mooshroom Cow Lv ${activePet.level} (${activePet.tier}) — Squash buff + coin mult`;
     } else if (petType === 'BEE') {
+      // Bee: +0.2 FF per level, max +20 at level 100 (wiki-confirmed)
       petFF = Math.floor(activePet.level * 0.2);
       petNote = `Bee Lv ${activePet.level} (${activePet.tier})`;
     } else if (petType === 'RABBIT') {
@@ -236,7 +242,7 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
       name: 'Active Pet',
       category: 'Pet',
       current: petFF,
-      max: petFF > 0 ? Math.floor(200 * 0.3) : 0,
+      max: petFF > 0 ? 150 : 0, // Elephant max +150 (wiki), Mooshroom max +110 shown separately
       notes: petNote,
       upgradeHint: petFF === 0 ? 'Equip an Elephant pet for farming fortune' : undefined,
     });
@@ -472,8 +478,8 @@ export default async function FarmingPage({ params, searchParams }: Props) {
           {profile.farming.gardenLevel < 15 && (
             <UpgradeRow
               title={`Garden Level: ${profile.farming.gardenLevel} → ${profile.farming.gardenLevel + 1}`}
-              gain={`+${FF_PER_GARDEN_LEVEL} FF`}
-              cost="Farm in Garden for Garden XP"
+              gain={`+${FF_PER_PLOT} FF per plot`}
+              cost="Farm in Garden for Garden XP + Compost for plots"
               priority="high"
             />
           )}
@@ -505,20 +511,20 @@ export default async function FarmingPage({ params, searchParams }: Props) {
         <div className="card p-5 mb-6">
           <h2 className="font-semibold text-white mb-1 flex items-center gap-2">
             🌿 Crop Upgrades
-            <span className="text-xs font-normal text-slate-500">+1 FF per level per crop</span>
+            <span className="text-xs font-normal text-slate-500">+5 FF per tier (up to +45 at Tier IX)</span>
           </h2>
-          <p className="text-xs text-slate-500 mb-4">Upgraded with Copper from Garden visitors. Max level 10 per crop.</p>
+          <p className="text-xs text-slate-500 mb-4">Upgraded with Copper from Garden visitors. Max Tier IX per crop — +45 FF total.</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {Object.entries(profile.farming.cropUpgrades ?? {}).sort(([, a], [, b]) => b - a).map(([crop, level]) => (
               <div key={crop} className="rounded-lg border border-white/5 p-3">
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-xs text-slate-300 font-medium capitalize">{crop.replace(/_/g, ' ')}</span>
-                  <span className="text-xs font-mono text-emerald-400">+{level} FF</span>
+                  <span className="text-xs font-mono text-emerald-400">+{level * 5} FF</span>
                 </div>
                 <div className="h-1 rounded-full bg-white/5">
-                  <div className="h-full rounded-full bg-emerald-500/70" style={{ width: `${(level / 10) * 100}%` }} />
+                  <div className="h-full rounded-full bg-emerald-500/70" style={{ width: `${(level / 9) * 100}%` }} />
                 </div>
-                <div className="text-xs text-slate-600 mt-0.5">Level {level}/10</div>
+                <div className="text-xs text-slate-600 mt-0.5">Tier {level}/9</div>
               </div>
             ))}
           </div>

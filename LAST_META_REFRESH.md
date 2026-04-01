@@ -184,6 +184,54 @@ Before modifying game-logic rules, check if a refresh is needed (> 30 days since
 
 ---
 
+## 2026-04-01 — Pass 4C: Wiki Direct Verification (wiki_content.md cross-check)
+
+**Researcher**: Claude Sonnet 4.6 (automated)
+**Trigger**: Pass 4A NotebookLM rate-limited (all 12 Q&A failed); used wiki_content.md + research_pass4_economy.md directly
+**Sources**: wiki_content.md (15 wiki pages fetched 2026-04-01), research_pass4_economy.md (NotebookLM Part B answers)
+**SkyBlock version**: ~0.24.2 (post-Foraging Update Part I June 2025)
+
+### New Topics Verified This Pass
+
+| Topic | Finding | Confidence |
+|-------|---------|-----------|
+| Skill bonus descriptions | Fishing gives HP (not FF); Mining gives Mining Fortune + Defense (not Speed/Fishing Fortune) | High |
+| Foraging bonuses | Foraging gives Foraging Fortune + Strength (not "Farming upgrade paths") | High |
+| Hunting skill max level | **Level 25** confirmed (wiki); Hunting is a Main Skill added in Foraging Update | High |
+| Crop upgrades | **9 tiers** (Tier I–IX), not 10; each tier = **+5 FF** per crop (not +1) | High |
+| Jacob FF perk | **15 tiers** max (not 4), +4 FF each = **+60 FF** total (wiki: "up to +60 with 15 tiers") | High |
+| Garden plots FF | **+3 FF per plot** (wiki), 24 plots max = +72 FF — distinct from garden levels | High |
+| Elephant pet FF | **+1.5 per level** = **+150 at level 100** (code had ×0.3 = only 30 at level 100) | High |
+| Mooshroom Cow FF | **+1 per level + 10** = **+110 at level 100** (now added to pet detection code) | High |
+| HOTM XP table | Verified: `[0, 3000, 12000, 37000, 97000, 197000, 347000, 557000, 847000, 1247000]` — matches wiki ✓ | High |
+| MP rarity values | Common 3, Uncommon 5, Rare 8, Epic 12, Legendary 16, Mythic 22 — matches code ✓ | High |
+| Kuudra tiers/rep | Basic 0 → Hot 1000 → Burning 3000 → Fiery 7000 → Infernal 12000 — matches code ✓ | High |
+
+### Critical Corrections Found This Pass
+
+| # | Correction | File Fixed |
+|---|-----------|-----------|
+| 1 | Fishing skill bonus wrong: "+4 Fishing Fortune per level" | `skills/page.tsx` — changed to "+4 HP per level" |
+| 2 | Mining skill bonus wrong: "+0.5 Fishing Fortune per level" | `skills/page.tsx` — changed to "+4 Mining Fortune per level, +1 Defense per level" |
+| 3 | Foraging skill bonus wrong: "Farming upgrade paths unlock" | `skills/page.tsx` — changed to "+4 Foraging Fortune per level, +Strength per level" |
+| 4 | Hunting skill missing from type + parser + skills page | `lib/types/player.ts`, `lib/hypixel/parser.ts`, `skills/page.tsx` — Hunting added |
+| 5 | Crop upgrades: max 10 levels, +1 FF/level | `farming/page.tsx` — corrected to max 9 tiers, +5 FF per tier (up to +45) |
+| 6 | Jacob FF perk max = 4 levels | `farming/page.tsx` — corrected to 15 levels (+60 FF max) |
+| 7 | Garden Level FF: used gardenLevel×4 (wrong concept) | `farming/page.tsx` — replaced with plot FF: plots×3 per wiki |
+| 8 | Elephant pet: ×0.3 multiplier (gives +30 at level 100) | `farming/page.tsx` — fixed to ×1.5 (+150 at level 100, wiki-confirmed) |
+| 9 | Mooshroom Cow missing from pet FF detection | `farming/page.tsx` — added: +1/level+10 = +110 max |
+
+### Status (Pass 4C)
+- [x] lib/types/player.ts: `hunting`, `hunting_xp` fields added to SkillLevels
+- [x] lib/hypixel/parser.ts: Hunting skill parsed from `SKILL_HUNTING` API key
+- [x] app/player/[username]/skills/page.tsx: 3 skill bonus descriptions corrected + Hunting added
+- [x] app/player/[username]/farming/page.tsx: Crop upgrades, Jacob perk, garden plots, pet FF all corrected
+- [x] LAST_META_REFRESH.md: Pass 4C entry added
+- [x] UPGRADE_RULES.json: farming_fortune section updated with correct FF sources, pet values, perk max levels
+- [ ] Committed
+
+---
+
 ## Next Scheduled Refresh
 
 **Recommended**: Within 30 days, or after any major SkyBlock patch announcement

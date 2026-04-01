@@ -79,6 +79,7 @@ function parseSkills(member: SkyBlockMember): SkillLevels {
     runecrafting: xpToLevel(get('runecrafting'), SKILL_XP_TABLE),
     social: xpToLevel(get('social') / 2, SKILL_XP_TABLE), // social XP is shared
     taming: xpToLevel(get('taming'), SKILL_XP_TABLE),
+    hunting: xpToLevel(get('hunting'), SKILL_XP_TABLE),
     farming_xp: get('farming'),
     mining_xp: get('mining'),
     combat_xp: get('combat'),
@@ -86,6 +87,7 @@ function parseSkills(member: SkyBlockMember): SkillLevels {
     fishing_xp: get('fishing'),
     enchanting_xp: get('enchanting'),
     alchemy_xp: get('alchemy'),
+    hunting_xp: get('hunting'),
   };
 
   const mainSkills = ['farming', 'mining', 'combat', 'foraging', 'fishing', 'enchanting', 'alchemy', 'taming'] as const;

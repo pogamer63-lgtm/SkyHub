@@ -40,6 +40,7 @@ export interface SkillLevels {
   runecrafting: number;
   social: number;
   taming: number;
+  hunting: number;
   farming_xp: number;
   mining_xp: number;
   combat_xp: number;
@@ -47,6 +48,7 @@ export interface SkillLevels {
   fishing_xp: number;
   enchanting_xp: number;
   alchemy_xp: number;
+  hunting_xp: number;
   average?: number;
 }
 

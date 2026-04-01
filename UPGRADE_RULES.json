@@ -336,10 +336,24 @@
 
   "farming_fortune": {
     "formula": "Every 100 FF = +100% drops. Leftover FF = % chance for one more drop multiplier. Example: 250 FF = 100% chance for 3x drops + 50% chance for 4x drops.",
+    "sources": {
+      "farming_skill": "+4 FF per level via Farmhand perk, max +240 at Farming 60 (requires Jacob's contest golds to raise cap 50→60)",
+      "anita_extra_ff_perk": "+4 FF per tier, 15 tiers max = +60 FF total (costs Jacob's Tickets)",
+      "garden_plots": "+3 FF per plot unlocked, 24 plots max = +72 FF total",
+      "crop_upgrades": "+5 FF per tier per crop type, Tier I–IX (9 tiers) = +45 FF max per crop. Bought with Copper. Requires Garden Level to unlock tiers.",
+      "pets": {
+        "elephant": "+1.5 FF per level, max +150 at level 100 (LEGENDARY)",
+        "mooshroom_cow": "+1 FF per level + 10, max +110 at level 100 (LEGENDARY). Has Squash buff + coin multiplier.",
+        "bee": "+0.2 FF per level, max +20 at level 100",
+        "rose_dragon": "+3 FF per Farming level"
+      }
+    },
     "key_enchantments": [
       { "name": "Dedication IV", "effect": "+0.5 per garden milestone for that crop (hoes/axes only)", "note": "Multiplied by garden crop milestone; max with tier 4" },
       { "name": "Pesterminator V", "effect": "+5 FF per armor piece = +20 total", "slots": "armor" },
-      { "name": "Green Thumb V", "effect": "+0.25 per unique visitor served per equipment piece; max +21/piece with 84 visitors = +84 total", "slots": "equipment" }
+      { "name": "Green Thumb V", "effect": "+0.25 per unique visitor served per equipment piece; max +21/piece with 84 visitors = +84 total", "slots": "equipment" },
+      { "name": "Harvesting VI", "effect": "+75 FF (hoes)", "slots": "hoe" },
+      { "name": "Sunder VI", "effect": "+75 FF (axes)", "slots": "axe" }
     ],
     "best_armor_for_ff": { "name": "Helianthus Armor", "ff_from_set": 150, "requirement": "Farming 50", "confidence": "high" },
     "farming_fortune_note": "Farming Fortune has no effect on Private Island — only works in Garden",

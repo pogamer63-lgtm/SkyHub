@@ -50,7 +50,7 @@ const SKILLS: SkillMeta[] = [
       { method: 'Hard Stone (Deep Caverns)', xpPerHour: '50k–100k', note: 'Early option, not efficient late', cost: 'free' },
       { method: 'Divan drill + gemstones', xpPerHour: '300k–600k', note: 'Endgame setup, very fast', cost: 'expensive' },
     ],
-    bonuses: ['+1 Speed per 2 levels', '+0.5 Fishing Fortune per level', 'Unlocks new areas at Lv 15/30/50'],
+    bonuses: ['+4 Mining Fortune per level', '+1 Defense per level', 'Reforging unlock at Mining 30'],
   },
   {
     key: 'combat', xpKey: 'combat_xp', name: 'Combat', emoji: '⚔️', maxLevel: MAX_SKILL_LEVEL,
@@ -69,7 +69,7 @@ const SKILLS: SkillMeta[] = [
       { method: 'Spruce auto-farm', xpPerHour: '150k–300k', note: 'AFK friendly', cost: 'cheap' },
       { method: 'Jungle tree (Flycatcher pet)', xpPerHour: '250k–400k', note: 'With Flycatcher pet bonus', cost: 'cheap' },
     ],
-    bonuses: ['+1 Speed per 2 levels', 'Farming upgrade paths unlock', '+Strength bonus at milestones'],
+    bonuses: ['+4 Foraging Fortune per level', '+Strength per level', '+Speed bonus at milestones'],
   },
   {
     key: 'fishing', xpKey: 'fishing_xp', name: 'Fishing', emoji: '🎣', maxLevel: MAX_MED_LEVEL,
@@ -79,7 +79,7 @@ const SKILLS: SkillMeta[] = [
       { method: 'Trophy fishing (Blazing Fortress)', xpPerHour: '100k–200k', note: 'Active play required', cost: 'cheap' },
       { method: 'Worm Fishing (Dungeon hub)', xpPerHour: '200k–400k', note: 'Best XP/hr, requires unlocks', cost: 'cheap' },
     ],
-    bonuses: ['+4 Fishing Fortune per level', 'Unlocks deeper sea areas', 'Sea creature spawns scale with level'],
+    bonuses: ['+4 HP per level', '+0.2% treasure chance per level', 'Sea creature spawns scale with level'],
   },
   {
     key: 'enchanting', xpKey: 'enchanting_xp', name: 'Enchanting', emoji: '✨', maxLevel: MAX_SKILL_LEVEL,
@@ -98,6 +98,15 @@ const SKILLS: SkillMeta[] = [
       { method: 'God Potion brewing', xpPerHour: '200k–400k', note: 'Expensive but good potion value', cost: 'expensive' },
     ],
     bonuses: ['+1 Intelligence per level', 'Longer potion durations', 'New potion recipes at higher levels'],
+  },
+  {
+    key: 'hunting', xpKey: 'hunting_xp', name: 'Hunting', emoji: '🪤', maxLevel: MAX_SPECIAL_LEVEL,
+    bestMethods: [
+      { method: 'Forest Hunting (Abyssal Lasso)', xpPerHour: '50k–150k', note: 'Primary Galatea method — Hunter Suppress attr speeds it up', cost: 'cheap' },
+      { method: 'Water Hunting (Fishing Net)', xpPerHour: '50k–100k', note: 'Some creatures instant-catch; Pull stat = damage', cost: 'cheap' },
+      { method: 'Combat Hunting (Huntaxe + Black Hole)', xpPerHour: '80k–200k', note: 'Capture mobs below 10% HP with Small Pocket Black Hole', cost: 'expensive' },
+    ],
+    bonuses: ['+1 Hunter Fortune per level', 'Mob charm chance increase', 'Unlocks Galatea gear (Huntaxes, Huntraps, Fig Armor)'],
   },
 ];
 
