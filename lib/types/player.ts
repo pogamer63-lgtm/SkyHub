@@ -30,6 +30,16 @@ export interface PlayerProfile {
   seniherWeight?: number;
   /** Trophy fish caught: FISH_NAME_bronze/silver/gold/diamond → count */
   trophyFish?: Record<string, number>;
+  /** Chocolate factory: rabbit names found → count (1 = found) */
+  chocolateRabbits?: Record<string, number>;
+  /** Chocolate per second (base rate before prestige) */
+  chocolatePerSecond?: number;
+  /** Total chocolate ever produced */
+  totalChocolate?: number;
+  /** Current chocolate available */
+  chocolate?: number;
+  /** Chocolate factory prestige level */
+  chocolatePrestige?: number;
 
   // Populated by enrichWithNBT — undefined until enriched
   armorItems?: ParsedItem[];

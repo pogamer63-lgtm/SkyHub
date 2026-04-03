@@ -5,6 +5,7 @@ import { parseInventoryNBT, ParsedItem, ItemRarity } from '@/lib/hypixel/nbt';
 import { SkyBlockProfile } from '@/lib/types/hypixel';
 import { formatCoins } from '@/lib/utils/format';
 import ItemIcon from '@/components/ItemIcon';
+import { GEMSTONE_TYPES, ESSENCE_COSTS } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -586,6 +587,29 @@ export default async function GearPage({ params, searchParams }: Props) {
               <div className="text-xs text-slate-400 mt-1">{r.use}</div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Gemstone Reference (from NEU-REPO) */}
+      <div className="card p-5">
+        <h2 className="text-lg font-semibold text-white mb-4">Gemstone Stats Reference</h2>
+        <p className="text-xs text-slate-500 mb-3">Stats at FLAWLESS quality by item rarity. Source: NEU-REPO gemstones.json</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {Object.entries(GEMSTONE_TYPES).map(([gemId, gemData]) => {
+            const flawless = gemData.stats?.['FLAWLESS'] ?? {};
+            const legVal = flawless['LEGENDARY'] ?? flawless['EPIC'] ?? null;
+            return (
+              <div key={gemId} className="rounded-lg border border-white/5 bg-slate-800/30 p-3">
+                <div className="text-sm font-medium text-white mb-1">
+                  {gemId.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
+                </div>
+                <div className="text-xs text-slate-400">{gemData.statName}</div>
+                {legVal !== null && (
+                  <div className="text-xs text-indigo-300 mt-0.5">+{legVal} at LEG (Flawless)</div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 

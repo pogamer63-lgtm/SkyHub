@@ -17,6 +17,16 @@ import bestiaryRaw from '@/data/neu/bestiary.json';
 import weightRaw from '@/data/neu/weight.json';
 import trophyFishRaw from '@/data/neu/trophyfish.json';
 import fairySoulsRaw from '@/data/neu/fairy_souls.json';
+import reforgestonesRaw from '@/data/neu/reforgestones.json';
+import enchantsRaw from '@/data/neu/enchants.json';
+import essencecostsRaw from '@/data/neu/essencecosts.json';
+import gemstonesRaw from '@/data/neu/gemstones.json';
+import gemstonecostsRaw from '@/data/neu/gemstonecosts.json';
+import attributeShardsRaw from '@/data/neu/attribute_shards.json';
+import sacksRaw from '@/data/neu/sacks.json';
+import hoppityRaw from '@/data/neu/hoppity.json';
+import miscRaw from '@/data/neu/misc.json';
+import bonusesRaw from '@/data/neu/bonuses.json';
 
 // ─── Garden ───────────────────────────────────────────────────────────────────
 
@@ -315,3 +325,157 @@ export const MUSEUM_MAX_VALUES: Record<string, number> = museumRaw.max_values as
  * Source: NEU-REPO museum.json → itemToStage
  */
 export const MUSEUM_ITEM_STAGE: Record<string, string> = museumRaw.itemToStage as Record<string, string>;
+
+// ─── Reforge Stones ───────────────────────────────────────────────────────────
+
+export interface ReforgeStone {
+  internalName: string;
+  reforgeName: string;
+  reforgeType: string;
+  itemTypes: string;
+  requiredRarities: string[];
+  reforgeCosts: Record<string, number>;
+  reforgeStats: Record<string, Record<string, number>>;
+  reforgeAbility?: Record<string, string>;
+}
+
+/** All reforge stones with per-rarity stats and costs. Source: NEU-REPO reforgestones.json */
+export const REFORGE_STONES: ReforgeStone[] =
+  Object.values(reforgestonesRaw) as unknown as ReforgeStone[];
+
+// ─── Enchants ─────────────────────────────────────────────────────────────────
+
+interface EnchantsData {
+  enchants: Record<string, string[]>;
+  enchant_pools: string[][];
+  enchants_xp_cost: Record<string, number[]>;
+  max_xp_table_levels: Record<string, number>;
+}
+
+const _enchantsData = enchantsRaw as unknown as EnchantsData;
+
+/** Enchantment IDs available per item type (SWORD, BOW, FISHING_ROD, etc.) */
+export const ENCHANTS_BY_ITEM_TYPE: Record<string, string[]> = _enchantsData.enchants ?? {};
+
+/** XP cost per enchant level (array indexed from 0 = level 1). */
+export const ENCHANT_XP_COSTS: Record<string, number[]> = _enchantsData.enchants_xp_cost ?? {};
+
+/** Mutually exclusive enchant pools (only one per pool can be applied). */
+export const ENCHANT_POOLS: string[][] = _enchantsData.enchant_pools ?? [];
+
+// ─── Essence Costs ────────────────────────────────────────────────────────────
+
+export interface EssenceCostEntry {
+  type: string;  // e.g. "Wither", "Gold", "Diamond"
+  [tier: string]: number | string | Record<string, string[]>;
+}
+
+/** Item ID → essence upgrade costs per tier. Source: NEU-REPO essencecosts.json */
+export const ESSENCE_COSTS: Record<string, EssenceCostEntry> =
+  essencecostsRaw as unknown as Record<string, EssenceCostEntry>;
+
+// ─── Gemstones ────────────────────────────────────────────────────────────────
+
+export interface GemstoneTypeInfo {
+  statName: string;
+  /** stats[quality][rarity] = stat value (e.g. stats['FLAWLESS']['LEGENDARY'] = 14) */
+  stats: Record<string, Record<string, number>>;
+}
+
+/** Gemstone type → stat info. Source: NEU-REPO gemstones.json */
+export const GEMSTONE_TYPES: Record<string, GemstoneTypeInfo> =
+  (gemstonesRaw as unknown as { gemstoneTypes: Record<string, GemstoneTypeInfo> }).gemstoneTypes;
+
+/** Item ID → gemstone slot costs. Source: NEU-REPO gemstonecosts.json */
+export const GEMSTONE_COSTS: Record<string, Record<string, string[]>> =
+  gemstonecostsRaw as unknown as Record<string, Record<string, string[]>>;
+
+// ─── Attribute Shards ─────────────────────────────────────────────────────────
+
+/** Shard XP costs per rarity to level up attributes. Source: NEU-REPO attribute_shards.json */
+export const ATTRIBUTE_LEVELING: Record<string, number[]> =
+  (attributeShardsRaw as unknown as { attribute_levelling: Record<string, number[]> }).attribute_levelling;
+
+/** Attribute IDs that cannot be consumed/transferred. */
+export const UNCONSUMABLE_ATTRIBUTES: string[] =
+  (attributeShardsRaw as unknown as { unconsumable_attributes: string[] }).unconsumable_attributes ?? [];
+
+/** All attribute shard IDs. */
+export const ATTRIBUTE_LIST: string[] =
+  (attributeShardsRaw as unknown as { attributes: string[] }).attributes ?? [];
+
+// ─── Sacks ────────────────────────────────────────────────────────────────────
+
+export interface SackInfo {
+  item: string;
+  contents: string[];
+}
+
+/** Sack name → sack info. Source: NEU-REPO sacks.json */
+export const SACKS_DATA: Record<string, SackInfo> =
+  (sacksRaw as unknown as { sacks: Record<string, SackInfo> }).sacks;
+
+// ─── Hoppity (Chocolate Factory) ──────────────────────────────────────────────
+
+export interface HoppityRarityData {
+  rabbits: string[];
+  chocolate: number;
+  multiplier: number;
+}
+
+export interface HoppityData {
+  rarities: Record<string, HoppityRarityData>;
+  special: Record<string, { chocolate: number; multiplier: number }>;
+  prestigeMultipliers: Record<string, number>;
+  talisman: Record<string, number>;
+}
+
+/** Full Hoppity Chocolate Factory rabbit data. Source: NEU-REPO hoppity.json */
+export const HOPPITY_DATA: HoppityData =
+  (hoppityRaw as unknown as { hoppity: HoppityData }).hoppity;
+
+// ─── Misc ─────────────────────────────────────────────────────────────────────
+
+interface MiscData {
+  talisman_upgrades: [string, string[]][];
+  slayer_cost: number[];
+  minionXp: Record<string, number>;
+  item_types: Record<string, string[]>;
+  base_stats: Record<string, number>;
+  area_names: Record<string, string>;
+}
+
+const _miscData = miscRaw as unknown as MiscData;
+
+/** Talisman upgrade paths: [fromId, toIds[]]. Source: NEU-REPO misc.json */
+export const TALISMAN_UPGRADES: Map<string, string[]> = new Map(
+  (_miscData.talisman_upgrades ?? []).map(([from, to]) => [from, to])
+);
+
+/** Coins required per slayer tier (index 0 = T1). Source: NEU-REPO misc.json */
+export const SLAYER_COST: number[] = _miscData.slayer_cost ?? [];
+
+/** Minion XP per tier. Source: NEU-REPO misc.json */
+export const MINION_XP: Record<string, number> = _miscData.minionXp ?? {};
+
+/** Area/zone display names. Source: NEU-REPO misc.json */
+export const AREA_NAMES: Record<string, string> = _miscData.area_names ?? {};
+
+// ─── Bonuses ──────────────────────────────────────────────────────────────────
+
+interface BonusesData {
+  pet_rewards: Record<string, Record<string, number>>;
+  pet_value: Record<string, Record<string, number>>;
+  bonus_stats: Record<string, Record<string, number>>;
+}
+
+const _bonusesData = bonusesRaw as unknown as BonusesData;
+
+/** Pet score milestones → bonus stats (Magic Find, etc.). Source: NEU-REPO bonuses.json */
+export const PET_SCORE_REWARDS: Record<string, Record<string, number>> = _bonusesData.pet_rewards ?? {};
+
+/** Pet score value milestones. */
+export const PET_SCORE_VALUE: Record<string, Record<string, number>> = _bonusesData.pet_value ?? {};
+
+/** Bonus stats per level milestone (e.g. fairy_souls, pet_score). */
+export const BONUS_STATS: Record<string, Record<string, number>> = _bonusesData.bonus_stats ?? {};

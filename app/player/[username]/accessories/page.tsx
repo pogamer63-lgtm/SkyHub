@@ -8,6 +8,7 @@ import { formatCoins } from '@/lib/utils/format';
 import { MP_PER_RARITY, ItemRarity } from '@/lib/hypixel/nbt';
 import { getUncuratedAccessories } from '@/lib/data/accessories-api';
 import ItemIcon from '@/components/ItemIcon';
+import { TALISMAN_UPGRADES } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -296,6 +297,40 @@ export default async function AccessoriesPage({ params, searchParams }: Props) {
           MP scales stats logarithmically — early MP gains (0→500) give far more power than late gains (1500→1963).
         </p>
       </div>
+
+      {/* Talisman upgrade paths from NEU-REPO */}
+      {hasNBT && (() => {
+        const upgradeable = [...ownedIds]
+          .filter(id => TALISMAN_UPGRADES.has(id))
+          .map(id => ({ from: id, to: TALISMAN_UPGRADES.get(id)! }))
+          .filter(({ to }) => to.some(t => !ownedIds.has(t)));
+        if (upgradeable.length === 0) return null;
+        return (
+          <div className="card p-5 mt-6">
+            <h2 className="text-base font-semibold text-white mb-3 flex items-center gap-2">
+              ⬆ Upgrade Paths
+              <span className="text-xs font-normal text-slate-500">from NEU-REPO — you own these, upgrades available</span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {upgradeable.map(({ from, to }) => (
+                <div key={from} className="rounded-lg border border-indigo-500/20 bg-indigo-500/5 px-3 py-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-400">{from.replace(/_/g, ' ')}</span>
+                    <span className="text-slate-600">→</span>
+                    <div className="flex gap-1 flex-wrap">
+                      {to.map(t => (
+                        <span key={t} className={`rounded px-1.5 py-0.5 ${ownedIds.has(t) ? 'text-emerald-400 bg-emerald-500/10' : 'text-indigo-300 bg-indigo-500/10'}`}>
+                          {t.replace(/_/g, ' ')}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* API-sourced additional accessories */}
       {apiExtras.length > 0 && (

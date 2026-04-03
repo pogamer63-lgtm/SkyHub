@@ -3,6 +3,7 @@ import { resolvePlayer, getSkyBlockProfiles, getSkyBlockMuseum } from '@/lib/hyp
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { PlayerProfile } from '@/lib/types/player';
 import ItemIcon from '@/components/ItemIcon';
+import { ESSENCE_COSTS } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -338,6 +339,39 @@ export default async function MuseumPage({ params, searchParams }: Props) {
       <p className="text-xs text-slate-600 text-center mt-2">
         Museum value is estimated from donated notable items. Milestone thresholds are approximate. Actual in-game value from API is authoritative.
       </p>
+
+      {/* Essence Costs for missing items */}
+      {(() => {
+        const missingWithEssence = categorized
+          .flatMap(c => c.missing)
+          .filter(item => ESSENCE_COSTS[item.id])
+          .map(item => ({ id: item.id, cost: ESSENCE_COSTS[item.id] }))
+          .slice(0, 12);
+        if (missingWithEssence.length === 0) return null;
+        return (
+          <div className="card p-5 mt-4">
+            <h2 className="font-semibold text-white mb-3 flex items-center gap-2">
+              ✨ Essence Upgrade Costs
+              <span className="text-xs font-normal text-slate-500">for missing museum items (from NEU-REPO)</span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {missingWithEssence.map(({ id, cost }) => (
+                <div key={id} className="rounded-lg border border-white/5 bg-slate-800/30 px-3 py-2 text-xs">
+                  <div className="text-slate-300 font-medium mb-1">{id.replace(/_/g, ' ')}</div>
+                  <div className="flex gap-3 text-slate-500">
+                    <span>Type: <span className="text-purple-300">{cost.type}</span></span>
+                    {([1,2,3,4,5] as const).map(tier => {
+                      const val = cost[String(tier)];
+                      if (!val || typeof val !== 'number') return null;
+                      return <span key={tier}>T{tier}: <span className="text-white">{val}</span></span>;
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

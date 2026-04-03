@@ -114,6 +114,16 @@ export interface SkyBlockMember {
   bestiary?: { kills?: Record<string, number> };
   fairy_soul?: { total_collected?: number; fairy_exchanges?: number };
   trophy_fish?: Record<string, number | string[]>;
+  hoppity?: {
+    chocolate?: number;
+    chocolate_since_prestige?: number;
+    total_chocolate?: number;
+    chocolate_level?: number;
+    employees?: Record<string, number>;
+    prestige?: { level?: number };
+    rabbits?: Record<string, number>;
+    [key: string]: unknown;
+  };
   rift?: {
     wither_cage?: { killed_eyes?: number[] };
     gallery?: { secured_trophies?: unknown[] };

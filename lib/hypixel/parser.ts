@@ -321,6 +321,28 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
   };
 }
 
+function parseChocolateFactory(member: SkyBlockMember): {
+  rabbits: Record<string, number>;
+  chocolate: number;
+  totalChocolate: number;
+  chocolatePerSecond: number;
+  prestige: number;
+} {
+  const h = member.hoppity ?? {};
+  const rabbits: Record<string, number> = {};
+  const raw = (h.rabbits ?? {}) as Record<string, unknown>;
+  for (const [k, v] of Object.entries(raw)) {
+    if (typeof v === 'number') rabbits[k] = v;
+  }
+  return {
+    rabbits,
+    chocolate: typeof h.chocolate === 'number' ? h.chocolate : 0,
+    totalChocolate: typeof h.total_chocolate === 'number' ? h.total_chocolate : 0,
+    chocolatePerSecond: 0, // computed later from rabbit count
+    prestige: typeof h.prestige === 'object' && h.prestige ? (h.prestige.level ?? 0) : 0,
+  };
+}
+
 function parseTrophyFish(member: SkyBlockMember): Record<string, number> {
   const raw = member.trophy_fish ?? {};
   const result: Record<string, number> = {};
@@ -432,6 +454,7 @@ export function parseProfile(
 
   const trophyFish = parseTrophyFish(member);
   const seniherWeight = computeSeniherWeight(skills, slayers, dungeons);
+  const cf = parseChocolateFactory(member);
 
   const partial: PlayerProfile = {
     uuid,
@@ -455,6 +478,10 @@ export function parseProfile(
     fairySouls: member.fairy_soul?.total_collected ?? 0,
     seniherWeight,
     trophyFish,
+    chocolateRabbits: cf.rabbits,
+    chocolate: cf.chocolate,
+    totalChocolate: cf.totalChocolate,
+    chocolatePrestige: cf.prestige,
   };
 
   return partial;
