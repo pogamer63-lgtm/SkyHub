@@ -21,9 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** FF per farming skill level */
 const FF_PER_SKILL_LEVEL = 4;
 
-/** FF per garden plot unlocked (wiki: +3 FF per plot, max +72 with all 24 plots) */
+/** FF per garden plot unlocked (+3 FF per plot, 25 plots max = +75 FF total) */
 const FF_PER_PLOT = 3;
-const MAX_PLOTS = 24;
+const MAX_PLOTS = 25;
 
 /** Jacob's Farming Fortune perk: FF per perk level */
 const FF_PER_JACOB_FF_PERK = 4;
@@ -36,31 +36,33 @@ const JACOB_FF_PERK_MAX = 15;
  * Each milestone level gives +1 FF.
  * Based on garden resources_collected (crops harvested in garden).
  */
+// API keys for garden.resources_collected (from SkyCrypt constants/misc.js):
+// CARROT_ITEM, POTATO_ITEM, MUSHROOM_COLLECTION, INK_SACK:3, NETHER_STALK — NOT the display names
 const CROP_MILESTONE_THRESHOLDS: Record<string, number[]> = {
-  WHEAT:         [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  CARROT:        [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  POTATO:        [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  PUMPKIN:       [40, 100, 200, 400, 1_000, 2_000, 4_000, 10_000, 20_000, 40_000, 100_000, 200_000, 400_000, 1_000_000, 2_000_000, 4_000_000, 10_000_000, 20_000_000],
-  MELON:         [250, 625, 1_250, 2_500, 6_250, 12_500, 25_000, 62_500, 125_000, 250_000, 625_000, 1_250_000, 2_500_000, 6_250_000, 12_500_000, 25_000_000, 62_500_000, 125_000_000],
-  SUGAR_CANE:    [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  CACTUS:        [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  MUSHROOM:      [90, 225, 450, 900, 2_250, 4_500, 9_000, 22_500, 45_000, 90_000, 225_000, 450_000, 900_000, 2_250_000, 4_500_000, 9_000_000, 22_500_000, 45_000_000],
-  COCOA_BEANS:   [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  NETHER_WART:   [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
+  WHEAT:                [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
+  CARROT_ITEM:          [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
+  POTATO_ITEM:          [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
+  PUMPKIN:              [40, 100, 200, 400, 1_000, 2_000, 4_000, 10_000, 20_000, 40_000, 100_000, 200_000, 400_000, 1_000_000, 2_000_000, 4_000_000, 10_000_000, 20_000_000],
+  MELON:                [250, 625, 1_250, 2_500, 6_250, 12_500, 25_000, 62_500, 125_000, 250_000, 625_000, 1_250_000, 2_500_000, 6_250_000, 12_500_000, 25_000_000, 62_500_000, 125_000_000],
+  SUGAR_CANE:           [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
+  CACTUS:               [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
+  MUSHROOM_COLLECTION:  [90, 225, 450, 900, 2_250, 4_500, 9_000, 22_500, 45_000, 90_000, 225_000, 450_000, 900_000, 2_250_000, 4_500_000, 9_000_000, 22_500_000, 45_000_000],
+  'INK_SACK:3':         [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
+  NETHER_STALK:         [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
 };
 
-/** Display names for garden resource keys */
+/** Display names for garden resource keys (API key → display name) */
 const CROP_NAMES: Record<string, string> = {
   WHEAT: 'Wheat',
-  CARROT: 'Carrot',
-  POTATO: 'Potato',
+  CARROT_ITEM: 'Carrot',
+  POTATO_ITEM: 'Potato',
   PUMPKIN: 'Pumpkin',
   MELON: 'Melon',
   SUGAR_CANE: 'Sugar Cane',
   CACTUS: 'Cactus',
-  MUSHROOM: 'Mushroom',
-  COCOA_BEANS: 'Cocoa Beans',
-  NETHER_WART: 'Nether Wart',
+  MUSHROOM_COLLECTION: 'Mushroom',
+  'INK_SACK:3': 'Cocoa Beans',
+  NETHER_STALK: 'Nether Wart',
 };
 
 function getCropMilestoneLevel(cropKey: string, collected: number): number {
@@ -163,7 +165,7 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
     upgradeHint: skills.farming < 60 ? `Level ${skills.farming} → ${skills.farming + 1} gives +${FF_PER_SKILL_LEVEL} FF` : 'Maxed',
   });
 
-  // 2. Garden Plots (wiki: +3 FF per plot, 24 plots max = +72 FF total)
+  // 2. Garden Plots (wiki: +3 FF per plot, 25 plots max = +75 FF total)
   const plotFF = (farming.plots ?? 0) * FF_PER_PLOT;
   sources.push({
     name: 'Garden Plots',
@@ -176,7 +178,9 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
   });
 
   // 3. Jacob's Farming Fortune Perk
-  const jacobFFLevel = farming.jacobPerks['farming_fortune'] ?? 0;
+  // API key is 'farming_level_cap' in jacobs_contest.perks (modern) — no direct FF perk key
+  // Anita's Extra Farming Fortune perk maps to farming_level_cap levels
+  const jacobFFLevel = farming.jacobPerks['farming_level_cap'] ?? farming.jacobPerks['farming_fortune'] ?? 0;
   const jacobFF = jacobFFLevel * FF_PER_JACOB_FF_PERK;
   sources.push({
     name: "Anita's FF Perk",
@@ -220,13 +224,14 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
     let petNote = '';
 
     if (petType === 'ELEPHANT') {
-      // Elephant: +1.5 FF per level (wiki-confirmed), max +150 at level 100
-      petFF = Math.floor(activePet.level * 1.5);
+      // Elephant: +1.8 FF per level, max +180 at level 100 (research-confirmed 2026)
+      petFF = Math.floor(activePet.level * 1.8);
       petNote = `Elephant Lv ${activePet.level} (${activePet.tier})`;
     } else if (petType === 'MOOSHROOM_COW') {
-      // Mooshroom Cow: +1 FF per level + 10, max +110 at level 100 (wiki-confirmed)
-      petFF = activePet.level + 10;
-      petNote = `Mooshroom Cow Lv ${activePet.level} (${activePet.tier}) — Squash buff + coin mult`;
+      // Mooshroom Cow: converts Strength → FF at 1 FF per 20 STR (wiki/research 2026)
+      // Cannot calculate exact value without knowing player's total Strength; show 0 with note
+      petFF = 0;
+      petNote = `Mooshroom Cow Lv ${activePet.level} (${activePet.tier}) — +1 FF per 20 Strength (stat-dependent, best overall pet)`;
     } else if (petType === 'BEE') {
       // Bee: +0.2 FF per level, max +20 at level 100 (wiki-confirmed)
       petFF = Math.floor(activePet.level * 0.2);
@@ -242,7 +247,7 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
       name: 'Active Pet',
       category: 'Pet',
       current: petFF,
-      max: petFF > 0 ? 150 : 0, // Elephant max +150 (wiki), Mooshroom max +110 shown separately
+      max: petFF > 0 ? 180 : 0, // Elephant max +180 (2026), Mooshroom scales with Strength
       notes: petNote,
       upgradeHint: petFF === 0 ? 'Equip an Elephant pet for farming fortune' : undefined,
     });
@@ -383,7 +388,8 @@ export default async function FarmingPage({ params, searchParams }: Props) {
   const knownFF = ffSources.filter(s => !s.needsNBT).reduce((sum, s) => sum + s.current, 0);
   const maxKnownFF = ffSources.filter(s => !s.needsNBT).reduce((sum, s) => sum + s.max, 0);
   const cropProgress = getCropProgress(profile.farming.gardenResources);
-  const jacobFF = profile.farming.jacobPerks['farming_fortune'] ?? 0;
+  // Jacob's Extra FF perk is 'farming_level_cap' in the API (not 'farming_fortune')
+  const jacobFF = profile.farming.jacobPerks['farming_level_cap'] ?? profile.farming.jacobPerks['farming_fortune'] ?? 0;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -544,10 +550,13 @@ export default async function FarmingPage({ params, searchParams }: Props) {
             { key: 'gold',     label: 'Gold',     color: 'text-yellow-300',  bg: 'border-yellow-500/20 bg-yellow-500/5' },
             { key: 'platinum', label: 'Platinum', color: 'text-cyan-300',    bg: 'border-cyan-500/20 bg-cyan-500/5' },
             { key: 'diamond',  label: 'Diamond',  color: 'text-blue-300',    bg: 'border-blue-500/20 bg-blue-500/5' },
-          ].filter(m => (profile.farming.jacobMedals[m.key] ?? 0) > 0 || m.key === 'gold').map(medal => (
+          ].filter(m => (profile.farming.jacobMedals[m.key] ?? 0) > 0 || (profile.farming.jacobMedalsEarned as Record<string, number>)[m.key] > 0 || m.key === 'gold').map(medal => (
             <div key={medal.key} className={`rounded-lg border p-3 text-center ${medal.bg}`}>
-              <div className={`text-xl font-bold ${medal.color}`}>{profile.farming.jacobMedals[medal.key] ?? 0}</div>
-              <div className="text-xs text-slate-500 mt-0.5">{medal.label} Medals</div>
+              <div className={`text-xl font-bold ${medal.color}`}>{(profile.farming.jacobMedalsEarned as Record<string, number>)[medal.key] ?? 0}</div>
+              <div className="text-xs text-slate-500 mt-0.5">{medal.label} Earned</div>
+              {(profile.farming.jacobMedals[medal.key] ?? 0) > 0 && (
+                <div className="text-xs text-slate-600">{profile.farming.jacobMedals[medal.key]} in bag</div>
+              )}
             </div>
           ))}
         </div>

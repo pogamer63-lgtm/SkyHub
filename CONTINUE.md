@@ -1,293 +1,88 @@
 # SkyHub — Continuation State
 
-**Last updated:** 2026-04-01
-**Session status:** Phase 6 Meta Audit Pass 4E COMPLETE — broad codebase audit, money/engine fixes (commit de49826)
+**Last updated:** 2026-04-03
+**Session status:** Pass 5 COMPLETE — API-Fixes + Research-Integration (NotebookLM 199 Fragen)
 
 ---
 
-## ✅ Completed (all phases)
+## Pass 5 — Was gemacht wurde
 
-### Phase 6 — Meta Audit Pass 4E (2026-04-01) — Broad codebase audit
+### Farming-Page (`app/player/[username]/farming/page.tsx`)
 
-- [x] **CRITICAL FIX**: `money/page.tsx` — 3 crop income estimates used `gardenLevel * 4` (gardenLevel gives no FF) → corrected to `plots * 3`
-- [x] **CRITICAL FIX**: `engine.ts` — crop upgrade recommendation said "+1 FF per tier, 10 tiers" → corrected to "+5 FF per tier, 9 tiers (max +45 FF, wiki-confirmed)"
-- [x] Verified correct: slayer XP breakpoints, tier counts, HOTM nodes, dungeon floor entry reqs, parser API keys, XP table
-- [x] Build: ✅ 0 TS errors (commit de49826)
+| Was | Vorher | Nachher |
+|-----|--------|---------|
+| Crop-API-Keys | CARROT, POTATO, MUSHROOM, COCOA_BEANS, NETHER_WART | CARROT_ITEM, POTATO_ITEM, MUSHROOM_COLLECTION, INK_SACK:3, NETHER_STALK |
+| Garden-Plots-Max | `MAX_PLOTS = 24` → +72 FF | `MAX_PLOTS = 25` → +75 FF |
+| Elephant-Pet-FF | +1.5/Level (max 150) | +1.8/Level (max 180) — research-bestätigt |
+| Mooshroom-Cow-FF | Falsche Formel `level + 10` | 0 + Hinweis "+1 FF per 20 Strength (stat-abhängig)" |
+| Jacob-FF-API-Key | `farming_fortune` | `farming_level_cap` (mit Fallback) |
+| Medaillen-UI | Zeigte Medaillen im Beutel | Zeigt `jacobMedalsEarned` + "in bag" als Unterzeile |
+| Plot-Kommentar | "24 plots max = +72 FF" | "25 plots max = +75 FF" |
 
-### Phase 6 — Meta Audit Pass 4D (2026-04-01) — fishing/page.tsx bug fixes
+### Parser (`lib/hypixel/parser.ts`)
 
-- [x] **CRITICAL FIX**: Fishing max level was 60 → corrected to 50 (`getFishingFortuneSources`)
-- [x] **CRITICAL FIX**: "each level gives +4 Fishing Fortune" → "+4 HP (not Fishing Fortune)" (Fishing gives HP, not FF)
-- [x] **CRITICAL FIX**: Removed false "Mining Skill (bonus)" entry claiming Mining gives Fishing Fortune (Mining gives Mining Fortune + Defense)
-- [x] `LAST_META_REFRESH.md`: Pass 4D entry added
-- [x] Build: ✅ committed (32d8ada)
+- Jacob `claimed_medal` direkt aus API gelesen (war vorher ignoriert)
+- Medaillen-Schwellenwerte: Diamond=2%, Platinum=5%, Gold=10%, Silver=30%, Bronze=60%
+- `platinum` zu `jacobMedalsEarned` hinzugefügt
 
-### Phase 6 — Meta Audit Pass 4C (2026-04-01) — Wiki Direct Verification
+### Bestiary (`app/player/[username]/bestiary/page.tsx`)
 
-- [x] **CRITICAL FIX**: Fishing skill bonus was "+4 Fishing Fortune/level" → corrected to "+4 HP/level" (wiki: HP bonus, not FF)
-- [x] **CRITICAL FIX**: Mining skill bonus was "+0.5 Fishing Fortune/level" → corrected to "+4 Mining Fortune/level, +1 Defense/level"
-- [x] **CRITICAL FIX**: Foraging skill bonus was "Farming upgrade paths unlock" → corrected to "+4 Foraging Fortune/level, +Strength/level"
-- [x] **NEW SKILL**: Hunting added to SkillLevels type, parser, and skills page (max level 25; Foraging Update June 2025)
-- [x] **CRITICAL FIX**: Crop upgrades max was 10 levels (+1 FF) → corrected to 9 tiers (+5 FF each = +45 FF max per crop)
-- [x] **CRITICAL FIX**: Jacob Extra FF perk max was 4 tiers → corrected to 15 tiers (+60 FF total)
-- [x] **CRITICAL FIX**: Garden FF source was gardenLevel×4 (wrong concept) → corrected to plots×3 (wiki: +3 FF per plot, 24 plots = +72 FF)
-- [x] **CRITICAL FIX**: Elephant pet multiplier was ×0.3 (gives 30 at level 100) → corrected to ×1.5 (+150 at level 100, wiki-confirmed)
-- [x] Mooshroom Cow pet added to farming FF detection: +1/level+10 = +110 FF max
-- [x] `UPGRADE_RULES.json` v1.4+: farming_fortune section updated with all sources
-- [x] `LAST_META_REFRESH.md`: Pass 4C entry added
-- [x] Build: ✅ PASSING (0 TS errors, commit c4c7556)
+- `getKills()`: Sucht jetzt Kleinbuchstaben-Keys (zombie_1, zombie_2…) statt Großbuchstaben
 
-### Phase 6 — Meta Audit Pass 4B/4C (2026-04-01) — Wiki Fetch + Code Fixes
-- [x] `wiki_content.md` (1233 lines): 15 wiki pages fetched via Fandom API (direct URLs blocked, API worked)
-  - Skills, SkyBlock Level, Slayer, Dungeons, HOTM, Magical Power, Pets, Garden, Farming Fortune, Hunting, Kuudra, Rift, Fairy Soul, Reforge, Minions + Money-Making
-- [x] **CRITICAL FIX**: Enderman unlock requires Wolf **Tier IV** (not T2 as coded) — `engine.ts` corrected
-- [x] **CRITICAL FIX**: Blaze now requires Enderman Level 3 prerequisite — `engine.ts` corrected + `dependsOn` added
-- [x] **CRITICAL FIX**: Dungeon floor entry requirements corrected across all 7 normal + 7 MM floors — `dungeons/page.tsx`
-  - Was: F2=Cat5, F3=Cat10, F4=Cat15, F5=Cat20, F6=Cat24, F7=Cat28
-  - Now: F2=Cat4, F3=Cat7, F4=Cat11, F5=Cat16, F6=Cat21, F7=Cat26 (wiki entrance reqs + buffer)
-- [x] Vampire Slayer rec: now requires SkyBlock Level 12 + explains Globulate Timecharm requirement
-- [x] `UPGRADE_RULES.json` v1.4: `dungeon_floor_entry_requirements`, `skills_max_levels` (all 13 skills with correct caps), `magical_power.formula` added
-- [x] `DISPUTED_FACTS.md`: 4 new resolved facts (Garden L15, Fairy Souls no stats, Rift access, no accessory reforges)
-- [x] `LAST_META_REFRESH.md`: Pass 4B entry added
-- [x] Build: ✅ PASSING (0 TS errors)
+### Mining (`app/player/[username]/mining/page.tsx`)
 
-### Phase 6 — Meta Audit Pass 4B (2026-04-01) — NotebookLM Economy & Content
-- [x] `research_pass4_economy.md` (610+ lines): Garden, Farming Fortune, Jacob's, Fishing, Foraging/Hunting, Kuudra, Rift, Money-making, Reforges, Enchants, Minions, Fairy Souls
-- [x] `lib/hypixel/parser.ts`: gardenTable corrected (max level 15, was 20)
-- [x] `lib/recommendations/engine.ts`: Fairy Souls description corrected (stat bonuses removed Sept 2022)
-- [x] `UPGRADE_RULES.json` v1.3: fairy_souls + rift_access sections; garden.levels.max = 15
+- HOTM-Node-Key: `quick_forge` → `forge_time`
 
-### Phase 6 — Meta Audit Pass 3 (2026-04-01) — NotebookLM
-- [x] NotebookLM notebook created; 10 wiki sources added and processed
-- [x] 9 targeted questions answered via NotebookLM chat
-- [x] `notebooklm_pass3_raw.md` — full Q&A saved
-- [x] **CRITICAL FIX**: Slayer unlock chain corrected — Spider before Wolf (was wrong in Pass 2)
-  - Correct chain: Zombie T2 → Spider → Spider T2 → Wolf → Wolf T2 → Enderman → Enderman T2 → Blaze
-  - `engine.ts`: Added `checkSlayerProgression` rules for Spider (L4) and Wolf (L4) with correct unlock dependencies
-- [x] **Bazaar unlock level RESOLVED**: Definitively Level 7 (wiki-confirmed, was disputed)
-- [x] **"Erythrocyte currency" CORRECTED**: Not confirmed in wiki; Vampire Slayer uses Motes + Coven Seals/Bloodbadges
-- [x] New findings documented: Hunting skill (max L25), Foraging Update scope, HOTM T10 nodes (7 nodes), Swappable Pet Items fee table, Greenhouse mutations (Sunflower/Moonflower/Wild Rose confirmed; Soggybud/Bambloom unconfirmed)
-- [x] `UPGRADE_RULES.json` v1.2: hunting_skill, foraging_update, greenhouse, hotm_t10_nodes, vampire_slayer_mechanics, money_making_2026 sections added; slayer order corrected; vampire currency corrected
-- [x] `DISPUTED_FACTS.md`: Bazaar level resolved, 5 new disputes (17–21), 8 new resolved facts
-- [x] `META_SOURCES.md`: 9 new sources (27–35), Pass 3 findings section
+### Recommendations Engine (`lib/recommendations/engine.ts`)
 
-### Phase 6 — Meta Audit Pass 2 (2026-04-01)
-- [x] Research Pass 2: 13 new sources, 8 new UPGRADE_RULES.json sections (v1.1)
-- [x] New engine rules: `checkDungeonClassMeta`, `checkEquipmentSlots`, `checkGlaciteTunnels` (20 modules total)
-- [x] Key findings: Vampire slayer (6th), Dungeon class transitions, Equipment slots meta, Glacite Tunnels requirements, Farming Fortune formula, money-making ladder, beginner mistakes
-- [x] NotebookLM-py confirmed installed; Google session expired — fallback direct web research used
+**5 neue Funktionen** (basierend auf NotebookLM-Research, 2026-Q1 Meta):
 
-### Phase 6 — Meta Audit Pass 1 (2026-04-01)
-- [x] Created `META_SOURCES.md` — 13 sources, findings by category
-- [x] Created `UPGRADE_RULES.json` — structured rules with confidence levels
-- [x] Created `DISPUTED_FACTS.md` — uncertain/disputed facts, resolved facts
-- [x] Created `LAST_META_REFRESH.md` — audit log with fix status
-- [x] `lib/recommendations/engine.ts`:
-  - Garden unlock: "SB Level 12" → "SkyBlock Level 5"
-  - Revenant armor: "Level 5 unlocks armor" → "Level 4 wear / Level 5 craft"
-  - MP thresholds: 200/400 replaced with 250/500/750 (logarithmic, no hard breakpoints)
-  - Dungeon path: added F5 milestone (Shadow Assassin unlock) before F6
-  - `checkMuseumValue`: removed MP-from-museum language; updated to Bits/Bank reward system
-- [x] `app/player/[username]/museum/page.tsx`: Complete rewrite for post-patch 0.20.7:
-  - Removed all Magical Power-from-museum logic and VALUE_TIERS
-  - Added 30-milestone system (+1% Bits Multiplier, +2% Bank Interest per milestone)
-  - Visual milestone grid (30 cells) + progress bar to next milestone
-  - Kept item donation tracking (weapons/armor/fishing/rarities still relevant)
+| Funktion | Trigger | Empfehlung |
+|----------|---------|-----------|
+| `checkBoosterCookie` | early/mid + ≥8M Coins | Cookie kaufen (~10M) — #1 mid-game Investment |
+| `checkGreenhousePlots` | Garden 12+ + ≥50M Coins | Greenhouse-Plots (~100M) — 40–50M/hr aktiv |
+| `checkPestFarming` | Garden 5+ + Farming 30+ | Pest Farming fokussieren — 80–90M/hr bei Finnegan |
+| `checkChocolateFactory` | SkyBlock Level 20+, Farming <10 | /cf täglich öffnen (free passive) |
+| `checkMinionOptimization` | mid/late/endgame | Compactors (~20k) auf alle Minions |
 
-### Phase 5 — Part 5 (2026-03-31)
-- [x] `lib/types/player.ts` + `lib/hypixel/parser.ts`: added `uniqueGolds`, `contestsParticipated` to FarmingProgress
-- [x] `farming/page.tsx`: Jacob's Farming panel (medals bronze→diamond, gold medal crop badges, contests count)
-- [x] `components/ItemIcon.tsx`: color fallback square for missing images (deterministic color + first-letter initial)
-- [x] `dungeons/page.tsx`: Fastest S+ Times grid + class XP shown per class
+**2 verbesserte Empfehlungen:**
 
-### Phase 5 — Part 4 (2026-03-31)
-- [x] `app/compare/page.tsx`: Champion Badges panel (8 categories, color-coded, A/B win tallies)
-- [x] `app/player/[username]/money/page.tsx`: Live Bazaar price status banner (timestamp, item count, animate-pulse)
-- [x] `components/ItemIcon.tsx`: skip 1-frame animated items (render as static)
-
-### Phase 5 — Part 3 (2026-03-31)
-- [x] `lib/recommendations/engine.ts` — 2 new rules (17 total): `checkGardenUpgrades`, `checkAccessoryPower`
-  - `checkGardenUpgrades`: Garden Lv 7 milestone + crop upgrade leveling recommendations
-  - `checkAccessoryPower`: critical blocker if MP ≥ 50 but no Power selected; low-prio if < 3 powers unlocked
-- [x] `app/player/[username]/farming/page.tsx` — Crop Upgrades panel (per-crop level, FF contribution, progress bar)
-- [x] 22 routes, 17 recommendation modules, 0 TS errors
-
-### Phase 5 — Part 2 (2026-03-31)
-- [x] `app/player/[username]/bestiary/page.tsx` — Bestiary Tracker (33 mob families, milestone progress bars, completion %)
-- [x] `app/player/[username]/page.tsx` — fixed profile switcher on cache hit (getSkyBlockProfiles now always called)
-- [x] 22 routes, 14 planner links per profile, 0 TS errors
-
-### Phase 5 — Part 1 (2026-03-31)
-- [x] `components/ItemIcon.tsx` — Smart item icon component with 3 modes:
-  - Helmet/armor: uses `*_model.png` pre-rendered 3D preview (60 helmets)
-  - Animated items: JS-driven sprite-sheet animation via `setInterval` + `backgroundPosition`
-  - Static icons: plain `<img>` with `pixelated` rendering and `onError` hide
-- [x] `lib/data/animated-items.ts` — Auto-generated from mcmeta files: 245 animated items with `{frames, frametime}` data
-- [x] Updated `gear/page.tsx`, `accessories/page.tsx`, `slayer/page.tsx` — all use `ItemIcon` instead of raw `<img>` + `getItemIconUrl`
-- [x] `app/player/[username]/museum/page.tsx` — Museum Tracker:
-  - Shows donated items from `profile.museum.members[uuid].items`
-  - Curated list of 35+ notable museum items with value estimates
-  - Museum value tier progress (Starter → Transcendent)
-  - Magical Power earned from museum milestones
-  - Categorized by Weapons / Armor / Fishing / Rarities
-  - Donated vs Missing layout with icons
-- [x] `lib/types/hypixel.ts` — Added `SkyBlockMuseum`, `MuseumMember`, `MuseumItem` types; `museum?` field on `SkyBlockProfile`
-- [x] `lib/recommendations/engine.ts` — 2 new rule modules (15 total):
-  - `checkPetItems`: detects active LEGENDARY/MYTHIC pets without held items
-  - `checkMuseumValue`: recommends donating to museum for mid-game+ players
-- [x] Navigation: added 🏛 Museum link to player profile page (13 planner links total)
-- [x] `app/page.tsx` — updated stats (21 routes, 13+ planners, 15 rules)
-- [x] Build: **PASSES** (21 routes, 0 TS errors)
-
-### Phase 4 (2026-03-31)
-- [x] Fishing, Admin, Collections, Pets, Skills, Networth pages
-- [x] Snapshot persistence, recommendations filter panel
-- [x] 13 recommendation modules → 15 now
-- [x] 3349 item PNGs in `public/items/` from FurfSky Reborn texture pack
-
-### Phase 3 — Part 2 (2026-03-31)
-- [x] Research page, Prisma 7 + PostgreSQL, DB snapshots, Compare page
-
-### Phase 3 — Part 1 (2026-03-30)
-- [x] Gear Analyzer, Money Making pages
-
-### Phase 2 (2026-03-30)
-- [x] NBT parser, enrichWithNBT, accessory optimizer, dungeon planner, slayer planner
-- [x] Farming Fortune planner, HOTM planner, Bazaar + AH price APIs, XP tables, pets panel, networth estimate
-
-### Phase 1 (2026-03-29)
-- [x] Full Next.js 16 app scaffold, all core infrastructure, player profile page
-- [x] Recommendation engine (MVP), skin provider, landing page, API routes
+- `slayer_enderman_3`: Hinweis dass Enderman 2026 schlechte coin/hr hat (Judgement Core gefallen), primär Blaze-Unlock-Zweck
+- `slayer_blaze_4`: Korrekt als profitabelster Slayer (50M+/hr) markiert, ROI/Urgency erhöht
 
 ---
 
-## 🔄 Currently In Progress
+## Offene Punkte / Nächste Schritte
 
-*No tasks in progress.*
+### Nicht lesbare API-Daten (NBT / zusätzliche Endpoints nötig)
+- Spieler-Strength-Wert (für Mooshroom-Cow-FF)
+- Crop-Shot-Chip-Level (Garden Chips API unbekannt)
+- Greenhouse-Mutation-Status
+- Aktiver Mayor (für Finnegan-Buff-Hinweis in Empfehlungen)
 
-### Known Remaining Issues
-- NotebookLM Part A (Pass 4A) still rate-limited — all 12 Q&A attempts fail consistently; data already covered by wiki_content.md + Pass 4B/4C direct research
-- YouTube money-making research pending — `scripts/notebooklm_youtube_money.py` ready; needs `notebooklm login` re-auth (auth expired)
-- Skill XP table: level 50 threshold may differ 200,000 XP from wiki (55,172,425 vs 55,372,425) — low priority, needs verification
+### Farming-Page — noch fehlende FF-Quellen (research-bestätigt, aber nicht in API)
+- **Crop Shot Chip**: +100 FF max (Garden Chip)
+- **Booster Cookie Buff**: +15–20 FF (temporär)
+- **God Potion**: +20 FF (temporär)
+- **Celestial Mason Jar Mixin**: +15 FF (Harvest Feast)
+- **Green Bandana** (Pet Item auf Elephant): +4 FF pro Garden-Level
+- **Yellow Bandana** (Pet Item): +30 FF
 
-### Deferred from Phase 6 Meta Audit (lower priority)
-- Museum milestone thresholds in `museum/page.tsx` are approximate — verify against live API once available
-
----
-
-## 📋 Next Steps — Phase 5 Part 2 (in priority order)
-
-### 1. ~~Better ItemIcon fallback~~ ✅ Color square fallback implemented
-
-### 2. ~~Garden / Jacob planner improvements~~ ✅ Jacob medals + contest stats added
-
-### 3. ~~Recommendation engine — 2 more rules~~ ✅ Done (now 17 modules)
-
-### 4. Profile snapshot persistence improvement
-- When loaded from snapshot cache, still fetch `allProfiles` for the profile switcher
-- Currently when cache hit occurs, `allProfiles = []` so switcher doesn't show
-
-### 5. ~~Better compare page~~ ✅ Champion badges done; export-as-image still open
-
-### 6. ~~Real-time price data on money page~~ ✅ Live price banner added
-
-### 7. Bestiary tracker
-- Parse `member.bestiary` data
-- Show mob kill counts, bestiary milestone progress
-- File: `app/player/[username]/bestiary/page.tsx`
+### Recommendation Engine — mögliche Erweiterungen
+- Erkennen ob Booster Cookie aktiv ist
+- Mayor-Finnegan-Erkennung für Pest/Pelt-Boost-Hinweise
+- Chocolate-Factory-Fortschritt prüfen
 
 ---
 
-## ⚠️ Known Issues / Limitations
+## Research-Quelle
 
-1. **Inventory NBT gating**: Armor, equipment, talisman bag only parse if player logged in recently.
-2. **AH price accuracy**: Only first 3 of ~60+ pages scanned. Ballpark only.
-3. **Prisma DB optional**: All DB features silently no-op if DATABASE_URL is not set.
-4. **Accessory API items**: Items from the Hypixel Items API shown without prices.
-5. **Pet level XP table**: Simplified XP table in pets/page.tsx.
-6. ~~**allProfiles on cache hit**~~: Fixed — getSkyBlockProfiles now called before cache check.
-7. **Networth estimate**: Very rough — no storage/enderchest/AH listings.
-8. **Museum value**: Estimated from curated notable items list only. Actual in-game value from API is more accurate when available.
-9. **Animated textures with 1 frame** (axe_of_the_shredded, etc.): ANIMATED_ITEMS map contains items with `frames: 1`. These animate with 1 frame = effectively static. Could filter them out.
+`research_youtube_money.md` — NotebookLM, 199 Fragen/Antworten, generiert 2026-04-01  
+Abgedeckt: Q1–Q50 gründlich gelesen, Q51–Q199 gescannt.  
+Gespeichert in Memory: `memory/project_skyblock_meta_2026.md`
 
 ---
 
-## 📁 Key Files
+## TypeScript-Status
 
-| File | Purpose |
-|------|---------|
-| `lib/hypixel/client.ts` | Hypixel + Mojang API client, in-memory TTL cache |
-| `lib/hypixel/parser.ts` | Raw API → PlayerProfile + `enrichWithNBT()` |
-| `lib/hypixel/nbt.ts` | NBT parser (base64 → ParsedItem[]) |
-| `lib/recommendations/engine.ts` | 15-module recommendation engine |
-| `lib/api/bazaar.ts` | Bazaar price fetcher (no key needed) |
-| `lib/api/auction.ts` | AH lowest BIN price fetcher |
-| `lib/data/accessories.ts` | ~55 curated accessories with upgrade chains |
-| `lib/data/accessories-api.ts` | Hypixel Items API fetcher (400+ accessories) |
-| `lib/data/animated-items.ts` | 245 animated item IDs with frame/frametime data (from .mcmeta) |
-| `lib/data/xp-tables.ts` | Skill + dungeon XP tables + helper functions |
-| `lib/db/client.ts` | Prisma 7 singleton (null if no DATABASE_URL) |
-| `lib/db/snapshots.ts` | Player snapshot + search history DB helpers |
-| `lib/types/player.ts` | All app-level TypeScript types |
-| `lib/types/hypixel.ts` | Raw Hypixel API types (incl. Museum types) |
-| `lib/utils/item-icons.ts` | Legacy `getItemIconUrl()` — prefer `ItemIcon` component now |
-| `components/ItemIcon.tsx` | Smart item icon: helmet model / animated sprite / static |
-| `app/page.tsx` | Landing page (21 routes stat, 16 feature cards) |
-| `app/compare/page.tsx` | Profile comparison page |
-| `app/research/page.tsx` | Data & Research transparency page |
-| `app/admin/page.tsx` | Admin dashboard |
-| `app/player/[username]/page.tsx` | Main profile page (13 planner nav links) |
-| `app/player/[username]/recommendations-panel.tsx` | Client recommendations with filter tabs |
-| `app/player/[username]/farming/page.tsx` | Farming Fortune Planner |
-| `app/player/[username]/mining/page.tsx` | HOTM / Mining Planner |
-| `app/player/[username]/dungeons/page.tsx` | Dungeon Planner |
-| `app/player/[username]/slayer/page.tsx` | Slayer Planner (6 bosses) |
-| `app/player/[username]/accessories/page.tsx` | Accessory Optimizer |
-| `app/player/[username]/gear/page.tsx` | Gear Analyzer |
-| `app/player/[username]/money/page.tsx` | Money Making Analyzer |
-| `app/player/[username]/fishing/page.tsx` | Fishing Planner |
-| `app/player/[username]/collections/page.tsx` | Collections & Minions |
-| `app/player/[username]/pets/page.tsx` | Pets Planner |
-| `app/player/[username]/skills/page.tsx` | Skills Planner |
-| `app/player/[username]/networth/page.tsx` | Networth Breakdown |
-| `app/player/[username]/museum/page.tsx` | Museum Tracker (NEW) |
-| `public/items/` | 3349+ PNGs from FurfSky Reborn (item icons + 60 _model.png helmets) |
-| `prisma/schema.prisma` | PlayerSnapshot + SearchHistory models |
-| `SPEC.md` | Full 26-section original specification |
-
----
-
-## 🔑 Environment
-
-- Node: v25.8.2 · npm: v11.11.1 · Next.js: 16.2.1 · Prisma: 7.6.0
-- Build: ✅ PASSING (21 routes, 0 TS errors)
-- PATH: `/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm`
-- DATABASE_URL: optional — set in `.env` to activate PostgreSQL features
-
----
-
-## Resume Command
-
-```bash
-export PATH="$PATH:/c/Program Files/nodejs:/c/Users/Leon/AppData/Roaming/npm"
-cd "E:/pyton/SkyHub"
-git status
-cat CONTINUE.md
-```
-
-## Database Setup (when ready)
-
-```bash
-# Set DATABASE_URL in .env first, then:
-npx prisma migrate dev --name init
-# App will then persist player snapshots and show recent searches on landing page
-```
-
-## Texture Pack Notes
-
-- Texture pack: `E:\pyton\SkyHub\temp\§aFurf§bSky §6Reborn §f§lFULL§r §71.21.8§8`
-- 3349 item PNGs copied to `public/items/` from `assets/cittofirmgenerated/textures/item/`
-- 245 animated items (`.mcmeta` files) — sprite sheets, vertical strips, 1 tick = 50ms
-- 60 `*_model.png` files — pre-rendered 3D helmet previews (larger than 16×16)
-- `ItemIcon` component handles all 3 cases automatically
-- Armor layer textures (64×32 UV maps) are in `assets/cittofirmgenerated/textures/models/armor/` — NOT yet implemented (would need Three.js for full 3D rendering)
+`npx tsc --noEmit` nach allen Änderungen: **0 Fehler**

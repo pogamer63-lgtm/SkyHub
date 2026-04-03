@@ -205,11 +205,11 @@ function checkSlayerProgression(profile: PlayerProfile, bazaar?: BazaarPrices): 
       id: 'slayer_enderman_3',
       category: 'slayer',
       title: 'Unlock Enderman Slayer Level 3',
-      description: `Enderman Slayer unlocks after Wolf T4. You're at Enderman ${enderman.level}. Level 3 unlocks Ender armor bonuses and Wither progression paths.`,
-      whyItMatters: 'Enderman slayer is the gateway to Wither armor progression. Requires Wolf Tier IV to unlock (not just T2 as some guides state).',
+      description: `Enderman Slayer unlocks after Wolf T4. You're at Enderman ${enderman.level}. Level 3 unlocks Ender armor bonuses and — critically — Enderman T3 is required to unlock Blaze Slayer.`,
+      whyItMatters: 'Note: Enderman slayer itself has poor coin/hr in 2026 (Judgement Core prices fell). Do it for progression — Enderman T3 unlocks Blaze Slayer, which earns 50M+/hr and opens Crimson Isle.',
       estimatedCost: 3_000_000,
       estimatedCostLabel: '~3M coins',
-      estimatedBenefit: 'Wither armor pathway, better combat damage, Enderman rewards',
+      estimatedBenefit: 'Unlocks Blaze Slayer (50M+/hr), Etherwarp Conduit at Eman 7, Wither progression path',
       roiScore: 78,
       urgencyScore: 72,
       progressionScore: 82,
@@ -558,14 +558,14 @@ function checkLateGameProgression(profile: PlayerProfile): Recommendation[] {
       id: 'slayer_blaze_4',
       category: 'slayer',
       title: 'Push Blaze Slayer to Level 4',
-      description: 'Blaze Slayer unlocks after Enderman T3. Level 4 unlocks Crimson Isle faction quests and Mage Outfit drops. The Mage Outfit alone sells for 15M+.',
-      whyItMatters: 'Blaze Slayer is the gateway to Crimson Isle content and Kuudra progression. Requires Enderman T3 to unlock. Mage Outfit drops are excellent income.',
+      description: 'Blaze Slayer unlocks after Enderman T3. Level 4 unlocks Crimson Isle faction quests, Kuudra access, and Blaze is currently the most profitable slayer at 50M+/hr.',
+      whyItMatters: 'Blaze Slayer is the top-earning slayer in 2026 (50M+/hr, ahead of Spider and Wolf). Drops Vertexes and Apexes for high-end gear. Also gates Kuudra (70M–90M/hr endgame). Worth prioritizing over Enderman for income.',
       estimatedCost: 5_000_000,
       estimatedCostLabel: '~5M in consumables',
-      estimatedBenefit: 'Crimson Isle access, Mage Outfit drops (5M+ each), faction reputation',
-      roiScore: 84,
-      urgencyScore: 76,
-      progressionScore: 86,
+      estimatedBenefit: 'Blaze T4: 50M+/hr; Crimson Isle + Kuudra access (70M–90M/hr endgame)',
+      roiScore: 90,
+      urgencyScore: 82,
+      progressionScore: 88,
       requirementScore: 50,
       confidenceScore: 82,
       sourceTags: ['slayer', 'blaze', 'crimson-isle', 'late-game'],
@@ -816,7 +816,7 @@ function checkGardenUpgrades(profile: PlayerProfile): Recommendation[] {
       id: 'garden_level_7',
       category: 'farming',
       title: `Reach Garden Level 7 (currently ${farming.gardenLevel})`,
-      description: 'Garden Level 7 unlocks all 24 crop plots and significant Farming Fortune bonuses from garden milestones.',
+      description: 'Garden Level 7 unlocks all 25 crop plots and significant Farming Fortune bonuses from garden milestones.',
       whyItMatters: 'Each garden level unlocks more plots and provides passive Farming Fortune. Level 7 is the inflection point for serious farming setups.',
       estimatedCost: 0,
       estimatedCostLabel: 'Farm crops to gain Garden XP',
@@ -1199,6 +1199,171 @@ function checkGlaciteTunnels(profile: PlayerProfile): Recommendation[] {
   return recs;
 }
 
+function checkBoosterCookie(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const total = (profile.purseCoins ?? 0) + (profile.bankCoins ?? 0);
+  const stage = determineGameStage(profile);
+
+  // Recommend cookie once player has 10M+ coins or is mid+ game — it's the #1 mid-game investment
+  if ((stage === 'early' || stage === 'mid') && total >= 8_000_000) {
+    recs.push({
+      id: 'booster_cookie',
+      category: 'money',
+      title: 'Buy a Booster Cookie (~10M)',
+      description: 'The Booster Cookie is the single best mid-game investment at ~10M coins. It lets you keep coins on death, access /bz and /ah remotely, and generates Bits for permanent upgrades.',
+      whyItMatters: 'Dying without a Cookie means losing all your purse coins. Remote /bz access saves hours of travel. Bits from Cookie convert into Booster Cookies, Farming Fortune books, and more — the ROI compounds over time.',
+      estimatedCost: 10_000_000,
+      estimatedCostLabel: '~10M from Bazaar',
+      estimatedBenefit: 'Coin-keep on death, remote AH/BZ, Bits income, faster progression',
+      roiScore: 95,
+      urgencyScore: 88,
+      progressionScore: 85,
+      requirementScore: 0,
+      confidenceScore: 97,
+      sourceTags: ['cookie', 'qol', 'bits', 'mid-game'],
+      dependsOn: [],
+      unlocks: ['coin_keep_death', 'remote_bazaar', 'bits_income'],
+      gameStage: ['early', 'mid'],
+      priority: total >= 10_000_000 ? 'high' : 'medium',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
+function checkGreenhousePlots(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const farming = profile.farming;
+  const total = (profile.purseCoins ?? 0) + (profile.bankCoins ?? 0);
+
+  // Greenhouse plots are unlocked with ~100M investment — best late-game passive income
+  // Require Garden Level 12+ (Greenhouse unlocks at GL 12) and significant coins saved
+  if (farming.gardenLevel >= 12 && total >= 50_000_000) {
+    recs.push({
+      id: 'greenhouse_plots',
+      category: 'farming',
+      title: 'Unlock Greenhouse Plots (100M investment)',
+      description: 'Unlocking all three Greenhouse plots costs ~100M in Ethereal Vines and compost. Active clearing with Ashreath mutations nets 40–50M/hr; semi-passive harvesting twice daily yields 30M/day.',
+      whyItMatters: 'The Greenhouse is the best consistent semi-passive income in the game. 100M invested can return 50M–100M per day through mutations — potentially paid off in under a week. Ashreath mutation is 20% better for raw NPC value.',
+      estimatedCost: 100_000_000,
+      estimatedCostLabel: '~100M (Ethereal Vines + compost)',
+      estimatedBenefit: '40M–50M/hr active, ~30M/day semi-passive; ROI in under 1 week',
+      roiScore: 92,
+      urgencyScore: 72,
+      progressionScore: 85,
+      requirementScore: 35,
+      confidenceScore: 88,
+      sourceTags: ['farming', 'greenhouse', 'passive-income', 'late-game'],
+      dependsOn: [],
+      unlocks: ['greenhouse_income', 'mutation_farming'],
+      gameStage: ['late', 'endgame'],
+      priority: 'high',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
+function checkPestFarming(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const farming = profile.farming;
+  const farmSkill = profile.skills.farming;
+
+  // Pest farming becomes available at Garden Level 5; practical with Farming 30+ and Fermento/Squash armor
+  if (farming.gardenLevel >= 5 && farmSkill >= 30) {
+    recs.push({
+      id: 'pest_farming',
+      category: 'farming',
+      title: 'Focus on Pest Farming',
+      description: 'With your Garden level, Pest Farming is one of the most profitable methods available. Standard rate: 40M–50M/hr. During Mayor Finnegan: 80M–90M/hr. Gear up Hedgehog/Mosquito pets for best results.',
+      whyItMatters: 'Pest Farming is the most consistent high-yield income for farming-focused players. Pests spawn while farming, dropping rare shards and items sold on Bazaar. Use Mosquito pet to maximize spawns, swap to Hedgehog to maximize kills.',
+      estimatedCost: 5_000_000,
+      estimatedCostLabel: '~5M (Hedgehog or Mosquito pet)',
+      estimatedBenefit: '40M–50M/hr normally; 80M–90M/hr during Finnegan',
+      roiScore: 87,
+      urgencyScore: 75,
+      progressionScore: 80,
+      requirementScore: 30,
+      confidenceScore: 90,
+      sourceTags: ['farming', 'pests', 'income', 'finnegan'],
+      dependsOn: [],
+      unlocks: ['pest_income', 'pest_shards'],
+      gameStage: ['mid', 'late', 'endgame'],
+      priority: 'high',
+      type: 'best_roi',
+    });
+  }
+
+  return recs;
+}
+
+function checkChocolateFactory(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const skyblockLevel = profile.skyblockLevel ?? 0;
+
+  // Chocolate Factory unlocks at SkyBlock Level 20 (/cf)
+  // Recommend to mid+ players who likely haven't been doing it
+  if (skyblockLevel >= 20 && profile.skills.farming < 10) {
+    recs.push({
+      id: 'chocolate_factory',
+      category: 'farming',
+      title: 'Start the Chocolate Factory (/cf)',
+      description: 'The Chocolate Factory (/cf) generates passive chocolate that scales with engagement. Check it daily to hire workers and collect progress. Scales into a major passive income stream.',
+      whyItMatters: 'Chocolate Factory is free passive income that scales with daily engagement. Early start compounds significantly over time — the earlier you start, the higher your total output.',
+      estimatedCost: 0,
+      estimatedCostLabel: 'Free — just open /cf daily',
+      estimatedBenefit: 'Passive chocolate income, pet upgrades, scaling passive rewards',
+      roiScore: 88,
+      urgencyScore: 70,
+      progressionScore: 65,
+      requirementScore: 0,
+      confidenceScore: 92,
+      sourceTags: ['chocolate-factory', 'passive', 'free'],
+      dependsOn: [],
+      unlocks: ['chocolate_income'],
+      gameStage: ['early', 'mid'],
+      priority: 'medium',
+      type: 'cheapest',
+    });
+  }
+
+  return recs;
+}
+
+function checkMinionOptimization(profile: PlayerProfile): Recommendation[] {
+  const recs: Recommendation[] = [];
+  const stage = determineGameStage(profile);
+
+  // Recommend Compactors for mid+ players — passive income multiplier
+  if (stage === 'mid' || stage === 'late' || stage === 'endgame') {
+    recs.push({
+      id: 'minion_compactors',
+      category: 'money',
+      title: 'Equip Compactors on All Minions',
+      description: 'Minions without Compactors fill up and stop generating while you\'re offline. Equip at least a basic Compactor (BZ ~20k each) on every minion to maximize passive income. Super Compactors are better for high-value minions.',
+      whyItMatters: 'A full minion generates nothing. Compactors are one of the highest ROI purchases per coin — cheap and permanent. Missing Compactors is one of the most common income leaks.',
+      estimatedCost: 20_000,
+      estimatedCostLabel: '~20k per Compactor (Bazaar)',
+      estimatedBenefit: 'Minions never stop running; passive income maximized',
+      roiScore: 88,
+      urgencyScore: 75,
+      progressionScore: 60,
+      requirementScore: 0,
+      confidenceScore: 95,
+      sourceTags: ['minions', 'passive', 'cheap', 'compactor'],
+      dependsOn: [],
+      unlocks: ['passive_minion_income'],
+      gameStage: ['mid', 'late', 'endgame'],
+      priority: 'medium',
+      type: 'cheapest',
+    });
+  }
+
+  return recs;
+}
+
 // ─── Main Engine ───────────────────────────────────────────────────────────────
 
 export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarPrices): RecommendationSet {
@@ -1226,6 +1391,11 @@ export function generateRecommendations(profile: PlayerProfile, bazaar?: BazaarP
     ...checkDungeonClassMeta(profile),
     ...checkEquipmentSlots(profile),
     ...checkGlaciteTunnels(profile),
+    ...checkBoosterCookie(profile),
+    ...checkGreenhousePlots(profile),
+    ...checkPestFarming(profile),
+    ...checkChocolateFactory(profile),
+    ...checkMinionOptimization(profile),
   ];
 
   // Filter by game stage relevance — include current stage + adjacent stages

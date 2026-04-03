@@ -144,20 +144,29 @@ export default async function BestiaryPage({ params, searchParams }: Props) {
 
   // ── Parse bestiary kills from raw member data ──────────────────────────────
   const member = rawProfile.members[profile.uuid ?? ''] ?? Object.values(rawProfile.members)[0];
-  const bestiaryRaw = (member?.bestiary ?? {}) as Record<string, unknown>;
+  // Modern API: member.bestiary.kills is an object mapping mob name → kill count
+  // Legacy format had kills_FAMILY keys at the bestiary root
+  const bestiaryKills = (member?.bestiary?.kills ?? {}) as Record<string, number>;
+  const bestiaryLegacy = (member?.bestiary ?? {}) as Record<string, unknown>;
 
-  // API structure: kills_FAMILY or kills_FAMILY_TIER — we sum all variants
   function getKills(familyId: string): number {
+    // API keys are lowercase with numeric suffixes: zombie_1, zombie_2, enderman_1, etc.
+    // familyId in our constants is UPPERCASE (e.g. ZOMBIE) — convert to lowercase for matching
+    const prefix = familyId.toLowerCase();
     let total = 0;
-    for (const [key, val] of Object.entries(bestiaryRaw)) {
-      if (key.startsWith(`kills_${familyId}`) && typeof val === 'number') {
-        total += val;
-      }
+    for (const [key, val] of Object.entries(bestiaryKills)) {
+      // Match exact prefix or prefix with _ separator (e.g. zombie_1, zombie_villager_1)
+      if (key === prefix || key.startsWith(prefix + '_')) total += val as number;
+    }
+    if (total > 0) return total;
+    // Legacy fallback: kills_FAMILY prefix at bestiary root
+    for (const [key, val] of Object.entries(bestiaryLegacy)) {
+      if (key.startsWith(`kills_${familyId}`) && typeof val === 'number') total += val;
     }
     return total;
   }
 
-  const hasData = Object.keys(bestiaryRaw).length > 0;
+  const hasData = Object.keys(bestiaryKills).length > 0 || Object.keys(bestiaryLegacy).length > 0;
 
   // Compute stats per family
   const families = BESTIARY_FAMILIES.map(f => {

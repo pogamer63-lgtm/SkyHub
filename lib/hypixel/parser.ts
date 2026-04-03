@@ -157,7 +157,13 @@ function parseDungeons(member: SkyBlockMember): DungeonProgress {
 }
 
 function parsePets(member: SkyBlockMember): ParsedPet[] {
-  const pets: Pet[] = member.pets?.pets ?? [];
+  // Modern API: pets_data.pets. Fallback: member.pets.pets (old format).
+  let pets: Pet[] = member.pets_data?.pets ?? [];
+  if (pets.length === 0) {
+    const fallback = member.pets;
+    if (Array.isArray(fallback)) pets = fallback as Pet[];
+    else if (fallback && !Array.isArray(fallback)) pets = (fallback as { pets?: Pet[] }).pets ?? [];
+  }
   return pets.map(p => ({
     type: p.type,
     tier: p.tier,
@@ -170,27 +176,56 @@ function parsePets(member: SkyBlockMember): ParsedPet[] {
   }));
 }
 
+// Cumulative XP thresholds to reach each pet level (1-indexed: index 0 = level 1).
+// Levels 1-100: standard table (all rarities).
+// Levels 101-200: extension for LEGENDARY / MYTHIC pets only.
+const PET_XP_TABLE_BASE = [
+  0, 100, 310, 700, 1300, 2200, 3500, 5200, 7400, 10100, 13500, 17600,
+  22500, 28200, 35700, 44000, 53500, 64000, 75500, 88000, 102000, 116500,
+  132000, 148500, 166000, 184500, 204000, 224500, 246000, 268500, 292000,
+  317500, 344000, 371500, 400000, 429500, 460000, 492500, 526500, 561500,
+  597500, 634500, 672500, 711500, 751500, 792500, 834500, 877500, 921500,
+  966500, 1012500, 1059500, 1107500, 1156500, 1206500, 1257500, 1309500,
+  1362500, 1416500, 1471500, 1527500, 1584500, 1642500, 1701500, 1761500,
+  1822500, 1884500, 1947500, 2011500, 2076500, 2142500, 2209500, 2277500,
+  2346500, 2416500, 2487500, 2559500, 2632500, 2706500, 2781500, 2857500,
+  2934500, 3012500, 3091500, 3171500, 3252500, 3334500, 3417500, 3501500,
+  3586500, 3672500, 3759500, 3847500, 3936500, 4026500, 4117500, 4209500,
+  4302500, 4396500,
+];
+
+// Per-level XP costs for L101→L200 (Legendary/Mythic only). Source: SkyCrypt/NEU.
+const PET_XP_PER_LEVEL_L101_200 = [
+  490000, 510000, 530000, 550000, 570000, 590000, 610000, 630000, 650000, 670000,
+  700000, 730000, 760000, 790000, 820000, 850000, 890000, 930000, 970000, 1020000,
+  1060000, 1110000, 1160000, 1210000, 1260000, 1310000, 1370000, 1430000, 1490000, 1560000,
+  1630000, 1700000, 1770000, 1840000, 1920000, 2010000, 2100000, 2200000, 2300000, 2400000,
+  2510000, 2630000, 2760000, 2900000, 3050000, 3200000, 3360000, 3530000, 3710000, 3900000,
+  4100000, 4310000, 4530000, 4770000, 5020000, 5290000, 5570000, 5870000, 6190000, 6530000,
+  6890000, 7270000, 7670000, 8100000, 8550000, 9030000, 9540000, 10080000, 10650000, 11260000,
+  11910000, 12590000, 13310000, 14070000, 14870000, 15720000, 16620000, 17570000, 18570000, 19630000,
+  20750000, 21940000, 23200000, 24530000, 25940000, 27440000, 29030000, 30720000, 32510000, 34420000,
+  36450000, 38600000, 40890000, 43310000, 45880000, 48600000, 51490000, 54560000, 57820000, 61280000,
+];
+
+// Build cumulative tables
+const PET_XP_LEGENDARY: number[] = [...PET_XP_TABLE_BASE];
+{
+  let cum = PET_XP_TABLE_BASE[PET_XP_TABLE_BASE.length - 1];
+  for (const cost of PET_XP_PER_LEVEL_L101_200) {
+    cum += cost;
+    PET_XP_LEGENDARY.push(cum);
+  }
+}
+
 function calculatePetLevel(xp: number, tier: string): number {
-  // Simplified pet level calculation
-  const maxLevel = tier === 'LEGENDARY' || tier === 'MYTHIC' ? 200 : 100;
-  const xpTable = [
-    0, 100, 310, 700, 1300, 2200, 3500, 5200, 7400, 10100, 13500, 17600,
-    22500, 28200, 35700, 44000, 53500, 64000, 75500, 88000, 102000, 116500,
-    132000, 148500, 166000, 184500, 204000, 224500, 246000, 268500, 292000,
-    317500, 344000, 371500, 400000, 429500, 460000, 492500, 526500, 561500,
-    597500, 634500, 672500, 711500, 751500, 792500, 834500, 877500, 921500,
-    966500, 1012500, 1059500, 1107500, 1156500, 1206500, 1257500, 1309500,
-    1362500, 1416500, 1471500, 1527500, 1584500, 1642500, 1701500, 1761500,
-    1822500, 1884500, 1947500, 2011500, 2076500, 2142500, 2209500, 2277500,
-    2346500, 2416500, 2487500, 2559500, 2632500, 2706500, 2781500, 2857500,
-    2934500, 3012500, 3091500, 3171500, 3252500, 3334500, 3417500, 3501500,
-    3586500, 3672500, 3759500, 3847500, 3936500, 4026500, 4117500, 4209500,
-    4302500, 4396500,
-  ];
+  const isLegendary = tier === 'LEGENDARY' || tier === 'MYTHIC';
+  const table = isLegendary ? PET_XP_LEGENDARY : PET_XP_TABLE_BASE;
+  const maxLevel = isLegendary ? 200 : 100;
 
   let level = 1;
-  for (let i = 0; i < Math.min(xpTable.length, maxLevel); i++) {
-    if (xp >= xpTable[i]) level = i + 1;
+  for (let i = 0; i < table.length; i++) {
+    if (xp >= table[i]) level = i + 1;
     else break;
   }
   return Math.min(level, maxLevel);
@@ -199,30 +234,41 @@ function calculatePetLevel(xp: number, tier: string): number {
 function parseMining(member: SkyBlockMember): MiningProgress {
   const mc = member.mining_core ?? {};
   const exp = mc.experience ?? 0;
-  // HOTM level from XP
   const hotmTable = [0, 3000, 12000, 37000, 97000, 197000, 347000, 557000, 847000, 1247000];
-  // 1-indexed: hotmLevel 1 = T1, 10 = T10 (so "< 7" check = below T7, etc.)
   let hotmLevel = 0;
   for (let i = 0; i < hotmTable.length; i++) {
     if (exp >= hotmTable[i]) hotmLevel = i + 1;
     else break;
   }
 
+  // Powder fields: in newer API they live at the member level (member.powder_mithril),
+  // older API versions put them inside mining_core. Support both.
+  const powderMithril = member.powder_mithril ?? mc.powder_mithril ?? 0;
+  const powderMithrilTotal = ((member.powder_mithril ?? 0) + (member.powder_spent_mithril ?? 0)) || (mc.powder_mithril_total ?? 0);
+  const powderGemstone = member.powder_gemstone ?? mc.powder_gemstone ?? 0;
+  const powderGemstoneTotal = ((member.powder_gemstone ?? 0) + (member.powder_spent_gemstone ?? 0)) || (mc.powder_gemstone_total ?? 0);
+  const powderGlacite = member.powder_glacite ?? mc.powder_glacite ?? 0;
+  const powderGlaciteTotal = ((member.powder_glacite ?? 0) + (member.powder_spent_glacite ?? 0)) || (mc.powder_glacite_total ?? 0);
+
   return {
     hotmLevel,
     hotmNodes: mc.nodes ?? {},
-    powderMithril: mc.powder_mithril ?? 0,
-    powderMithrilTotal: mc.powder_mithril_total ?? 0,
-    powderGemstone: mc.powder_gemstone ?? 0,
-    powderGemstoneTotal: mc.powder_gemstone_total ?? 0,
-    powderGlacite: mc.powder_glacite ?? 0,
+    hotmTokensAvailable: mc.tokens ?? 0,
+    hotmTokensSpent: mc.tokens_spent ?? 0,
+    powderMithril,
+    powderMithrilTotal,
+    powderGemstone,
+    powderGemstoneTotal,
+    powderGlacite,
+    powderGlaciteTotal,
     xp: exp,
   };
 }
 
 function parseFarming(member: SkyBlockMember): FarmingProgress {
   const garden = member.garden_player_data ?? {};
-  const jacob = member.jacobs_farming ?? {};
+  // API uses jacobs_contest in v2; jacobs_farming is legacy fallback
+  const jacob = member.jacobs_contest ?? member.jacobs_farming ?? {};
 
   // Garden level from XP — max level is 15 (wiki-confirmed, updated April 2026)
   const gardenXP = garden.garden_experience ?? 0;
@@ -236,16 +282,40 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
   const contests = jacob.contests ?? {};
   const contestsParticipated = Object.keys(contests).length;
 
+  // Count medals earned per type from contest data.
+  // Use claimed_medal if present; otherwise compute from position/participants.
+  // SkyCrypt thresholds: diamond=2%, platinum=5%, gold=10%, silver=30%, bronze=60%
+  const jacobMedalsEarned = { bronze: 0, silver: 0, gold: 0, platinum: 0, diamond: 0 };
+  for (const contest of Object.values(contests)) {
+    const c = contest as { claimed_position?: number; claimed_participants?: number; claimed_rewards?: boolean; claimed_medal?: string };
+    if (!c.claimed_rewards) continue;
+    if (c.claimed_medal) {
+      const m = c.claimed_medal.toLowerCase() as keyof typeof jacobMedalsEarned;
+      if (m in jacobMedalsEarned) jacobMedalsEarned[m]++;
+      continue;
+    }
+    if (c.claimed_position == null || c.claimed_participants == null) continue;
+    const pos = c.claimed_position;
+    const par = c.claimed_participants;
+    if (pos <= Math.floor(par * 0.02))      jacobMedalsEarned.diamond++;
+    else if (pos <= Math.floor(par * 0.05)) jacobMedalsEarned.platinum++;
+    else if (pos <= Math.floor(par * 0.10)) jacobMedalsEarned.gold++;
+    else if (pos <= Math.floor(par * 0.30)) jacobMedalsEarned.silver++;
+    else if (pos <= Math.floor(par * 0.60)) jacobMedalsEarned.bronze++;
+  }
+
   return {
     gardenLevel,
     plots: garden.plots_unlocked ?? 0,
     cropUpgrades: garden.crop_upgrade_levels ?? {},
     jacobMedals: jacob.medals_inv ?? {},
+    jacobMedalsEarned,
     jacobPerks: jacob.perks ?? {},
     gardenResources: garden.resources_collected ?? {},
     copper: garden.copper ?? 0,
     farmingFortune: 0,
-    uniqueGolds: jacob.unique_golds2 ?? [],
+    // unique_brackets is the modern format; unique_golds2 is legacy
+    uniqueGolds: jacob.unique_brackets?.gold ?? jacob.unique_golds2 ?? [],
     contestsParticipated,
   };
 }
@@ -319,7 +389,7 @@ export function parseProfile(
     farming,
     collections: member.collection ?? {},
     magicalPower: accessories.magicalPower,
-    fairySouls: member.nether_island_player_data?.fairy_soul_collected ?? 0,
+    fairySouls: member.fairy_soul?.total_collected ?? 0,
   };
 
   return partial;
@@ -348,10 +418,16 @@ export function selectBestProfile(
   return parseProfile(best, uuid, username);
 }
 
+/** Parse a single optional NBT slot, returning [] on missing/error. */
+async function safeParseNBT(data: string | undefined): Promise<ReturnType<typeof parseInventoryNBT>> {
+  if (!data) return [];
+  try { return await parseInventoryNBT(data); } catch { return []; }
+}
+
 /**
  * Asynchronously enriches a PlayerProfile with NBT-parsed inventory data.
- * Call this after selectBestProfile / parseProfile in server contexts.
- * Falls back gracefully if NBT parsing fails.
+ * Parses: talisman bag, armor, equipment, main inventory, wardrobe, ender chest, backpacks.
+ * Falls back gracefully on any parsing failure.
  */
 export async function enrichWithNBT(
   profile: PlayerProfile,
@@ -359,31 +435,50 @@ export async function enrichWithNBT(
   uuid: string,
 ): Promise<PlayerProfile> {
   const member = rawProfile.members[uuid] ?? {};
-  const talismans = member.inventory?.bag_contents?.talisman_bag?.data;
+  const inv = member.inventory;
+  if (!inv) return profile;
 
-  if (!talismans) return profile;
+  // Parse all slots in parallel
+  const [
+    accessories,
+    armorItems,
+    equipmentItems,
+    inventoryItems,
+    wardrobeItems,
+    enderChestItems,
+    ...backpackArrays
+  ] = await Promise.all([
+    safeParseNBT(inv.bag_contents?.talisman_bag?.data),
+    safeParseNBT(inv.armor?.data),
+    safeParseNBT(inv.equipment_contents?.data),
+    safeParseNBT(inv.inv_contents?.data),
+    safeParseNBT(inv.wardrobe_contents?.data),
+    safeParseNBT(inv.ender_chest_contents?.data),
+    // Each backpack slot is a separate NBT blob
+    ...Object.values(inv.backpack_contents ?? {}).map(bp => safeParseNBT(bp?.data)),
+  ]);
 
-  try {
-    const items = await parseInventoryNBT(talismans);
-    const accessories = items.filter(i => i.id && !i.id.startsWith('NONE'));
+  const filteredAccessories = accessories.filter(i => i.id && !i.id.startsWith('NONE'));
+  const backpackItems = (backpackArrays as Awaited<ReturnType<typeof parseInventoryNBT>>[]).flat();
 
-    // Calculate real MP from rarity
-    const realMP = accessories.reduce((sum, item) => sum + (MP_PER_RARITY[item.rarity] ?? 3), 0);
+  // Magical Power from talisman bag rarity
+  const realMP = filteredAccessories.reduce((sum, item) => sum + (MP_PER_RARITY[item.rarity] ?? 3), 0);
+  const ownedIds = new Set(filteredAccessories.map(i => i.id));
 
-    // Group by rarity for missing calculations
-    const ids = new Set(accessories.map(i => i.id));
-
-    return {
-      ...profile,
-      accessories: {
-        ...profile.accessories,
-        count: accessories.length,
-        magicalPower: Math.max(profile.accessories.magicalPower, realMP),
-        ownedIds: ids,
-      },
-      magicalPower: Math.max(profile.magicalPower, realMP),
-    };
-  } catch {
-    return profile;
-  }
+  return {
+    ...profile,
+    accessories: {
+      ...profile.accessories,
+      count: filteredAccessories.length,
+      magicalPower: Math.max(profile.accessories.magicalPower, realMP),
+      ownedIds,
+    },
+    magicalPower: Math.max(profile.magicalPower, realMP),
+    armorItems:    armorItems.filter(i => !!i.id),
+    equipmentItems:equipmentItems.filter(i => !!i.id),
+    inventoryItems:inventoryItems.filter(i => !!i.id),
+    wardrobeItems: wardrobeItems.filter(i => !!i.id),
+    enderChestItems:enderChestItems.filter(i => !!i.id),
+    backpackItems: backpackItems.filter(i => !!i.id),
+  };
 }

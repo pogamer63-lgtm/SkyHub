@@ -1,4 +1,5 @@
 // Normalized player types used throughout the app
+import type { ParsedItem } from '@/lib/hypixel/nbt';
 
 export interface PlayerProfile {
   uuid: string;
@@ -26,7 +27,17 @@ export interface PlayerProfile {
   magicalPower: number;
   networth?: number;
   fairySouls: number;
+
+  // Populated by enrichWithNBT — undefined until enriched
+  armorItems?: ParsedItem[];
+  equipmentItems?: ParsedItem[];
+  inventoryItems?: ParsedItem[];
+  enderChestItems?: ParsedItem[];
+  wardrobeItems?: ParsedItem[];
+  backpackItems?: ParsedItem[];
 }
+
+export type { ParsedItem };
 
 export interface SkillLevels {
   farming: number;
@@ -110,11 +121,14 @@ export interface AccessoryInfo {
 export interface MiningProgress {
   hotmLevel: number;
   hotmNodes: Record<string, number>;
+  hotmTokensAvailable: number;
+  hotmTokensSpent: number;
   powderMithril: number;
   powderMithrilTotal: number;
   powderGemstone: number;
   powderGemstoneTotal: number;
   powderGlacite: number;
+  powderGlaciteTotal: number;
   xp: number;
 }
 
@@ -122,8 +136,12 @@ export interface FarmingProgress {
   gardenLevel: number;
   plots: number;
   cropUpgrades: Record<string, number>;
+  /** medals_inv: current held medals (bronze/silver/gold) */
   jacobMedals: Record<string, number>;
+  /** Total medals earned across all contests (bronze/silver/gold/platinum/diamond) */
+  jacobMedalsEarned: { bronze: number; silver: number; gold: number; platinum: number; diamond: number };
   jacobPerks: Record<string, number>;
+  /** Crop resources collected (used for milestone calculation) */
   gardenResources: Record<string, number>;
   copper: number;
   farmingFortune: number;

@@ -53,7 +53,7 @@ const HOTM_NODES: HOTMNode[] = [
   },
   // HOTM 2
   {
-    key: 'quick_forge',
+    key: 'forge_time',
     displayName: 'Quick Forge',
     maxLevel: 20,
     hotmRequired: 2,

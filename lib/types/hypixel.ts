@@ -90,15 +90,42 @@ export interface SkyBlockMember {
   };
   slayer?: SlayerData;
   dungeons?: DungeonData;
-  pets?: { pets?: Pet[] };
+  /** Modern API: pets live under pets_data.pets */
+  pets_data?: { pets?: Pet[] };
+  /** Legacy fallback (old API format) */
+  pets?: { pets?: Pet[] } | Pet[];
   inventory?: InventoryData;
   mining_core?: MiningCoreData;
+  /** Powder fields are at member level, NOT inside mining_core */
+  powder_mithril?: number;
+  powder_spent_mithril?: number;
+  powder_gemstone?: number;
+  powder_spent_gemstone?: number;
+  powder_glacite?: number;
+  powder_spent_glacite?: number;
   garden_player_data?: GardenData;
+  /** API uses jacobs_contest, NOT jacobs_farming */
+  jacobs_contest?: JacobsFarmingData;
+  /** Legacy fallback */
   jacobs_farming?: JacobsFarmingData;
   collection?: Record<string, number>;
   crafted_generators?: string[];
   accessory_bag_storage?: AccessoryBagData;
-  bestiary?: Record<string, unknown>;
+  bestiary?: { kills?: Record<string, number> };
+  fairy_soul?: { total_collected?: number; fairy_exchanges?: number };
+  rift?: {
+    wither_cage?: { killed_eyes?: number[] };
+    gallery?: { secured_trophies?: unknown[] };
+    enigma?: { found_souls?: unknown[] };
+    dead_cats?: { montezuma?: unknown; found_cats?: unknown[] };
+    castle?: { grubber_stacks?: number };
+  };
+  player_stats?: {
+    kills?: Record<string, number>;
+    deaths?: Record<string, number>;
+    rift?: { lifetime_motes_earned?: number; motes_orb_pickup?: number };
+    gifts?: { total_given?: number; total_received?: number };
+  };
   nether_island_player_data?: NetherData;
 }
 
@@ -235,6 +262,7 @@ export interface MiningCoreData {
   received_free_tier?: boolean;
   tokens?: number;
   tokens_spent?: number;
+  /** Legacy powder fields (may be inside mining_core in some API versions) */
   powder_mithril?: number;
   powder_mithril_total?: number;
   powder_gemstone?: number;
@@ -278,6 +306,8 @@ export interface JacobsFarmingData {
   perks?: Record<string, number>;
   talked?: boolean;
   contests?: Record<string, JacobsContest>;
+  /** unique_brackets replaces unique_golds2 in newer API */
+  unique_brackets?: { gold?: string[]; platinum?: string[]; diamond?: string[] };
   unique_golds2?: string[];
   participation_milestones?: number;
   collected_rewards?: string[];
@@ -288,6 +318,8 @@ export interface JacobsContest {
   claimed_rewards?: boolean;
   claimed_position?: number;
   claimed_participants?: number;
+  /** Direct medal field present in newer API responses */
+  claimed_medal?: string;
 }
 
 export interface AccessoryBagData {
