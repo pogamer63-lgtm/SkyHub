@@ -449,9 +449,9 @@ interface MiscData {
 
 const _miscData = miscRaw as unknown as MiscData;
 
-/** Talisman upgrade paths: [fromId, toIds[]]. Source: NEU-REPO misc.json */
+/** Talisman upgrade paths: fromId → toIds[]. Source: NEU-REPO misc.json */
 export const TALISMAN_UPGRADES: Map<string, string[]> = new Map(
-  (_miscData.talisman_upgrades ?? []).map(([from, to]) => [from, to])
+  Object.entries((_miscData.talisman_upgrades ?? {}) as unknown as Record<string, string[]>)
 );
 
 /** Coins required per slayer tier (index 0 = T1). Source: NEU-REPO misc.json */
