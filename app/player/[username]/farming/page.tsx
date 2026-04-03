@@ -5,6 +5,11 @@ import { parseInventoryNBT, ParsedItem } from '@/lib/hypixel/nbt';
 import { PlayerProfile } from '@/lib/types/player';
 import { SkyBlockProfile } from '@/lib/types/hypixel';
 import { formatCoins } from '@/lib/utils/format';
+import {
+  CROP_MILESTONE_THRESHOLDS,
+  CROP_DISPLAY_NAMES as CROP_NAMES,
+  GARDEN_PLOT_COUNT,
+} from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -21,9 +26,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** FF per farming skill level */
 const FF_PER_SKILL_LEVEL = 4;
 
-/** FF per garden plot unlocked (+3 FF per plot, 25 plots max = +75 FF total) */
+/** FF per garden plot unlocked (+3 FF per plot) */
 const FF_PER_PLOT = 3;
-const MAX_PLOTS = 25;
+/** Total garden plots available. Source: NEU-REPO garden.json */
+const MAX_PLOTS = GARDEN_PLOT_COUNT;
 
 /** Jacob's Farming Fortune perk: FF per perk level */
 const FF_PER_JACOB_FF_PERK = 4;
@@ -32,38 +38,10 @@ const FF_PER_JACOB_FF_PERK = 4;
 const JACOB_FF_PERK_MAX = 15;
 
 /**
- * Crop milestone FF contribution.
- * Each milestone level gives +1 FF.
- * Based on garden resources_collected (crops harvested in garden).
+ * Crop milestone FF: each milestone level gives +1 FF.
+ * CROP_MILESTONE_THRESHOLDS and CROP_NAMES are imported from NEU-REPO data.
+ * NEU-REPO has 46 milestone tiers per crop (vs our old 18 — those were wrong).
  */
-// API keys for garden.resources_collected (from SkyCrypt constants/misc.js):
-// CARROT_ITEM, POTATO_ITEM, MUSHROOM_COLLECTION, INK_SACK:3, NETHER_STALK — NOT the display names
-const CROP_MILESTONE_THRESHOLDS: Record<string, number[]> = {
-  WHEAT:                [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  CARROT_ITEM:          [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  POTATO_ITEM:          [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  PUMPKIN:              [40, 100, 200, 400, 1_000, 2_000, 4_000, 10_000, 20_000, 40_000, 100_000, 200_000, 400_000, 1_000_000, 2_000_000, 4_000_000, 10_000_000, 20_000_000],
-  MELON:                [250, 625, 1_250, 2_500, 6_250, 12_500, 25_000, 62_500, 125_000, 250_000, 625_000, 1_250_000, 2_500_000, 6_250_000, 12_500_000, 25_000_000, 62_500_000, 125_000_000],
-  SUGAR_CANE:           [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  CACTUS:               [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  MUSHROOM_COLLECTION:  [90, 225, 450, 900, 2_250, 4_500, 9_000, 22_500, 45_000, 90_000, 225_000, 450_000, 900_000, 2_250_000, 4_500_000, 9_000_000, 22_500_000, 45_000_000],
-  'INK_SACK:3':         [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-  NETHER_STALK:         [100, 250, 500, 1_000, 2_500, 5_000, 10_000, 25_000, 50_000, 100_000, 250_000, 500_000, 1_000_000, 2_500_000, 5_000_000, 10_000_000, 25_000_000, 50_000_000],
-};
-
-/** Display names for garden resource keys (API key → display name) */
-const CROP_NAMES: Record<string, string> = {
-  WHEAT: 'Wheat',
-  CARROT_ITEM: 'Carrot',
-  POTATO_ITEM: 'Potato',
-  PUMPKIN: 'Pumpkin',
-  MELON: 'Melon',
-  SUGAR_CANE: 'Sugar Cane',
-  CACTUS: 'Cactus',
-  MUSHROOM_COLLECTION: 'Mushroom',
-  'INK_SACK:3': 'Cocoa Beans',
-  NETHER_STALK: 'Nether Wart',
-};
 
 function getCropMilestoneLevel(cropKey: string, collected: number): number {
   const thresholds = CROP_MILESTONE_THRESHOLDS[cropKey];
