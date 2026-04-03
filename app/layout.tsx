@@ -42,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="flex items-center gap-0.5">
               {[
                 { href: '/',         label: 'Home'    },
+                { href: '/items',    label: 'Items'   },
                 { href: '/compare',  label: 'Compare' },
                 { href: '/research', label: 'Data'    },
                 { href: 'https://github.com/pogamer63-lgtm/SkyHub', label: 'GitHub', external: true },
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             <div className="flex gap-6 text-xs" style={{ color: 'var(--text-faint)' }}>
               <a href="/" className="hover:text-white transition-colors">Home</a>
+              <a href="/items" className="hover:text-white transition-colors">Items</a>
               <a href="/compare" className="hover:text-white transition-colors">Compare</a>
               <a href="/research" className="hover:text-white transition-colors">Data</a>
               <a href="https://github.com/pogamer63-lgtm/SkyHub" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>

@@ -4,6 +4,7 @@ import { selectBestProfile, enrichWithNBT } from '@/lib/hypixel/parser';
 import { getBazaarPrices, getBazaarSellPrice } from '@/lib/api/bazaar';
 import { PlayerProfile, ParsedPet } from '@/lib/types/player';
 import { formatCoins } from '@/lib/utils/format';
+import { getItemName } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -162,13 +163,12 @@ export default async function NetworthPage({ params, searchParams }: Props) {
 
   // 3. Gear value (from NBT-parsed items if available)
   const ownedIds = profile.accessories.ownedIds ?? new Set<string>();
-  // Check gear from known expensive items
   let gearValue = 0;
   const gearItems: Array<{ name: string; value: number }> = [];
   for (const [itemId, value] of Object.entries(GEAR_TIER_VALUES)) {
     if (ownedIds.has(itemId)) {
       gearValue += value;
-      gearItems.push({ name: itemId.replace(/_/g, ' '), value });
+      gearItems.push({ name: getItemName(itemId), value });
     }
   }
 
@@ -180,28 +180,40 @@ export default async function NetworthPage({ params, searchParams }: Props) {
   const gemstonePowderValue = profile.mining.powderGemstoneTotal * GEMSTONE_POWDER_RATE;
   const powderValue = mithrilPowderValue + gemstonePowderValue;
 
-  // 6. Collection items in storage (rough estimate from collection count)
-  // This is a very rough estimate — actual storage is NBT-only
-  let collectionEstimate = 0;
-  const collectionItems: Array<{ name: string; count: number; value: number }> = [];
-  if (bazaarPrices) {
-    for (const item of COLLECTION_ITEMS_VALUE) {
-      const count = profile.collections[item.id] ?? 0;
-      const price = getBazaarSellPrice(bazaarPrices, item.bazaarId);
-      if (count > 0 && price) {
-        // Very rough: assume 1% of collected items are still in storage
-        const estimatedStorage = Math.floor(count * 0.01);
-        const value = estimatedStorage * price;
+  // 6. Real inventory value from NBT-parsed items × bazaar prices
+  let inventoryValue = 0;
+  const topInventoryItems: Array<{ name: string; count: number; value: number }> = [];
+  const hasNBTItems = !!(profile.inventoryItems?.length || profile.enderChestItems?.length || profile.backpackItems?.length);
+
+  if (bazaarPrices && hasNBTItems) {
+    const allItems = [
+      ...(profile.inventoryItems ?? []),
+      ...(profile.enderChestItems ?? []),
+      ...(profile.backpackItems ?? []),
+      ...(profile.armorItems ?? []),
+      ...(profile.equipmentItems ?? []),
+    ];
+    const itemTotals = new Map<string, number>();
+    for (const item of allItems) {
+      if (item.id && !item.petInfo) {
+        itemTotals.set(item.id, (itemTotals.get(item.id) ?? 0) + item.count);
+      }
+    }
+    for (const [id, count] of itemTotals) {
+      const price = getBazaarSellPrice(bazaarPrices, id);
+      if (price > 0) {
+        const value = price * count;
+        inventoryValue += value;
         if (value > 10_000) {
-          collectionItems.push({ name: item.name, count: estimatedStorage, value });
-          collectionEstimate += value;
+          topInventoryItems.push({ name: getItemName(id), count, value });
         }
       }
     }
+    topInventoryItems.sort((a, b) => b.value - a.value);
   }
 
   // Total
-  const totalNetworth = liquidCoins + petsValue + gearValue + fairySoulValue + powderValue;
+  const totalNetworth = liquidCoins + petsValue + gearValue + fairySoulValue + powderValue + inventoryValue;
 
   interface NetworthComponent {
     label: string;
@@ -215,6 +227,7 @@ export default async function NetworthPage({ params, searchParams }: Props) {
     { label: 'Liquid Coins', value: liquidCoins, color: 'bg-yellow-500', pct: 0, note: `Purse: ${formatCoins(purseCoins)} · Bank: ${formatCoins(bankCoins)}` },
     { label: 'Pets Portfolio', value: petsValue, color: 'bg-pink-500', pct: 0, note: `${profile.pets.length} pets estimated` },
     { label: 'Gear / Armor', value: gearValue, color: 'bg-slate-400', pct: 0, note: gearValue > 0 ? `${gearItems.length} known pieces` : 'Requires NBT data' },
+    { label: 'Inventory & Storage', value: inventoryValue, color: 'bg-indigo-500', pct: 0, note: hasNBTItems ? `${topInventoryItems.length} bazaar items found` : 'Requires NBT data' },
     { label: 'Fairy Souls', value: fairySoulValue, color: 'bg-fuchsia-500', pct: 0, note: `${profile.fairySouls} souls × ~1k` },
     { label: 'Mining Powder', value: powderValue, color: 'bg-sky-500', pct: 0, note: `${profile.mining.powderMithrilTotal.toLocaleString()} mithril · ${profile.mining.powderGemstoneTotal.toLocaleString()} gemstone` },
   ].filter(c => c.value > 0).map(c => ({ ...c, pct: totalNetworth > 0 ? (c.value / totalNetworth) * 100 : 0 }))
@@ -328,11 +341,38 @@ export default async function NetworthPage({ params, searchParams }: Props) {
         </div>
       )}
 
+      {/* Inventory & Storage */}
+      {topInventoryItems.length > 0 && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-white mb-1">📦 Inventory &amp; Storage (Bazaar Items)</h2>
+          <p className="text-xs text-slate-500 mb-4">Items found in your inventory, ender chest, and backpacks that are tradable on the Bazaar.</p>
+          <div className="space-y-2">
+            {topInventoryItems.slice(0, 15).map((item, i) => (
+              <div key={i} className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 w-5 text-right text-xs">{i + 1}.</span>
+                  <span className="text-slate-300">{item.name}</span>
+                  <span className="text-xs text-slate-600">×{item.count.toLocaleString()}</span>
+                </div>
+                <span className="text-indigo-300 font-mono">{formatCoins(item.value)}</span>
+              </div>
+            ))}
+            {topInventoryItems.length > 15 && (
+              <div className="text-xs text-slate-600 text-right">+{topInventoryItems.length - 15} more items</div>
+            )}
+          </div>
+          <div className="mt-3 pt-3 border-t border-white/5 flex justify-between text-sm">
+            <span className="text-slate-500">Total ({topInventoryItems.length} distinct items)</span>
+            <span className="text-indigo-300 font-mono">{formatCoins(inventoryValue)}</span>
+          </div>
+        </div>
+      )}
+
       {/* Accuracy note */}
       <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-4 text-xs text-slate-500 space-y-1">
         <div className="font-medium text-slate-400 mb-1">About this estimate</div>
-        <div>• Gear value requires inventory NBT — only detects items via their SkyBlock item ID.</div>
-        <div>• Storage, enderchest, and auction listings are not included.</div>
+        <div>• Inventory value only includes Bazaar-tradable items — non-tradable gear, swords, etc. are not priced.</div>
+        <div>• Auction house listings and sack contents are not included.</div>
         <div>• Pet values are approximations — actual market price may differ by 20-50%.</div>
         <div>• Powder conversion rates are rough estimates, not real Bazaar prices.</div>
         <div>• For a more accurate networth, use sky.shiiyu.moe or similar dedicated calculators.</div>

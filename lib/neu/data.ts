@@ -8,6 +8,8 @@
  * To refresh: re-download from raw.githubusercontent.com/pogamer63-lgtm/NotEnoughUpdates-REPO/master/constants/
  */
 
+import itemsIndexRaw from '@/data/neu/items_index.json';
+import bazaarItemIdsRaw from '@/data/neu/items_bazaar_ids.json';
 import gardenRaw from '@/data/neu/garden.json';
 import levelingRaw from '@/data/neu/leveling.json';
 import petsRaw from '@/data/neu/pets.json';
@@ -479,3 +481,22 @@ export const PET_SCORE_VALUE: Record<string, Record<string, number>> = _bonusesD
 
 /** Bonus stats per level milestone (e.g. fairy_souls, pet_score). */
 export const BONUS_STATS: Record<string, Record<string, number>> = _bonusesData.bonus_stats ?? {};
+
+// ─── Items Index ───────────────────────────────────────────────────────────────
+
+export interface ItemIndexEntry {
+  name: string;
+  lore: string;
+  category: string;
+}
+
+/** All 8000+ SkyBlock items from NEU-REPO, keyed by internal item ID. */
+export const ITEMS_INDEX = itemsIndexRaw as unknown as Record<string, ItemIndexEntry>;
+
+/** Set of item IDs that are tradable on the Bazaar. */
+export const BAZAAR_ITEM_IDS: ReadonlySet<string> = new Set(bazaarItemIdsRaw as string[]);
+
+/** Convert a raw item ID to a human-readable name, falling back to underscores → spaces. */
+export function getItemName(id: string): string {
+  return ITEMS_INDEX[id]?.name ?? id.replace(/_/g, ' ');
+}

@@ -8,7 +8,7 @@ import { formatCoins } from '@/lib/utils/format';
 import { MP_PER_RARITY, ItemRarity } from '@/lib/hypixel/nbt';
 import { getUncuratedAccessories } from '@/lib/data/accessories-api';
 import ItemIcon from '@/components/ItemIcon';
-import { TALISMAN_UPGRADES } from '@/lib/neu/data';
+import { TALISMAN_UPGRADES, getItemName } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -315,12 +315,12 @@ export default async function AccessoriesPage({ params, searchParams }: Props) {
               {upgradeable.map(({ from, to }) => (
                 <div key={from} className="rounded-lg border border-indigo-500/20 bg-indigo-500/5 px-3 py-2 text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-400">{from.replace(/_/g, ' ')}</span>
+                    <span className="text-slate-400">{getItemName(from)}</span>
                     <span className="text-slate-600">→</span>
                     <div className="flex gap-1 flex-wrap">
                       {to.map(t => (
                         <span key={t} className={`rounded px-1.5 py-0.5 ${ownedIds.has(t) ? 'text-emerald-400 bg-emerald-500/10' : 'text-indigo-300 bg-indigo-500/10'}`}>
-                          {t.replace(/_/g, ' ')}
+                          {getItemName(t)}
                         </span>
                       ))}
                     </div>
