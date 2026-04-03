@@ -113,6 +113,7 @@ export interface SkyBlockMember {
   accessory_bag_storage?: AccessoryBagData;
   bestiary?: { kills?: Record<string, number> };
   fairy_soul?: { total_collected?: number; fairy_exchanges?: number };
+  trophy_fish?: Record<string, number | string[]>;
   rift?: {
     wither_cage?: { killed_eyes?: number[] };
     gallery?: { secured_trophies?: unknown[] };

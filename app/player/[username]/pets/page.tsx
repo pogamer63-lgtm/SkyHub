@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { PlayerProfile, ParsedPet } from '@/lib/types/player';
+import { computePetLevel, computePetStats } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -26,43 +27,39 @@ const TIER_COLOR: Record<string, string> = {
   MYTHIC:    'text-pink-300 border-pink-500/30 bg-pink-500/5',
 };
 
-// XP required per level bracket (approximate, from SkyBlock wiki)
-// Levels 1-100: use common_pet_xp table; L200 pets have extended table
-const PET_LEVEL_XP: number[] = [
-  0, 100, 210, 440, 700, 1000, 1430, 2100, 3000, 4350, 6300,
-  9000, 13000, 18000, 24000, 32000, 43000, 57000, 75000, 100000,
-  133333, 177777, 236852, 315802, 421069, 561425, 748566, 997988, 1330650, 1774200,
-  2365600, 3154133, 4205510, 5607346, 7476461, 9968614, 13291485, 17721980, 23629306, 31505741,
-  42007655, 56010206, 74680274, 99573698, 132764930, 177019906, 236026541, 314702054, 419602738, 559470317,
-  745960422, 994613896, 1326151861, 1768202481, 2357603307, 3143471076, 4191294767, 5588393022, 7451190696, 9934920928,
-  // L60-100 (simplified)
-  13246561237, 17662081649, 23549442198, 31399256264, 41865675018,
-  55820900024, 74427866698, 99237155597, 132316207462, 176421609949,
-  235228813265, 313638417686, 418184556914, 557579409218, 743439212290,
-  990585616386, 1320780821848, 1761041095797, 2348054794395, 3130739725860,
-  4174319634480, 5565759512640, 7420346016853, 9893794689137, 13191726252182,
-  17588968336242, 23451957781656, 31269277042207, 41692369389609, 55589825852812,
-  74119767803749, 98826357071666, 131768476095554, 175691301460738, 234255068614317,
-  312340091485756, 416453455314341, 555271273752454, 740361698336604, 987148931115472,
-];
-
-function xpForLevel(level: number): number {
-  return PET_LEVEL_XP[level - 1] ?? PET_LEVEL_XP[PET_LEVEL_XP.length - 1];
-}
-
+// Use NEU-authoritative pet level XP curve
 function petProgressToNextLevel(pet: ParsedPet): { progress: number; xpToNext: number; maxLevel: number } {
   const maxLevel = pet.tier === 'LEGENDARY' || pet.tier === 'MYTHIC' ? 200 : 100;
   if (pet.level >= maxLevel) return { progress: 1, xpToNext: 0, maxLevel };
-  const currentLevelXP = xpForLevel(pet.level);
-  const nextLevelXP = xpForLevel(pet.level + 1);
-  const xpThisLevel = pet.xp - currentLevelXP;
-  const xpNeeded = nextLevelXP - currentLevelXP;
+  // Use NEU computePetLevel for accurate XP progress within current level
+  const { xpIntoLevel, xpForNextLevel } = computePetLevel(pet.xp, pet.tier);
+  const needed = xpForNextLevel ?? 1;
   return {
-    progress: xpNeeded > 0 ? Math.min(1, xpThisLevel / xpNeeded) : 1,
-    xpToNext: Math.max(0, xpNeeded - xpThisLevel),
+    progress: needed > 0 ? Math.min(1, xpIntoLevel / needed) : 1,
+    xpToNext: Math.max(0, needed - xpIntoLevel),
     maxLevel,
   };
 }
+
+// Key stats to display from petnums (human-readable labels)
+const STAT_LABELS: Record<string, string> = {
+  FARMING_FORTUNE: 'Farming Fortune',
+  FISHING_FORTUNE: 'Fishing Fortune',
+  FORAGING_FORTUNE: 'Foraging Fortune',
+  MINING_FORTUNE: 'Mining Fortune',
+  MINING_SPEED: 'Mining Speed',
+  SEA_CREATURE_CHANCE: 'Sea Creature Chance',
+  FEROCITY: 'Ferocity',
+  STRENGTH: 'Strength',
+  CRIT_DAMAGE: 'Crit Damage',
+  CRIT_CHANCE: 'Crit Chance',
+  INTELLIGENCE: 'Intelligence',
+  HEALTH: 'Health',
+  DEFENSE: 'Defense',
+  SPEED: 'Speed',
+  MAGIC_FIND: 'Magic Find',
+  PET_LUCK: 'Pet Luck',
+};
 
 function formatXP(n: number): string {
   if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(1)}B`;
@@ -81,8 +78,8 @@ const BIS_PETS: Array<{
     activity: 'Farming',
     emoji: '🌾',
     pets: [
-      { type: 'MOOSHROOM_COW', tier: 'LEGENDARY', reason: 'Current meta pick — Squash buff + coin multiplier. Note: Elephant gives +150 FF vs Mooshroom Cow\'s +110 FF at max level.' },
-      { type: 'ELEPHANT', tier: 'LEGENDARY', reason: 'More raw Farming Fortune (+150 FF max vs +110 for Mooshroom Cow). Simpler to obtain, better if you only care about FF.' },
+      { type: 'MOOSHROOM_COW', tier: 'LEGENDARY', reason: 'Squash buff + converts Strength to FF (1 FF per 20 STR). Good if you have high Strength. Coin multiplier bonus.' },
+      { type: 'ELEPHANT', tier: 'LEGENDARY', reason: 'Most raw Farming Fortune per level — +1.5 FF/level, +150 FF at Lv 100 (NEU-verified). Best if you want simple FF stacking.' },
       { type: 'HEDGEHOG', tier: 'LEGENDARY', reason: 'BIS for pest control and pest-related Farming Fortune' },
       { type: 'BEE', tier: 'LEGENDARY', reason: '+Farming Fortune, Honey production boost' },
     ],
@@ -249,6 +246,21 @@ export default async function PetsPage({ params, searchParams }: Props) {
                   Held: {active.heldItem.replace(/_/g, ' ')}
                 </div>
               )}
+              {/* Active pet stat bonuses */}
+              {(() => {
+                const stats = computePetStats(active.type, active.tier, active.level);
+                const displayStats = Object.entries(stats).filter(([k]) => k in STAT_LABELS);
+                if (displayStats.length === 0) return null;
+                return (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {displayStats.map(([stat, val]) => (
+                      <span key={stat} className="text-xs text-yellow-300 bg-yellow-500/10 rounded px-1.5 py-0.5">
+                        +{Math.round(val * 10) / 10} {STAT_LABELS[stat]}
+                      </span>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
             <div className="text-right">
               {(() => {
@@ -398,6 +410,23 @@ export default async function PetsPage({ params, searchParams }: Props) {
                   {pet.candyUsed > 0 && (
                     <div className="text-xs text-slate-600">🍬 {pet.candyUsed} candy</div>
                   )}
+                  {/* Pet stat bonuses from NEU petnums */}
+                  {(() => {
+                    const stats = computePetStats(pet.type, pet.tier, pet.level);
+                    const displayStats = Object.entries(stats)
+                      .filter(([k]) => k in STAT_LABELS)
+                      .slice(0, 3);
+                    if (displayStats.length === 0) return null;
+                    return (
+                      <div className="mt-1.5 flex flex-wrap gap-1">
+                        {displayStats.map(([stat, val]) => (
+                          <span key={stat} className="text-xs text-indigo-300 bg-indigo-500/10 rounded px-1.5 py-0.5">
+                            +{Math.round(val)} {STAT_LABELS[stat]}
+                          </span>
+                        ))}
+                      </div>
+                    );
+                  })()}
                 </div>
               );
             })}

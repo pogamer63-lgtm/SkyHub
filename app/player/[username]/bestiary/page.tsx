@@ -3,6 +3,12 @@ import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { PlayerProfile } from '@/lib/types/player';
 import { SkyBlockProfile } from '@/lib/types/hypixel';
+import {
+  BESTIARY_ZONES,
+  BESTIARY_BRACKETS,
+  getBestiaryMilestoneLevel,
+  getBestiaryMaxLevel,
+} from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -14,91 +20,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: `${username} — Bestiary` };
 }
 
-// ─── Bestiary Knowledge Base ──────────────────────────────────────────────────
-
-type BestiaryCategory = 'Hub' | 'Slayer' | 'Dungeons' | 'Nether' | 'Mining' | 'Farming' | 'Other';
-
-interface BestiaryFamily {
-  id: string;          // key prefix in API (e.g. "ZOMBIE")
-  name: string;
-  category: BestiaryCategory;
-  maxMilestone: number; // highest milestone kill count
-  emoji: string;
-}
-
-// Milestones: kills required per tier (Hypixel wiki)
-// Each family has tiers at: 1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000
-const MILESTONE_KILLS = [1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
-
-const BESTIARY_FAMILIES: BestiaryFamily[] = [
-  // Hub
-  { id: 'ZOMBIE',           name: 'Zombie',           category: 'Hub',      maxMilestone: 10000, emoji: '🧟' },
-  { id: 'SKELETON',         name: 'Skeleton',         category: 'Hub',      maxMilestone: 10000, emoji: '💀' },
-  { id: 'SPIDER',           name: 'Spider',           category: 'Hub',      maxMilestone: 10000, emoji: '🕷' },
-  { id: 'CREEPER',          name: 'Creeper',          category: 'Hub',      maxMilestone: 10000, emoji: '💚' },
-  { id: 'WITCH',            name: 'Witch',            category: 'Hub',      maxMilestone: 5000,  emoji: '🧙' },
-  { id: 'ENDERMAN',         name: 'Enderman',         category: 'Hub',      maxMilestone: 10000, emoji: '👁' },
-  { id: 'BLAZE',            name: 'Blaze',            category: 'Hub',      maxMilestone: 10000, emoji: '🔥' },
-  { id: 'MAGMA_CUBE',       name: 'Magma Cube',       category: 'Hub',      maxMilestone: 10000, emoji: '🟥' },
-  { id: 'GHAST',            name: 'Ghast',            category: 'Hub',      maxMilestone: 5000,  emoji: '👻' },
-  { id: 'SLIME',            name: 'Slime',            category: 'Hub',      maxMilestone: 5000,  emoji: '🟢' },
-  // Slayer
-  { id: 'REVENANT_HORROR',      name: 'Revenant Horror',      category: 'Slayer', maxMilestone: 10000, emoji: '🧟' },
-  { id: 'TARANTULA_BROODFATHER',name: 'Tarantula Broodfather', category: 'Slayer', maxMilestone: 5000,  emoji: '🕷' },
-  { id: 'SVEN_PACKMASTER',      name: 'Sven Packmaster',       category: 'Slayer', maxMilestone: 5000,  emoji: '🐺' },
-  { id: 'VOIDGLOOM_SERAPH',     name: 'Voidgloom Seraph',      category: 'Slayer', maxMilestone: 2500,  emoji: '👁' },
-  { id: 'INFERNO_DEMONLORD',    name: 'Inferno Demonlord',     category: 'Slayer', maxMilestone: 2500,  emoji: '🔥' },
-  { id: 'RIFTSTALKER_BLOODFIEND',name:'Riftstalker Bloodfiend', category: 'Slayer', maxMilestone: 2500,  emoji: '🩸' },
-  // Dungeons
-  { id: 'BONZO',            name: 'Bonzo\'s Followers',  category: 'Dungeons', maxMilestone: 5000,  emoji: '🃏' },
-  { id: 'SCARF',            name: 'Scarf\'s Studies',    category: 'Dungeons', maxMilestone: 5000,  emoji: '📚' },
-  { id: 'PROFESSOR',        name: 'Prof\'s Guardians',   category: 'Dungeons', maxMilestone: 5000,  emoji: '⚡' },
-  { id: 'THORN',            name: 'Thorn\'s Minions',    category: 'Dungeons', maxMilestone: 5000,  emoji: '🌿' },
-  { id: 'LIVID',            name: 'Livid\'s Clones',     category: 'Dungeons', maxMilestone: 5000,  emoji: '🔮' },
-  { id: 'SADAN',            name: 'Sadan\'s Giants',     category: 'Dungeons', maxMilestone: 5000,  emoji: '🗿' },
-  { id: 'NECRON',           name: 'Necron\'s Army',      category: 'Dungeons', maxMilestone: 10000, emoji: '💀' },
-  // Nether
-  { id: 'KUUDRA',           name: 'Kuudra',              category: 'Nether',   maxMilestone: 2500,  emoji: '🦀' },
-  { id: 'WITHER_SKELETON',  name: 'Wither Skeleton',     category: 'Nether',   maxMilestone: 10000, emoji: '💀' },
-  { id: 'PIGLIN',           name: 'Piglin',              category: 'Nether',   maxMilestone: 5000,  emoji: '🐷' },
-  // Mining
-  { id: 'GOBLIN',           name: 'Goblin',              category: 'Mining',   maxMilestone: 10000, emoji: '👺' },
-  { id: 'AUTOMATON',        name: 'Automaton',           category: 'Mining',   maxMilestone: 5000,  emoji: '🤖' },
-  { id: 'YETI',             name: 'Yeti',                category: 'Mining',   maxMilestone: 2500,  emoji: '❄' },
-  // Farming
-  { id: 'CHICKEN',          name: 'Chicken',             category: 'Farming',  maxMilestone: 5000,  emoji: '🐔' },
-  { id: 'COW',              name: 'Cow',                 category: 'Farming',  maxMilestone: 5000,  emoji: '🐄' },
-  { id: 'PIG',              name: 'Pig',                 category: 'Farming',  maxMilestone: 5000,  emoji: '🐷' },
-  { id: 'SHEEP',            name: 'Sheep',               category: 'Farming',  maxMilestone: 5000,  emoji: '🐑' },
-];
-
-function getMilestoneLevel(kills: number, maxMilestone: number): number {
-  const caps = MILESTONE_KILLS.filter(m => m <= maxMilestone);
-  let level = 0;
-  for (const cap of caps) {
-    if (kills >= cap) level++;
-    else break;
-  }
-  return level;
-}
-
-function getMaxLevel(maxMilestone: number): number {
-  return MILESTONE_KILLS.filter(m => m <= maxMilestone).length;
-}
-
-function nextMilestoneKills(kills: number, maxMilestone: number): number | null {
-  const caps = MILESTONE_KILLS.filter(m => m <= maxMilestone);
-  return caps.find(c => c > kills) ?? null;
-}
-
-const CATEGORY_COLORS: Record<BestiaryCategory, string> = {
-  Hub:      'text-slate-300',
-  Slayer:   'text-red-300',
-  Dungeons: 'text-orange-300',
-  Nether:   'text-rose-300',
-  Mining:   'text-sky-300',
-  Farming:  'text-emerald-300',
-  Other:    'text-slate-400',
+// Zone display config
+const ZONE_CONFIG: Record<string, { emoji: string; color: string }> = {
+  hub:                   { emoji: '🏠', color: 'text-slate-300' },
+  farming_1:             { emoji: '🌾', color: 'text-emerald-300' },
+  combat_1:              { emoji: '🕷', color: 'text-red-300' },
+  combat_3:              { emoji: '🌌', color: 'text-purple-300' },
+  crimson_isle:          { emoji: '🔥', color: 'text-rose-300' },
+  mining_2:              { emoji: '⛏', color: 'text-sky-300' },
+  mining_3:              { emoji: '⛰', color: 'text-blue-300' },
+  crystal_hollows:       { emoji: '💎', color: 'text-cyan-300' },
+  foraging_1:            { emoji: '🌲', color: 'text-green-300' },
+  foraging_2:            { emoji: '🏹', color: 'text-lime-300' },
+  spooky_festival:       { emoji: '🎃', color: 'text-orange-300' },
+  mythological_creatures:{ emoji: '⚡', color: 'text-yellow-300' },
+  jerry:                 { emoji: '🎁', color: 'text-pink-300' },
+  kuudra:                { emoji: '🦀', color: 'text-amber-300' },
+  fishing:               { emoji: '🎣', color: 'text-teal-300' },
+  catacombs:             { emoji: '🏰', color: 'text-orange-300' },
+  garden:                { emoji: '🌱', color: 'text-emerald-400' },
 };
 
 export default async function BestiaryPage({ params, searchParams }: Props) {
@@ -142,47 +82,44 @@ export default async function BestiaryPage({ params, searchParams }: Props) {
     );
   }
 
-  // ── Parse bestiary kills from raw member data ──────────────────────────────
+  // ── Parse bestiary kills ────────────────────────────────────────────────────
   const member = rawProfile.members[profile.uuid ?? ''] ?? Object.values(rawProfile.members)[0];
-  // Modern API: member.bestiary.kills is an object mapping mob name → kill count
-  // Legacy format had kills_FAMILY keys at the bestiary root
   const bestiaryKills = (member?.bestiary?.kills ?? {}) as Record<string, number>;
-  const bestiaryLegacy = (member?.bestiary ?? {}) as Record<string, unknown>;
+  const hasData = Object.keys(bestiaryKills).length > 0;
 
-  function getKills(familyId: string): number {
-    // API keys are lowercase with numeric suffixes: zombie_1, zombie_2, enderman_1, etc.
-    // familyId in our constants is UPPERCASE (e.g. ZOMBIE) — convert to lowercase for matching
-    const prefix = familyId.toLowerCase();
-    let total = 0;
-    for (const [key, val] of Object.entries(bestiaryKills)) {
-      // Match exact prefix or prefix with _ separator (e.g. zombie_1, zombie_villager_1)
-      if (key === prefix || key.startsWith(prefix + '_')) total += val as number;
-    }
-    if (total > 0) return total;
-    // Legacy fallback: kills_FAMILY prefix at bestiary root
-    for (const [key, val] of Object.entries(bestiaryLegacy)) {
-      if (key.startsWith(`kills_${familyId}`) && typeof val === 'number') total += val;
-    }
-    return total;
+  /**
+   * Get total kills for a mob family by summing all matching API keys.
+   * Each family has exact apiKeys from NEU (e.g. "farming_chicken_1", "enderman_50").
+   */
+  function getKills(apiKeys: string[]): number {
+    return apiKeys.reduce((sum, key) => sum + (bestiaryKills[key] ?? 0), 0);
   }
 
-  const hasData = Object.keys(bestiaryKills).length > 0 || Object.keys(bestiaryLegacy).length > 0;
-
-  // Compute stats per family
-  const families = BESTIARY_FAMILIES.map(f => {
-    const kills = getKills(f.id);
-    const level = getMilestoneLevel(kills, f.maxMilestone);
-    const maxLevel = getMaxLevel(f.maxMilestone);
-    const next = nextMilestoneKills(kills, f.maxMilestone);
-    return { ...f, kills, level, maxLevel, next };
+  // ── Compute stats for all zones and families ───────────────────────────────
+  const zonesWithStats = BESTIARY_ZONES.map(zone => {
+    const families = zone.families.map(family => {
+      const kills = getKills(family.apiKeys);
+      const level = getBestiaryMilestoneLevel(kills, family.cap, family.bracket);
+      const maxLevel = getBestiaryMaxLevel(family.cap, family.bracket);
+      const thresholds = BESTIARY_BRACKETS[String(family.bracket)] ?? [];
+      const capThresholds = thresholds.filter(t => t <= family.cap);
+      const nextThreshold = capThresholds.find(t => t > kills) ?? null;
+      return { ...family, kills, level, maxLevel, nextThreshold };
+    });
+    const zoneLevel = families.reduce((s, f) => s + f.level, 0);
+    const zoneMaxLevel = families.reduce((s, f) => s + f.maxLevel, 0);
+    return { ...zone, families, zoneLevel, zoneMaxLevel };
   });
 
-  const totalLevel = families.reduce((s, f) => s + f.level, 0);
-  const maxTotalLevel = families.reduce((s, f) => s + f.maxLevel, 0);
-  const completedFamilies = families.filter(f => f.level >= f.maxLevel).length;
-  const nearComplete = families.filter(f => f.next !== null && f.kills > 0 && f.kills >= (f.next * 0.75)).length;
-
-  const categories: BestiaryCategory[] = ['Hub', 'Slayer', 'Dungeons', 'Nether', 'Mining', 'Farming'];
+  const totalLevel = zonesWithStats.reduce((s, z) => s + z.zoneLevel, 0);
+  const maxTotalLevel = zonesWithStats.reduce((s, z) => s + z.zoneMaxLevel, 0);
+  const totalFamilies = zonesWithStats.reduce((s, z) => s + z.families.length, 0);
+  const completedFamilies = zonesWithStats.reduce(
+    (s, z) => s + z.families.filter(f => f.level >= f.maxLevel).length, 0
+  );
+  const nearComplete = zonesWithStats.reduce(
+    (s, z) => s + z.families.filter(f => f.nextThreshold !== null && f.kills > 0 && f.kills >= f.nextThreshold * 0.75).length, 0
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -214,7 +151,7 @@ export default async function BestiaryPage({ params, searchParams }: Props) {
         <div className="card p-4 text-center">
           <div className="text-2xl font-bold text-emerald-300">{completedFamilies}</div>
           <div className="text-xs text-slate-500 mt-1">Completed Families</div>
-          <div className="text-xs text-slate-600">of {families.length}</div>
+          <div className="text-xs text-slate-600">of {totalFamilies}</div>
         </div>
         <div className="card p-4 text-center">
           <div className="text-2xl font-bold text-yellow-300">{nearComplete}</div>
@@ -229,38 +166,43 @@ export default async function BestiaryPage({ params, searchParams }: Props) {
         </div>
       </div>
 
-      {/* Per category */}
-      {categories.map(cat => {
-        const catFamilies = families.filter(f => f.category === cat);
-        if (catFamilies.length === 0) return null;
+      {/* Per zone */}
+      {zonesWithStats.map(zone => {
+        const cfg = ZONE_CONFIG[zone.key] ?? { emoji: '📖', color: 'text-slate-300' };
         return (
-          <div key={cat} className="card p-5 mb-4">
-            <h2 className={`font-semibold mb-4 flex items-center gap-2 ${CATEGORY_COLORS[cat]}`}>
-              {cat}
-              <span className="text-xs font-normal text-slate-500">
-                {catFamilies.reduce((s, f) => s + f.level, 0)} / {catFamilies.reduce((s, f) => s + f.maxLevel, 0)} levels
+          <div key={zone.key} className="card p-5 mb-4">
+            <h2 className={`font-semibold mb-4 flex items-center gap-2 ${cfg.color}`}>
+              <span>{cfg.emoji}</span> {zone.name}
+              <span className="text-xs font-normal text-slate-500 ml-1">
+                {zone.zoneLevel} / {zone.zoneMaxLevel} levels
               </span>
             </h2>
             <div className="space-y-3">
-              {catFamilies.map(f => {
-                const pct = f.next ? Math.min(100, (f.kills / f.next) * 100) : 100;
+              {zone.families.map(f => {
                 const isMax = f.level >= f.maxLevel;
+                const pct = f.nextThreshold
+                  ? Math.min(100, (f.kills / f.nextThreshold) * 100)
+                  : isMax ? 100 : 0;
                 return (
-                  <div key={f.id} className={isMax ? 'opacity-60' : ''}>
+                  <div key={f.name} className={isMax ? 'opacity-60' : ''}>
                     <div className="flex items-center justify-between text-xs mb-1">
                       <span className="text-slate-300 font-medium">
-                        {f.emoji} {f.name}
+                        {f.name}
                         <span className="ml-2 text-slate-500">Lv {f.level}/{f.maxLevel}</span>
                       </span>
                       <span className="text-slate-500">
                         {isMax
                           ? <span className="text-emerald-400">✓ Max</span>
-                          : `${f.kills.toLocaleString()} / ${f.next?.toLocaleString() ?? '—'} kills`}
+                          : f.nextThreshold !== null
+                          ? `${f.kills.toLocaleString()} / ${f.nextThreshold.toLocaleString()}`
+                          : `${f.kills.toLocaleString()} kills`}
                       </span>
                     </div>
                     <div className="h-1.5 rounded-full bg-white/5">
                       <div
-                        className={`h-full rounded-full transition-all ${isMax ? 'bg-emerald-500' : pct >= 75 ? 'bg-yellow-500' : 'bg-indigo-500'}`}
+                        className={`h-full rounded-full transition-all ${
+                          isMax ? 'bg-emerald-500' : pct >= 75 ? 'bg-yellow-500' : 'bg-indigo-500'
+                        }`}
                         style={{ width: `${isMax ? 100 : pct}%` }}
                       />
                     </div>

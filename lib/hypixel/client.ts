@@ -68,7 +68,8 @@ export async function getUsernameFromUUID(uuid: string): Promise<string> {
   const cached = getFromCache<string>(cacheKey);
   if (cached) return cached;
 
-  const res = await fetch(`${MOJANG_PROFILE_BASE}/user/profile/${uuid}`);
+  // Mojang session server is the correct endpoint for UUID → name
+  const res = await fetch(`https://sessionserver.mojang.com/session/minecraft/profile/${uuid}`);
   if (!res.ok) throw new Error(`Mojang profile error: ${res.status}`);
   const data = await res.json() as MojangProfile;
   setCache(cacheKey, data.name, 60 * 60 * 1000);
@@ -85,6 +86,18 @@ export async function getSkyBlockProfiles(uuid: string): Promise<HypixelProfiles
 
 export async function getSkyBlockProfile(profileId: string): Promise<{ success: boolean; profile: unknown }> {
   return hypixelFetch(`/v2/skyblock/profile?profile=${profileId}`, 3 * 60 * 1000);
+}
+
+export async function getSkyBlockMuseum(profileId: string): Promise<{
+  success: boolean;
+  members?: Record<string, {
+    items?: Record<string, { donated_time?: number; borrowing?: boolean; [key: string]: unknown }>;
+    special?: unknown[];
+    value?: number;
+    appraisal?: boolean;
+  }>;
+}> {
+  return hypixelFetch(`/v2/skyblock/museum?profile=${profileId}`, 10 * 60 * 1000);
 }
 
 /** Resolve username or UUID → UUID */

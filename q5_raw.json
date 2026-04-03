@@ -1,0 +1,3080 @@
+{
+  "answer": "The **Foraging Update (v0.23)**, released in June 2025, completely overhauled the Foraging skill and introduced the brand-new **Hunting** skill alongside a new island named **Galatea** [1, 2]. \n\n### **What Changed with the Foraging Update?**\nThe update introduced massive changes to Foraging progression and environmental mechanics:\n*   **New Island - Galatea:** A high-level foraging and fishing area that requires **Foraging Level 25** to access [1].\n*   **Level Cap Increase:** The Foraging skill cap was extended from level 50 to **Level 54** [1, 3].\n*   **Extension Mechanics:** These extra levels are unlocked in any order by reaching Tier IX in the **Fig Log** and **Mangrove Log** collections (+1 level each) or by purchasing upgrades from **Agatha's Shop** at Milestone 4 (+2 levels) [4, 5]. \n*   **New Resources:** Added **Fig Logs** (yielding +15 Foraging XP) and **Mangrove Logs** (yielding +20 Foraging XP) [6]. Other new resources include **Lushlilac** bushes and **Sea Lumies**, an underwater plant [7, 8].\n*   **Tree Gifts:** Harvesting Fig or Mangrove trees now rewards players with **Tree Gifts**, which are the primary source of **Tender Wood** and **Vinesap** [9, 10].\n*   **Logger Perk:** Foraging levels now scale the **Logger** ability, providing **+4 Foraging Fortune** per level. At level 54, players have **216 Foraging Fortune** and **94 Strength** from the skill [1, 11].\n\n---\n\n### **The Hunting Skill**\n**Hunting** is a new **Main Skill** added to the core skill list [2, 12]. It centers around tracking, trapping, and harvesting creatures and specialized wood on Galatea.\n\n#### **Max Level**\nThe sources **do not specify a max level** for Hunting, though it is categorized as a core skill alongside Foraging and Farming, which typically have a base cap of **50** [2-4, 12, 13].\n\n#### **XP Sources**\nHunting Experience is earned primarily through progression milestones in the new Galatea-based collections:\n*   **Lushlilac Collection IV:** Rewards **+1,000 Hunting XP** [7].\n*   **Tender Wood Collection VIII:** Rewards **+50,000 Hunting XP** [10].\n*   **Vinesap Collection VIII:** Rewards **+50,000 Hunting XP** [7].\nThe skill is practiced using specialized **Huntraps** and **Huntaxes** [7, 10].\n\n#### **What It Unlocks**\nHunting unlocks a variety of specialized tools, traps, and equipment through the Galatea resource collections:\n*   **Huntaxes:** A new line of tools for hunting and foraging, ranging from the **Worn Huntaxe - Genesis** (Tier I) to the **Prime Huntaxe - Nex Titanum** (Tier IX) [7].\n*   **Huntraps:** Mechanical traps used for hunting, including **Small, Medium, Large, Greater, and Astral Huntraps** [10].\n*   **Lassos:** Specialized tools like the **Vinerip, Entangler, and Everstretch Lasso** [7].\n*   **Fishing & Water Gear:** Unlocks recipes for **Fishing Nets** (Basic, Medium, and Turbo), **Fish Bowls** (Small, Medium, and Large), and **Diver's Armor** [8, 10].\n*   **Armor & Pets:** Unlocks **Fig Armor** (at Fig Log VIII), **Abyssal Armor** (at Sea Lumies VIII), and two new pets: the **Sparrow** and the **Seagull** [8-10].\n*   **Scaffolding:** Recipes for **Tiny, Medium, and Large Scaffolding** are unlocked via the Fig Log collection [9].",
+  "conversation_id": "322bf330-d8a8-43bb-9cba-a0716952fb2e",
+  "turn_number": 1,
+  "is_follow_up": true,
+  "references": [
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 1,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "2c9aaf83-d425-48e9-966b-996b5566ffa7"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 2,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "f5402903-80b6-497f-b591-a4aee8829505"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 3,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "a50906e2-fffe-446d-8a4f-27c01678df29"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 4,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "bbcecb2b-8d33-4d67-b20e-becd1389c113"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 5,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "c79b7ff0-d979-49a3-9480-c0090142536d"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 6,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "d507512c-c298-4817-8e33-841faa1f614e"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 7,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "be635374-6c63-432b-9fde-62cb7eb78a89"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 8,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "08fde54b-73c9-47b7-8590-40a5a71ca2ef"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 9,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "471ac5c2-a227-48b5-86c3-3c82d70b3501"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 10,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "f5e271ab-de64-4937-a43b-7c98513eda65"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 11,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "88fc8be3-fda7-46bf-8f09-bdf79e20c973"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 12,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "f9be6b5a-48a3-4103-b5f1-4ef9cedb13aa"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 13,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "84f095df-a8a6-4b93-90c8-bfce1059d2db"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 14,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "665ce068-2287-43db-a6f5-99b175b3fc50"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 15,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "a41e61dd-2440-4413-b72a-0815b04a036b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 16,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "f765c4f3-b449-47eb-be1d-e4c71ac2803a"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 17,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "396d63cb-99e0-45e2-a731-a39360e9ebc1"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 18,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "b7f0ca4b-b6c6-464c-8454-f52aad7bd121"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 19,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "b72087be-30d6-41e4-a487-8645325fc29f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 20,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "869bed26-5a4a-492a-8de8-95b4fea4a066"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 21,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "4483ca88-9d6d-48fc-9995-8a64d83a0c71"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 22,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "655b927f-c915-4f82-8b21-5c2ad8e2f028"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 23,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "3d642d9f-631c-4883-8f9d-4f3e98f0a3de"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 24,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "d82af1d6-76ae-4e13-9dea-45f5e01f3b9d"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 25,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "12f5f5fe-6708-46bb-87e8-104f68128cf5"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 26,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "f6f6f90b-6fe6-4dab-ad19-5aca999b73f4"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 27,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "67f5f472-61ff-4abf-ba19-5271e4485cae"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 28,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "412ad17d-cf70-4ef5-aba4-d99de214f95f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 29,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "bbefac7e-4df3-483f-b298-e110139a0f34"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 30,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "685d5f7f-4d4f-42a7-a825-2a8a6cb38d28"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 31,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "8870f51b-27c2-4648-a03a-57ea808cd32a"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 32,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "17f49909-bd8f-4359-b437-f5ddfcc5bebe"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 33,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "cd5aa9bd-d90a-4f08-b0df-b2b3cfab4c9c"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 34,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "8c08260f-4add-48a6-acb1-b50ae6841e3d"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 35,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "032cc8e7-bbaf-4af3-802f-ff57764a69e8"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 36,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "1fb59ee8-f7ae-4646-8928-7337186346d0"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 37,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "bf42b8fc-cc7e-4008-9a33-f69dab8f02f0"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 38,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "69eba6b4-c640-4102-ab0b-112a6f091533"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 39,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "82f456d6-0092-4c5e-9997-66d643ad5023"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 40,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "cf53b4bb-889f-4614-b3a3-3e08be417d5b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 41,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "f3718e91-3ee1-442e-90dd-833209d8d058"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 42,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "b6ce2cde-3e81-4d1e-b0ad-e5996b72a9b8"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 43,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "27ab4d67-909f-4678-bcd4-637d9e7f9622"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 44,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "ed078bdb-d517-4caa-8435-9e8a7415ac89"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 45,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "35a05f81-1da9-4396-8f94-44220c4dff7c"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 46,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "9925c363-6dee-4129-84a5-d3d30f3b99b9"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 47,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "93bd0099-4252-4630-a4fb-fb7938ef3484"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 48,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "cd7c1859-6b38-41c5-b377-71bc05796022"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 49,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "eac9558a-f661-42d3-8f1a-c48a8ff1fad9"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 50,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "00a742fa-749e-4ef0-b7a0-1bb4977ae3af"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 51,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "d6c0bfd3-a13a-4872-9bad-43225e316cbf"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 52,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "6cc0f7e6-16bd-4b24-88e0-bd61d3a294a4"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 53,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "a5dcc3e3-4b8c-41ce-ac39-c2aea5f7c39d"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 54,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "c4a8a58e-8f39-4d9f-9404-c92f59cf103a"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 55,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "0ac00436-f36e-49e0-8d17-df767098cd2d"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 56,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "cb74a7ff-a408-4279-a5cb-af96da548f7a"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 57,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "50ec9aeb-291c-4cf4-8e71-2f87f4ccb530"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 58,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "6a339015-d767-485f-b153-bfb277bfed35"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 59,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "9eb6a75f-1c8e-4391-84fc-00446d5819fd"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 60,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "e81f5db9-0aaa-47b7-b505-956bbd0f5be1"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 61,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "938c3b41-7133-4be6-a097-6b71750b3cf8"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 62,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "91813873-3edf-4d92-86f8-1fd5f05a3d9c"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 63,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "94db5678-1d67-4579-875e-41039c3b32d7"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 64,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "701d3c5c-dd5c-4ad1-a645-3d74fee39e1a"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 65,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "1a453938-2ee9-4bb8-a52c-6b7b4738e311"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 66,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "ca479d10-8f68-4d66-880c-8374490201d0"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 67,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "74ad365d-1ab8-46f5-94ca-a16c6e7d49dd"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 68,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "9d79c99b-9da8-405d-a6e2-b9734ab26845"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 69,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "ec018121-833c-487f-898d-1ea8ca10a67f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 70,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "ac3b2cf3-d38f-4f68-9ca8-221bd386e114"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 71,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "80b73b32-bbc1-4e93-ab59-6e7d92570a02"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 72,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "30e9868c-6119-404d-9cb0-c6decc54333a"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 73,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "2604520b-4216-4404-a1a6-566f67c21fcc"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 74,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "3c6ddad6-7f16-4d9c-bd24-8d564ff1e39f"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 75,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "e0100e35-d2da-4485-b7f0-919524014187"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 76,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "a88fbe81-556e-4bba-996e-d5d3e3ef2034"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 77,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "8c7e7668-f2ba-43aa-8334-a4a1d4777b75"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 78,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "d46cf739-4dcb-401c-81d1-d96289d36963"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 79,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "8021ffd7-7cdd-4fe4-be3c-50398ab9f52d"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 80,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "69b20a71-419f-49e6-9cb8-295133794bca"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 81,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "da2d637f-6d20-46f4-a779-563fce847fc6"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 82,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "7b549eb4-7370-40dd-ac18-0982e7cb22ec"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 83,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "dfc3b9cf-6d11-4969-8d3a-ee60308ef704"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 84,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "db8bcdfa-30e7-4d99-a154-7e7ee9aed7cf"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 85,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "2c946764-4777-4519-9d9b-babc6c7bc733"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 86,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "1af0144d-176e-4db1-a7d7-796e8adc071a"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 87,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "6637c0d9-f59d-496c-b824-fd387841e07b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 88,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "1a7a4a05-d370-48e4-8570-a8aca6b5d8c3"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 89,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "f9e247f8-3a6c-4f0c-b743-671089ad6c4c"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 90,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "e79f56c1-275d-43e9-96b6-f7884c1361be"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 91,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "346e3555-81a2-4a0b-9482-09d98cc200e0"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 92,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "1c24be01-17bc-447a-a6ba-4aaf3c0caed6"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 93,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "21d75f54-98fe-4ba2-b170-56bfd9634055"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 94,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "1d889ab4-88e2-4db1-a162-d64102807448"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 95,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "3585564d-1b95-4039-9b4d-cf99e8accb1d"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 96,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "3c48c2a3-0579-453d-a4d0-8172fb1bc8b7"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 97,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "6520f891-da2a-4ff2-bb6f-1f85a9b16d1e"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 98,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "d1da362b-db37-47ac-b8b2-53d7ed4016fb"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 99,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "e4b899c2-369a-4044-a969-f5a8200e65d4"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 100,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "c4c4d99b-7c2c-4ed6-a795-a5c38197949f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 101,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "3cc5e452-01b7-405b-9b0c-ee5024d517d1"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 102,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "9f6f1ee0-a0fe-42e4-859b-6736c8b97d69"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 103,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "30a0a51a-8b1b-4754-9304-bbbcccdfdedf"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 104,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "ea261ba6-afec-4e6e-8a58-edcb236675b4"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 105,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "4e6b37aa-9488-4776-80ea-895ea4f5244a"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 106,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "5572913d-1016-4914-9c8f-a1289342abe9"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 107,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "4e6a42bf-974f-49e5-be43-bc5d76557bf0"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 108,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "2eb82ec9-1738-439b-aa6f-f17b5d6c2add"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 109,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "32cd2ac1-2560-459b-aa88-9c536daa5a7f"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 110,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "1eaaecb0-5584-43d8-a182-45eb039a6253"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 111,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "a736b138-2a74-4e75-bcdf-0e28a10589fd"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 112,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "bd337d58-9db2-4d82-a113-b58841a7eb42"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 113,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "2aa4d2d7-3fc6-4635-a739-2ffe89902de7"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 114,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "23a363db-02bd-4060-834c-15301be75b04"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 115,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "67fc547b-48c1-4da8-893a-63c9e6662d41"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 116,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "93ec9701-a7fd-4fa6-9e37-2199ca21d686"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 117,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "125af2a4-43b9-4706-96ee-d3aa64c9de52"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 118,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "989dd5c6-2f31-4b70-b866-8491eb95db6c"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 119,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "b2ba6662-a08a-4eec-9c03-54d779f55e64"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 120,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "9dc6fbc7-79ee-4926-942f-5a99b60f4355"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 121,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "65c0961e-4dd1-4b9a-9ac1-37bafa7afefc"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 122,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "3bef9ea4-a141-457a-b99a-92b1183ac64d"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 123,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "47fcf728-a3b5-4ba6-874b-48e361e24e2e"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 124,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "ce4819de-9657-406a-869c-45aba8cc9ad4"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 125,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "5961de97-b0c6-45be-a6ea-d82053282089"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 126,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "9b7de774-cea0-4bd9-b766-3907a7953e4e"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 127,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "c0acf5ba-a04a-4780-b921-c273e81bb642"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 128,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "e64040bc-972a-4f5d-8ae9-3784e7a8d735"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 129,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "ae9a2aee-21f7-4d8e-8af5-b66f4b2c2059"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 130,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "c52bf9ad-82d5-418c-8d9e-120b339f8a41"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 131,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "102a74f9-173e-4d07-90ef-9672e53ec283"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 132,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "fd1325dd-2d82-4d40-9d54-482c6f5c83e5"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 133,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "c7783636-e98f-47a5-8e6f-38fbc3913695"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 134,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "265b7a5b-8402-4d5c-89a4-1ab7f1044494"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 135,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "fe51bf8f-0207-4666-9b10-db6c1f58bd6d"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 136,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "ccb7a4ce-54ff-42bf-b864-2676937f9cb6"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 137,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "4ee6a2a2-bca2-432c-9479-447baa7a658f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 138,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "614f51d4-e15d-48c9-b652-892bf1702d89"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 139,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "a73d67da-7df3-4525-b7f6-3049ae21a2d2"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 140,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "dee0e68c-ad43-475c-9ff0-3074fdf4bb0b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 141,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "abd2456d-f993-49f4-974f-d9953c12a069"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 142,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "2ede1632-edbe-4354-8a32-3f434f2bbfaf"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 143,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "144bb71d-ee9b-424d-a2f4-03c7e3dc1239"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 144,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "7bb77263-de99-46ce-8f34-9ef83997417e"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 145,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "d1df278a-ad39-4749-9aad-365ccda59c93"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 146,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "22764323-be8a-4a22-8667-0697a0245fc6"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 147,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "39a0149c-cd6f-4277-87ed-777dd9457f34"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 148,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "b5e82087-64d1-4fb1-99b8-b1530d4cad66"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 149,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "de09f31f-b672-4729-9dcd-19eed731f51e"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 150,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "14bb09ea-8944-4162-bf5a-91b6caa10b6c"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 151,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "bd69e5a7-c622-462e-8979-9ffa0f455702"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 152,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "8eb41c05-4571-4f49-aafa-787054ec30e9"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 153,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "aff21151-6490-45f1-880c-b3a7c6685f27"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 154,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "33c56e24-5547-481e-a84f-cd6a49f5c1f8"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 155,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "81183596-e643-40a7-a020-6d70a7e5216d"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 156,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "d448ac6c-49c8-43ca-807d-84ec9cec48e9"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 157,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "a2d4f8c9-2a56-4f01-becb-418fc5d800d0"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 158,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "f12ae87d-f246-464c-961b-202eb2eae96f"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 159,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "cf39c8e0-104b-4494-b9f5-cfc493e42563"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 160,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "924f6529-665a-4678-afc8-c6f00d0d7f2a"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 161,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "d97c9209-c52d-4e94-ac9e-38a1b5b47247"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 162,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "bcf35df3-e17c-4da9-8a3a-27e2d435f5f9"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 163,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "86c03088-5fe2-47fc-8454-b1a2bf9d7159"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 164,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "ce6b56ad-c5ab-4d6b-a636-dac5c3182d9b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 165,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "8c538448-5f97-414a-ad4f-a4604cb4f03f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 166,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "736029dd-688a-47a7-87ec-ddd1f3d79df7"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 167,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "44f9601e-1654-4b8f-8d08-99af10de15a4"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 168,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "2ab2de9b-90e2-484c-92d6-e2b5e1f8168c"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 169,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "af34b03c-d19d-434a-94db-2b0b0496bbf7"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 170,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "e2f8b800-31e4-413b-a75f-72b4ea11b044"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 171,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "69ba0378-bcb0-435a-a1a8-8385276c6efd"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 172,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "d85630a0-a589-4b95-bc62-1aa3e1157969"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 173,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "7658b309-b3ae-48bd-a483-8fab54b7aa11"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 174,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "ced8ed1a-06b6-46b9-a3bc-a22bb539ad72"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 175,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "7645e03c-2eb1-4694-8aff-97eeec8fd11b"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 176,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "1b921c60-c45b-40d8-b946-652c006e6deb"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 177,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "2a1d49b3-913a-43d3-88f6-21866d6ee6ad"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 178,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "b82b6f0e-a438-4ff0-b700-07eb0634f0d3"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 179,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "6feebcb7-e2a0-433c-b694-a827be0a8e14"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 180,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "d8d42e6f-a250-4e0c-b44b-68294ddbbbe6"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 181,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "90a14e34-f013-4b9a-aa1b-3a0813782688"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 182,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "dd42f175-3979-46d8-aa37-3bc3e002decb"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 183,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "bda59a55-1b8f-4134-877c-bc316dd3b895"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 184,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "be824254-6e5a-48c2-b63e-cd77688c4856"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 185,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "9daf82ae-3178-48f8-9a27-dd8577ca008b"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 186,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "c3cdaf03-577b-4ead-9a7e-3d593d894ffd"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 187,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "06c268c4-3f56-4ced-998c-84ae4cbcf9b7"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 188,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "175dd1ef-61b2-410e-863d-c58d427851de"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 189,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "888cd5bc-1cea-496d-be76-dfe6177e5ff2"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 190,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "353c4226-e08f-48cc-abd4-3ada24031673"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 191,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "d96319e0-c8d3-47cf-96c9-835413000e85"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 192,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "f0be197e-9087-4a1c-808a-c31dc40b3707"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 193,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "132f632a-5186-4c51-ba79-25880cb8dec3"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 194,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "0186daed-e113-4058-b14b-9ee5914fda4f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 195,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "5ae9224d-3190-4250-ba16-23661cc05cf1"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 196,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "7501bc65-6554-4923-80bd-53250c48c447"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 197,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "9f553ece-67bf-42ec-b724-0f6ce63fde3c"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 198,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "d1b38d4e-de21-42fb-bef6-b7f1b1bf213f"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 199,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "656b4149-b667-4f00-a6fe-5f4e77d5fff1"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 200,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "96f7cd0d-c45e-4f83-a0af-6e28e746b43c"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 201,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "fd775fe1-43d8-4cf3-bb7e-1a048362ad98"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 202,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "fdb1826b-1a1a-4a40-998d-4bd7711b63d2"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 203,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "29c2ae93-5dbc-4760-8239-be4a36c6f34b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 204,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "832bdae9-6f0a-43dd-9694-360d276fa133"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 205,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "602f1cf0-ec73-49c4-a252-48be8de7bb6e"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 206,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "0846cd87-f1e9-4808-b2d2-27000338ff70"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 207,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "23325a48-c7ad-4f46-9aa4-1e835560f61b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 208,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "d76ff8bf-272d-45b7-a83e-adc4b3dd03b6"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 209,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "c40f6fd2-6128-4db1-bfa7-5faae5f0bca3"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 210,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "b3d03c41-16c3-4d0c-92bd-34c6a2716ce4"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 211,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "65845274-08d2-4099-add8-aa53e935161a"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 212,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "3eae1fe8-9343-4ee8-9630-bcf3f97b3b47"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 213,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "b04d407c-4f38-4ecb-8721-f2379e78ddc7"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 214,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "6dbd28a5-3ca7-46b2-8ceb-cac727ba482c"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 215,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "8d251065-11c9-41ec-bd2c-6cca8a98481e"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 216,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "b240fe7a-35d6-4f85-9988-cf098398f754"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 217,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "65b7fa6c-0b41-4e1e-8d62-e03a9f55e963"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 218,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "bfd95ff6-009b-447c-96a2-05e29c309b12"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 219,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "5190cf39-4db5-4d55-9971-9bfc6983f2e9"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 220,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "8df51938-1dc5-4065-9089-42fe8e8ae84f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 221,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "342053fd-86f6-4774-90e5-9f99b02f1fc3"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 222,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "d252d260-883e-4847-bb38-3a76d9d154ff"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 223,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "e4b46273-a6ff-4ce0-bfde-7e359e4f0b14"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 224,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "c89cb4a8-9482-46af-a69d-3643eb6e2830"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 225,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "9fa27e0f-2ad4-44d7-b997-392018a09cf3"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 226,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "dcf85e23-10af-4dcc-bd79-3fa675524833"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 227,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "68af6048-c873-4ac0-9a17-f538c1440459"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 228,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "464897a3-8e1c-4e5f-b05d-0706ef95c191"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 229,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "8649b188-d420-41fb-a73d-ece5c71223b3"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 230,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "d7248bcb-bf11-4cab-8cea-3b0a0fe6b64b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 231,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "b2267935-d2be-4097-a72a-ffa1681094bc"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 232,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "df0fd4b1-fbc9-492f-999c-530267f92fb5"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 233,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "c6f597b3-5d8f-41df-b901-760b83e982f7"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 234,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "1d8c4e0a-8ad9-4862-b55b-e82e9b70eedb"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 235,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "6ce30d52-7ac0-4c4e-bd75-df39d7eba938"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 236,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "6739ea53-321c-437b-a372-48b68a6efea5"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 237,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "7e7ca762-3c4c-493f-bb56-cea4ebeb1cc9"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 238,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "7812f9c2-2237-4aa0-8d72-823e071eff41"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 239,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "25ca6dd1-012b-40eb-80a9-22a3cc1df269"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 240,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "66011a34-06a3-4369-bab9-9b0765b5ea84"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 241,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "4a877fbe-0a4a-4b41-995b-641720ed1e9c"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 242,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "17966fd4-aa69-4f9d-947d-093342db5199"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 243,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "009ef16c-e3b6-4a2c-9a22-220c353e57b8"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 244,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "fc2f382b-81b1-4fe6-b7b5-d73df7b6445b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 245,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "91921fa1-3394-40e9-8d5d-48d9a2816e80"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 246,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "ab928877-3622-448e-80ca-6c08d0f88804"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 247,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "f346c045-82e0-418b-943f-21dce805a717"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 248,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "2ad72cf8-3e83-46cf-8116-21e11d4accbc"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 249,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "ce180cd6-ef10-43c9-99c1-705f75f5b258"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 250,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "dd759f40-d53a-4760-b73d-9c381495d400"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 251,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "9d9feae3-fba1-44b0-94d2-ecc0395a1be5"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 252,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "d94208b5-9187-4600-8811-206e8fd85645"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 253,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "49ccd76b-7acb-41f2-a742-208e7eab8c24"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 254,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "82246131-84d5-4f44-92c2-5a89786b3775"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 255,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "a64f15fd-a81b-4730-9b47-fd29007afe9b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 256,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "861653f1-c328-4e30-98bb-f66aa9c3dee8"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 257,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "5d3c0ff5-cf27-4292-876d-d4168d0f4148"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 258,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "72debb5f-e46c-4a54-a865-242308b41373"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 259,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "bba91ba5-37c4-41f3-b82e-ef10fae300da"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 260,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "1d1454f7-d040-4975-973c-31e63f26643a"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 261,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "5ebbd524-2ae4-452a-8bb0-6f6dc2bc2799"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 262,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "73bf9fe5-a9e0-4d0d-9b69-d59d2a4d5034"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 263,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "91feebd8-c2dc-4832-b295-5289248a16b5"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 264,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "856b8ce1-7539-47a4-8e70-a83802d5d70b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 265,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "8ad08761-2153-4592-8bf5-a0e58c92050a"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 266,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "5b54405c-5c07-46fb-a783-3a9b09e25370"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 267,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "65f3aaea-a1f8-4b09-9748-6eb62d122b4e"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 268,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "c89f6cbb-a3f0-4afd-8efe-24e65a662779"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 269,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "eee1b177-5e51-4335-97b8-ba103e419dbe"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 270,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "d6917e5e-3d23-4613-96c4-ee5936681e71"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 271,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "efb074a5-e237-40be-b46a-1502fdc2ffaa"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 272,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "98610450-7c53-40db-af3f-09d57d9def2c"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 273,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "d04545b1-8a55-46e3-9693-064835608dbc"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 274,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "27a720ca-6c0e-4aed-87a7-19e96d404c3f"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 275,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "765e3b79-2ce7-48cb-a7dd-164da5962c52"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 276,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "b718e68d-2497-48b5-adef-ad9a26c077d3"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 277,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "520dd757-d70a-4669-a936-096fbfd3662d"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 278,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "f0821a0d-6cda-401d-bb0c-147e58274631"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 279,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "bb577b90-bf11-41f0-8c22-1636c3cd13cb"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 280,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "80c3eb7c-8c05-4637-872c-ea8149d69989"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 281,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "5150ec87-063b-4780-957e-5b956137c78f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 282,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "73c0075c-1d92-48f3-a3fe-0c5154b98d92"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 283,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "c9cb1547-cb02-49c3-92c0-bc8815fb2b34"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 284,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "81306c05-4c56-4629-a221-cf45072ce6cf"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 285,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "bc711023-f73e-49d9-a4e1-35420458887b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 286,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "a8d9056e-711a-4823-838c-014e71d962c9"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 287,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "21e934f5-d52d-45f6-9338-71b69a62a56c"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 288,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "7f58cecb-a0b0-4b53-9dbd-694f6422ed82"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 289,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "122f3ea3-60d5-4262-bfde-7d9918c12a9e"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 290,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "7c480e9d-3dba-4c5a-9dea-b37177cd9a2a"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 291,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "4ff267ce-f0b5-4a1b-8168-47b64b8e5210"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 292,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "efde0cd7-8ad2-4294-be5d-4f739cf300ef"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 293,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "8073cce6-04da-45b9-9cd6-04bbb4e0081f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 294,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "b271111f-0701-47db-83a4-a7693e6f55a3"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 295,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "028d52d0-7e94-4552-905b-32ba5541bc90"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 296,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "abc1c67f-b455-418b-be00-967f5b2b4e91"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 297,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "fc8997eb-233c-4a3a-a2f2-cd5b3adcb0f0"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 298,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "d8914754-3bde-43be-bf1e-85e449cc283c"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 299,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "5dc2c0d6-c384-4dd1-9242-000484bb1dc0"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 300,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "05418bcd-e7c4-4573-8cf6-b80599880fc8"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 301,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "96172015-1e6d-40f4-9ff9-80997324a6b0"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 302,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "c203ac63-18f1-4b02-a296-22c1e99885fd"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 303,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "6c49a603-f800-40c2-a023-f00a721b20d8"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 304,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "8e570ef7-af81-459e-95f6-30c959ffb4c9"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 305,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "53e0637e-89b3-464d-ad1e-b0c5ba390548"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 306,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "038aca94-4892-4d76-92ff-696f58439f8f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 307,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "8857cc4d-49c9-4d55-9e70-2bfd6945a6b8"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 308,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "6fedb0ea-f9ad-4093-8191-e74014a3d366"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 309,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "e1d97ee7-f50b-49bd-91b8-c25ed6112c5f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 310,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "cfee09f0-9d34-46de-9af1-11f250fcf731"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 311,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "7d8da6a0-8ea3-44ba-98dd-6deb8c36b6dc"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 312,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "55037049-7d5d-4a3e-b074-137640a2a9e3"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 313,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "ebaac1ec-0755-4b87-baae-4a7813d5169e"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 314,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "c96176d8-0597-442c-9234-9f0466ba9cbb"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 315,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "42b052b4-0736-4ef5-ac68-8ac92c97a308"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 316,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "3736af18-afa7-4f84-b63f-4033195648eb"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 317,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "b4a66178-f177-4398-a058-fb6f8bd9bd1d"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 318,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "7f915960-eca9-4a5a-b2b3-6757d7714be9"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 319,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "a34edbac-54d7-4d2f-9b16-ce08f5f3749e"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 320,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "b9bb1155-2fed-42e9-83de-f9210532a32e"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 321,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "d4109a11-db96-4b68-8212-b7785808643b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 322,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "d2614458-fd97-4ecf-b451-f6a77f9b62f6"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 323,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "1ffa2832-0a30-44aa-bfe2-337f395e52d7"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 324,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "82217269-aa70-454f-9ff4-057627689643"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 325,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "8fdede2b-e40a-412e-863a-8708e5ff2a8b"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 326,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "d48c5e96-3992-44fc-beef-23d58fa7bd96"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 327,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "54d10de6-71ba-459f-817b-9cd18d2efea9"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 328,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "2984a70d-4e1f-4140-a5d9-fc2dffbeec7c"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 329,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "982518fa-ea38-42fd-8628-8ddf46a418be"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 330,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "b4ac80f2-787f-4876-8850-969c4478ab90"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 331,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "cc1e6e73-9de2-4511-aca6-99985760e029"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 332,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "2a6d78c6-e413-4ab3-826f-9d85f9f98150"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 333,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "611a1c08-97e4-43e5-99b5-5debd9fd5f38"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 334,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "c09c4a99-525a-4a06-b92c-dd3a335e58ff"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 335,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "d4ef1553-3d52-4cab-ba7c-48a24baf396f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 336,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "2f4c281e-3009-4678-ab50-544043eca12a"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 337,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "5429b8e4-3de4-41d0-91a4-77c14f0f3bbd"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 338,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "1b4601f9-a749-40ec-bb4e-e51d462d8fa1"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 339,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "1311f618-1a15-4bc2-8b3c-dfff6a85353b"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 340,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "3145347c-df23-4776-8bb2-5b1a4dd77e28"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 341,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "c0800d5b-50e1-4d06-84f8-edb7c5fe8498"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 342,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "cd46db6c-3524-46ce-bc83-0b12915ac564"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 343,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "280604df-0222-4e33-8193-86875640d06e"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 344,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "53592573-66fa-41f7-8083-983692c69a5a"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 345,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "8c441d62-4d30-4a49-8547-006ec80c0b7e"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 346,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "f3589944-b95a-41ad-bc71-1f706187f66b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 347,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "32334c17-f59c-4d5a-8d29-451b22a54112"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 348,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "6fbb7ed8-a533-4e10-a0e4-12321bf165e6"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 349,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "10efc337-737c-44f8-893e-8202c3283940"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 350,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "44c7cb3c-0de5-4889-b253-b0920413191f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 351,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "ec5ba55e-61b3-4633-ad0e-0c2cde3e4eda"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 352,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "999c4010-beae-483f-a76a-d14167405653"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 353,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "a46d312f-9202-4495-83b0-5eed8bab718d"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 354,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "cc782daa-4ba5-4491-a04e-d775c7908da3"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 355,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "66ef7c0c-fb3c-45c0-8827-b412ab781a8f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 356,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "c733ad01-b5ef-4910-9f59-a024c8d2b5f9"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 357,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "e882cd65-6379-4d3c-8cad-1e1d76013f3f"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 358,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "44a49983-25de-4d09-83aa-ae8097cb62e3"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 359,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "f3589944-b95a-41ad-bc71-1f706187f66b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 360,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "32334c17-f59c-4d5a-8d29-451b22a54112"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 361,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "6fbb7ed8-a533-4e10-a0e4-12321bf165e6"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 362,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "10efc337-737c-44f8-893e-8202c3283940"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 363,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "44c7cb3c-0de5-4889-b253-b0920413191f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 364,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "ec5ba55e-61b3-4633-ad0e-0c2cde3e4eda"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 365,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "999c4010-beae-483f-a76a-d14167405653"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 366,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "a46d312f-9202-4495-83b0-5eed8bab718d"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 367,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "cc782daa-4ba5-4491-a04e-d775c7908da3"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 368,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "66ef7c0c-fb3c-45c0-8827-b412ab781a8f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 369,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "c733ad01-b5ef-4910-9f59-a024c8d2b5f9"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 370,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "e882cd65-6379-4d3c-8cad-1e1d76013f3f"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 371,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "44a49983-25de-4d09-83aa-ae8097cb62e3"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 372,
+      "cited_text": "36 \u2741 Strength",
+      "start_char": 5665,
+      "end_char": 5678,
+      "chunk_id": "f3589944-b95a-41ad-bc71-1f706187f66b"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 373,
+      "cited_text": null,
+      "start_char": 6101,
+      "end_char": 6211,
+      "chunk_id": "32334c17-f59c-4d5a-8d29-451b22a54112"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 374,
+      "cited_text": "Contents",
+      "start_char": 2733,
+      "end_char": 2741,
+      "chunk_id": "6fbb7ed8-a533-4e10-a0e4-12321bf165e6"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 375,
+      "cited_text": "Increasing Level Cap[ ]",
+      "start_char": 3795,
+      "end_char": 3819,
+      "chunk_id": "10efc337-737c-44f8-893e-8202c3283940"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 376,
+      "cited_text": "Foraging levels in",
+      "start_char": 4307,
+      "end_char": 4325,
+      "chunk_id": "44c7cb3c-0de5-4889-b253-b0920413191f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 377,
+      "cited_text": "Foraging XP is required to reach the first level, meaning there is a \"level 0\", just like all other Skills . [-]",
+      "start_char": 3200,
+      "end_char": 3311,
+      "chunk_id": "ec5ba55e-61b3-4633-ad0e-0c2cde3e4eda"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 378,
+      "cited_text": null,
+      "start_char": 30203,
+      "end_char": 30650,
+      "chunk_id": "999c4010-beae-483f-a76a-d14167405653"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 379,
+      "cited_text": null,
+      "start_char": 30910,
+      "end_char": 31385,
+      "chunk_id": "a46d312f-9202-4495-83b0-5eed8bab718d"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 380,
+      "cited_text": null,
+      "start_char": 28576,
+      "end_char": 28972,
+      "chunk_id": "cc782daa-4ba5-4491-a04e-d775c7908da3"
+    },
+    {
+      "source_id": "164417ca-c508-45ac-aa60-cc73015f9b17",
+      "citation_number": 381,
+      "cited_text": null,
+      "start_char": 29391,
+      "end_char": 29783,
+      "chunk_id": "66ef7c0c-fb3c-45c0-8827-b412ab781a8f"
+    },
+    {
+      "source_id": "dadeba33-5ac4-4a35-9b2e-75ae7b853d7d",
+      "citation_number": 382,
+      "cited_text": "Logger[ ]",
+      "start_char": 5158,
+      "end_char": 5168,
+      "chunk_id": "c733ad01-b5ef-4910-9f59-a024c8d2b5f9"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 383,
+      "cited_text": "Notes[ ]",
+      "start_char": 20775,
+      "end_char": 20784,
+      "chunk_id": "e882cd65-6379-4d3c-8cad-1e1d76013f3f"
+    },
+    {
+      "source_id": "46a68ca1-a987-4463-b1d0-af65d3f95151",
+      "citation_number": 384,
+      "cited_text": "and 4 more",
+      "start_char": 3152,
+      "end_char": 3162,
+      "chunk_id": "44a49983-25de-4d09-83aa-ae8097cb62e3"
+    }
+  ]
+}

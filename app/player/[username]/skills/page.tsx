@@ -200,11 +200,14 @@ export default async function SkillsPage({ params, searchParams }: Props) {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         <StatCard label="Skill Average" value={avg.toFixed(1)} color="text-white" />
         <StatCard label="Maxed Skills" value={`${skillData.filter(s => s.level >= s.maxLevel).length}/${SKILLS.length}`} color="text-yellow-300" />
         <StatCard label="XP to All 60" value={formatXP(totalXPToMax)} color="text-indigo-300" sub="total remaining" />
         <StatCard label="Weakest" value={lowestSkills[0]?.name ?? '—'} color="text-red-300" sub={`Lv ${lowestSkills[0]?.level ?? 0}`} />
+        {profile.seniherWeight != null && (
+          <StatCard label="Senither Weight" value={profile.seniherWeight.toLocaleString()} color="text-purple-300" sub="skills+slayer+cat" />
+        )}
       </div>
 
       {/* Priority: Lowest Skills */}

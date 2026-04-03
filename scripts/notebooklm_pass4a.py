@@ -68,21 +68,33 @@ async def ask_questions(client, notebook_id: str, questions: list[str]) -> list[
     conv_id = None
     for i, q in enumerate(questions, 1):
         print(f"  Q{i}: {q[:80]}...")
-        try:
-            result = await client.chat.ask(
-                notebook_id=notebook_id,
-                question=q,
-                conversation_id=conv_id,
-            )
-            answer = result.answer if hasattr(result, 'answer') else str(result)
-            if hasattr(result, 'conversation_id') and result.conversation_id:
-                conv_id = result.conversation_id
-            print(f"    -> {len(answer)} chars received")
-            results.append((q, answer))
-        except Exception as e:
-            print(f"    -> FAILED: {e}")
-            results.append((q, f"ERROR: {e}"))
-        await asyncio.sleep(2)
+        answer = None
+        for attempt in range(3):
+            try:
+                result = await client.chat.ask(
+                    notebook_id=notebook_id,
+                    question=q,
+                    conversation_id=conv_id,
+                )
+                answer = result.answer if hasattr(result, 'answer') else str(result)
+                if hasattr(result, 'conversation_id') and result.conversation_id:
+                    conv_id = result.conversation_id
+                print(f"    -> {len(answer)} chars received")
+                break
+            except Exception as e:
+                err = str(e)
+                if 'rate' in err.lower() or 'rejected' in err.lower():
+                    wait = 15 * (attempt + 1)
+                    print(f"    -> Rate limited, waiting {wait}s (attempt {attempt+1}/3)...")
+                    await asyncio.sleep(wait)
+                else:
+                    print(f"    -> FAILED: {e}")
+                    answer = f"ERROR: {e}"
+                    break
+        if answer is None:
+            answer = "ERROR: Rate limited after 3 attempts"
+        results.append((q, answer))
+        await asyncio.sleep(8)
     return results
 
 

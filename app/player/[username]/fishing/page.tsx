@@ -3,6 +3,7 @@ import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { getBazaarPrices, getBazaarSellPrice } from '@/lib/api/bazaar';
 import { PlayerProfile } from '@/lib/types/player';
+import { TROPHY_FISH_THRESHOLDS, trophyFishName } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -14,33 +15,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: `${username} — Fishing Planner` };
 }
 
-// ─── Trophy Fish Data ─────────────────────────────────────────────────────────
+// ─── Trophy Fish Data (from NEU-REPO trophyfish.json) ────────────────────────
 
-interface TrophyFish {
-  id: string;
-  name: string;
-  location: string;
-  rarity: 'BRONZE' | 'SILVER' | 'GOLD' | 'DIAMOND';
-  bazaarId?: string;
-  dropChance: string;
-  notes: string;
-}
-
-const TROPHY_FISH: TrophyFish[] = [
-  { id: 'SULPHER_SKITTER', name: 'Sulphur Skitter', location: 'Blazing Fortress', rarity: 'BRONZE', dropChance: 'Common', notes: 'Starter trophy fish.' },
-  { id: 'OBFUSCATED_FISH_1', name: 'Obfuscated Fish', location: 'Various', rarity: 'BRONZE', dropChance: 'Common', notes: 'Counts toward fishing milestone.' },
-  { id: 'STEAMING_HOT_FLOUNDER', name: 'Steaming-Hot Flounder', location: 'Blazing Fortress', rarity: 'SILVER', dropChance: 'Uncommon', notes: 'Mid-tier trophy fish.' },
-  { id: 'GUSHER', name: 'Gusher', location: 'Blazing Fortress', rarity: 'SILVER', dropChance: 'Rare', notes: 'Rarer Blazing Fortress fish.' },
-  { id: 'BLOBFISH', name: 'Blobfish', location: 'Deep Caverns', rarity: 'GOLD', dropChance: 'Very Rare', notes: 'Valuable gold trophy.' },
-  { id: 'LAVAHORSE', name: 'Lavahorse', location: 'Blazing Fortress', rarity: 'GOLD', dropChance: 'Very Rare', notes: 'Fire-based trophy fish.' },
-  { id: 'MANA_RAY', name: 'Mana Ray', location: 'The End', rarity: 'GOLD', dropChance: 'Rare', notes: 'End dimension fishing.' },
-  { id: 'VANILLE', name: 'Vanille', location: 'Crimson Isle', rarity: 'GOLD', dropChance: 'Rare', notes: 'Crimson Isle trophy.' },
-  { id: 'SKELETON_FISH', name: 'Skeleton Fish', location: 'Graveyard', rarity: 'GOLD', bazaarId: 'SKELETON_FISH', dropChance: 'Very Rare', notes: 'Valuable mid-game trophy.' },
-  { id: 'GREAT_WHITE_SHARK', name: 'Great White Shark', location: 'Open Ocean', rarity: 'DIAMOND', bazaarId: 'GREAT_WHITE_SHARK_TOOTH', dropChance: 'Ultra Rare', notes: 'Most valuable common trophy. Tooth drops.' },
-  { id: 'MOLDFIN', name: 'Moldfin', location: 'Mushroom Desert', rarity: 'DIAMOND', dropChance: 'Ultra Rare', notes: 'Desert area diamond trophy.' },
-  { id: 'SLUGFISH', name: 'Slugfish', location: 'Mushroom Desert', rarity: 'DIAMOND', dropChance: 'Ultra Rare', notes: 'Rare diamond drop.' },
-  { id: 'FLYFISH', name: 'Flyfish', location: 'Spider Den', rarity: 'DIAMOND', dropChance: 'Ultra Rare', notes: 'Spider Den diamond trophy.' },
-];
+// Thresholds per fish: [bronze_count, silver_count, gold_count, diamond_count]
+// Build display list from NEU data
+const RARITY_TIERS = ['BRONZE', 'SILVER', 'GOLD', 'DIAMOND'] as const;
+type TrophyRarity = typeof RARITY_TIERS[number];
 
 // ─── Fishing Rod Tiers ────────────────────────────────────────────────────────
 
@@ -186,6 +166,23 @@ export default async function FishingPage({ params, searchParams }: Props) {
   // Sea creature kills from collections
   const seaWalkerKills = profile.collections['SEA_CREATURE_MEAT'] ?? 0;
 
+  // Trophy fish counts from API (member.trophy_fish)
+  const playerTrophyFish = profile.trophyFish ?? {};
+
+  // Compute trophy fish summary stats
+  const allFishIds = Object.keys(TROPHY_FISH_THRESHOLDS);
+  let trophyFishCaught = 0;
+  let trophyFishDiamond = 0;
+  for (const fishId of allFishIds) {
+    const [bThresh, sThresh, gThresh, dThresh] = TROPHY_FISH_THRESHOLDS[fishId];
+    const bronze = playerTrophyFish[`${fishId}_bronze`] ?? 0;
+    const silver = playerTrophyFish[`${fishId}_silver`] ?? 0;
+    const gold = playerTrophyFish[`${fishId}_gold`] ?? 0;
+    const diamond = playerTrophyFish[`${fishId}_diamond`] ?? 0;
+    if (bronze + silver + gold + diamond > 0) trophyFishCaught++;
+    if (diamond >= dThresh) trophyFishDiamond++;
+  }
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 space-y-6">
       {/* Header */}
@@ -281,28 +278,53 @@ export default async function FishingPage({ params, searchParams }: Props) {
 
       {/* Trophy Fish */}
       <div className="card p-6">
-        <h2 className="text-lg font-semibold text-white mb-1">Trophy Fish</h2>
-        <p className="text-slate-400 text-xs mb-4">Trophy fishing requires a Trophy Fishing Rod or better. Each trophy fish caught counts toward milestones.</p>
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="text-lg font-semibold text-white">Trophy Fish</h2>
+          <div className="flex gap-3 text-xs text-slate-500">
+            <span className="text-white font-medium">{trophyFishCaught}/{allFishIds.length}</span> species caught
+            {trophyFishDiamond > 0 && <span className="text-sky-300">{trophyFishDiamond} Diamond</span>}
+          </div>
+        </div>
+        <p className="text-slate-400 text-xs mb-4">Thresholds from NEU-REPO. Each fish has Bronze / Silver / Gold / Diamond tiers.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {TROPHY_FISH.map(fish => {
-            const price = fish.bazaarId && bazaarPrices
-              ? getBazaarSellPrice(bazaarPrices, fish.bazaarId)
-              : null;
+          {allFishIds.map(fishId => {
+            const [bThresh, sThresh, gThresh, dThresh] = TROPHY_FISH_THRESHOLDS[fishId];
+            const bronze = playerTrophyFish[`${fishId}_bronze`] ?? 0;
+            const silver = playerTrophyFish[`${fishId}_silver`] ?? 0;
+            const gold = playerTrophyFish[`${fishId}_gold`] ?? 0;
+            const diamond = playerTrophyFish[`${fishId}_diamond`] ?? 0;
+            const total = bronze + silver + gold + diamond;
+            const hasDiamond = diamond >= dThresh;
+            const hasGold = gold >= gThresh;
+            const hasSilver = silver >= sThresh;
+            const hasBronze = bronze >= bThresh;
+            // Highest rarity achieved
+            const tier: TrophyRarity | null = hasDiamond ? 'DIAMOND' : hasGold ? 'GOLD' : hasSilver ? 'SILVER' : hasBronze ? 'BRONZE' : null;
             return (
-              <div key={fish.id} className={`rounded-lg border px-3 py-2 ${RARITY_COLORS[fish.rarity]}`}>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-sm font-medium">{fish.name}</div>
-                    <div className="text-xs text-slate-400 mt-0.5">{fish.location} · {fish.dropChance}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{fish.notes}</div>
-                  </div>
-                  <div className="text-right shrink-0 ml-2">
-                    <div className="text-xs font-medium">{fish.rarity}</div>
-                    {price !== null && price > 0 && (
-                      <div className="text-xs text-yellow-300 mt-0.5">
-                        {price >= 1_000_000 ? `${(price / 1_000_000).toFixed(1)}M` : `${Math.round(price / 1_000)}k`}
+              <div key={fishId} className={`rounded-lg border px-3 py-2 ${
+                tier ? RARITY_COLORS[tier] : 'border-white/5 bg-slate-800/20 opacity-50'
+              }`}>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium truncate">{trophyFishName(fishId)}</div>
+                    {total > 0 && (
+                      <div className="flex gap-2 mt-0.5">
+                        {[
+                          { label: 'B', count: bronze, thresh: bThresh, color: 'text-orange-300' },
+                          { label: 'S', count: silver, thresh: sThresh, color: 'text-slate-300' },
+                          { label: 'G', count: gold,   thresh: gThresh, color: 'text-yellow-300' },
+                          { label: 'D', count: diamond, thresh: dThresh, color: 'text-sky-300' },
+                        ].map(({ label, count, thresh, color }) => (
+                          <span key={label} className={`text-xs ${count > 0 ? color : 'text-slate-600'}`}>
+                            {label}: {count}/{thresh}
+                          </span>
+                        ))}
                       </div>
                     )}
+                  </div>
+                  <div className="shrink-0 text-right">
+                    {tier && <div className={`text-xs font-medium ${RARITY_COLORS[tier].split(' ')[0]}`}>{tier}</div>}
+                    {!tier && total === 0 && <div className="text-xs text-slate-600">not caught</div>}
                   </div>
                 </div>
               </div>

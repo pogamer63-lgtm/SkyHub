@@ -27,6 +27,9 @@ export interface PlayerProfile {
   magicalPower: number;
   networth?: number;
   fairySouls: number;
+  seniherWeight?: number;
+  /** Trophy fish caught: FISH_NAME_bronze/silver/gold/diamond → count */
+  trophyFish?: Record<string, number>;
 
   // Populated by enrichWithNBT — undefined until enriched
   armorItems?: ParsedItem[];

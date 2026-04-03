@@ -1,0 +1,2880 @@
+{
+  "answer": "**Kuudra** is a massive lava kraken boss found in **Kuudra's Hollow**, accessible through the **Forgotten Skull** on the Crimson Isle [1, 2]. The fight is designed for groups of 2 to 4 players and is central to endgame progression for gear and attributes [3].\n\n### **Kuudra Tiers and Requirements**\nThere are **five progressive tiers** of the Kuudra boss fight. Each tier requires the player to have defeated the previous one and meet specific **Faction Reputation** milestones [4].\n\n| Tier | Reputation Requirement | Quest/Other Requirements | SkyBlock XP |\n| :--- | :--- | :--- | :--- |\n| **Basic** | None | Have Elle take you to Kuudra | 20 XP |\n| **Hot** | 1,000 Reputation | Complete main quest; beat Basic | 40 XP |\n| **Burning**| 3,000 Reputation | Beat Hot | 60 XP |\n| **Fiery** | 7,000 Reputation | Beat Fiery | 80 XP |\n| **Infernal**| 12,000 Reputation| Beat Fiery | 100 XP |\n\n### **The Faction System**\nPlayers must align with either the **Mage** or **Barbarian** factions on the Crimson Isle [5, 6]. \n*   **Reputation:** Earning reputation with your chosen faction is mandatory to unlock higher Kuudra tiers [4, 7].\n*   **Emissaries:** Each faction has an Emissary (Mage or Barbarian) who sells the **Kuudra Keys** necessary to open paid reward chests after a successful fight [3].\n*   **NPCs:** Major faction NPCs include Queen Nyx (Mage) and Chief Scorn (Barbarian) [5, 6].\n\n### **Armor and Equipment Sets**\nKuudra is the primary source for several powerful endgame armor sets and \"Molten\" equipment. These items are found in **Paid Reward Chests** [8].\n\n*   **Armor Sets:** There are five main sets, each catering to different playstyles:\n    *   **Aurora Armor:** Focused on Mage/Intelligence stats [8, 9].\n    *   **Crimson Armor:** Focused on Melee/Combat stats [8, 9].\n    *   **Terror Armor:** Focused on Ranged/Bow stats [8, 9].\n    *   **Fervor Armor:** Focused on Tank/Defense stats [8, 9].\n    *   **Hollow Armor:** A specialized set often used for support [8, 9].\n*   **Molten Equipment:** This set consists of four pieces of equipment (not armor): the **Molten Necklace**, **Molten Bracelet**, **Molten Cloak**, and **Molten Belt** [9, 10].\n\n### **Drops and Loot System**\nAfter defeating Kuudra, two chests appear: a **Free Chest** and a **Paid Chest** [11].\n\n*   **Free Chest:** Always contains **Crimson Essence** (amounts scale from ~1-2 in Basic to 200 in Infernal) [8, 12].\n*   **Paid Chest:** Requires a **Kuudra Key** corresponding to the tier of the fight (e.g., an Infernal Kuudra Key for an Infernal run) [11]. \n*   **Guaranteed Paid Rewards:** Every paid chest is guaranteed to give Crimson Essence, **Kuudra Teeth**, an **Attribute Shard**, and a piece of gear (Armor or Molten equipment) [8, 11].\n*   **Enchanted Books:** Special books like **Fatal Tempo**, **Inferno**, and various **Mana** enchants (Ferocious, Hardened, Strong, and Vampire) drop exclusively from these chests [9].\n*   **Attribute Shards:** These are used to add or upgrade stats on Kuudra gear. Examples include **Vitality** (Kraken Shard), **Breeze** (Wither Specter Shard), and **Magic Find** (Cinderbat Shard) [10].\n*   **Rare Drops:** Higher tiers have chances for extremely rare items like the **Burning Kuudra Core** or **Tentacle Dye** [12, 13].\n*   **Boss Collection:** Defeating Kuudra progresses a collection that rewards **Kuudra Pets** (Common through Legendary), Kuudra Chunks, and bonus Essence/Teeth [14].",
+  "conversation_id": "322bf330-d8a8-43bb-9cba-a0716952fb2e",
+  "turn_number": 1,
+  "is_follow_up": true,
+  "references": [
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 1,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "ab3a165f-9764-4869-ab0f-7c50a6f1efc7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 2,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "68d915f7-0dc2-4dde-8343-9e4f27f3e842"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 3,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "80ce2bd9-c756-47ca-a88e-54423076c8cf"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 4,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "4662dae6-8cef-4307-98a3-3f819323693b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 5,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "4d55887e-0313-412b-8b0b-763b6e99566e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 6,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "cad58b8e-3e45-4b95-98f4-ea466e6af6ea"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 7,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "faf6c404-9185-4a43-82e1-f871f297882f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 8,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "b2a4bc1b-94b1-4b29-96b9-75279874e423"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 9,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "2e4d4ec8-45f1-4b75-bd58-ca8b60502b14"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 10,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "0b3f5bd0-5d2a-4273-bfde-5510833a3a58"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 11,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "ff7ad663-1e0e-4e64-997c-cb2aab80df03"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 12,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "7188988b-a53f-4048-a09b-7f5edbde0ff7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 13,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "6007a4ee-507d-4242-b0cc-037064a69eb9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 14,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "b5d4b3d5-36d6-496b-9b4a-2fd7ff7aa35f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 15,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "b196c7d3-5347-458b-90cb-6e57f25a58d9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 16,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "701d1fa3-5f7b-4ece-b44f-0da00b713dc7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 17,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "31712ca6-ffc3-420d-9126-6dfd29ede000"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 18,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "e97d6c4a-3b66-46b5-909c-309cf6ae9517"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 19,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "fa1ef150-06e0-480f-8dec-7fbebb57811f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 20,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "d57eaf1a-6b27-44e7-adc9-e217affac558"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 21,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "04e0a342-e3b9-4acf-a288-1adb345f4867"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 22,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "bf94ccba-31d6-4e16-b9f9-d0db192a365d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 23,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "6e08c698-5da4-4788-bd6c-18dbedde2096"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 24,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "b91a60be-c4b0-4a92-8cbb-6a68b363ce4e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 25,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "18e9afc5-7377-4a75-8eb9-f9f65c87a74c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 26,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "8bea03b7-a066-40d9-bdae-1a257a96f984"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 27,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "e8ffb2d6-ada8-434c-a6d7-25da3e2b49a5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 28,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "8ae076f3-f675-4803-b104-96504a59d2a8"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 29,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "a9e356dc-b6b8-4ec6-806a-ac6af1346fae"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 30,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "1d307b2f-4382-42ee-8426-6b04425d560d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 31,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "842ba490-a4c8-4dd8-8112-c5be935c66f8"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 32,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "8cfdfed4-284a-44f6-b85b-a3a4f24f7e69"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 33,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "c1f2a3be-fd64-440d-82e0-6feb429cfdd6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 34,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "d4c9371d-a8af-49a1-b89f-787b16679599"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 35,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "09a2508f-c919-4857-9bee-40dbd3379507"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 36,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "a47f7007-3b37-4a77-af07-b59265584a53"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 37,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "4a28f78f-088e-4c50-abe5-c5987dedd178"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 38,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "93aaeadb-568f-46d1-a08c-4d6f69bc2c99"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 39,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "f3c3cd42-24b4-4ef8-bc6f-c43f2d036c1f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 40,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "0bd87f5b-7092-4184-b669-d4ec1140f09e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 41,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "506de9ce-d60c-44c4-8b18-a1bbf423b15f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 42,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "be45f8d3-2714-4844-accb-6e06f1151b6a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 43,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "ec13b97f-9c4a-45b1-9d6b-8c53e3d94ca6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 44,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "33bda47e-2f7a-41db-b2b0-c24caf263162"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 45,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "02d09fef-d010-446d-973b-0603fa9e6892"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 46,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "69fc9d6b-a01b-4902-95e6-21e006246b2d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 47,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "3fe752a4-d1f5-4a3c-b61d-44f7f4759e45"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 48,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "f4e04d6c-c72d-41e9-bedb-10ed1ede7655"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 49,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "69cdb3a2-a824-4a68-8872-b4ab9761e5d4"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 50,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "6d6f38e5-91e9-4a4d-8b2d-29324d4cf8cc"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 51,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "3ef651f0-c4c2-4423-85ef-fa4f7d0d797e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 52,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "ebdf71b3-1442-4766-9ccc-66895df2247c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 53,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "dbdc1490-da8f-4713-b5f0-485af075e061"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 54,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "0583bae1-f370-4d4e-a914-bebfd56feb21"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 55,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "ebab3acf-8eed-4474-82a1-f985f747bc35"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 56,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "a5a4379a-7e34-4c33-a21f-45cb86a45970"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 57,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "b42cc736-72e2-4ba9-b000-9a98098ca741"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 58,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "63733469-e8ab-4c81-9634-bbe83ba28de8"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 59,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "1d7b5830-d708-4ae8-bdda-5e3c25ec1b21"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 60,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "2d29c5c1-e383-44e4-b2b9-2fda1738696f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 61,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "37f5a5a4-a2cd-4686-b674-8d5bcfb30d3b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 62,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "1ed2727a-3b90-40ba-ad69-80b4bc0b0822"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 63,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "99456e5c-cb8f-400e-ad2b-671030e816c2"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 64,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "8043723d-7421-4a9f-a95e-ca7611cc5d4c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 65,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "de22e3f5-a0c6-480f-8f4a-e66f548bc103"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 66,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "94a62f4a-0a8c-4e40-9062-361bbf2b7a3c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 67,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "340f9466-7fd9-49d8-b80a-784b4a6036a0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 68,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "2f0aa933-04a9-4e39-adec-9adef2adaded"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 69,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "89a72884-ebcf-4f0c-aa9c-f69a00bfcfaf"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 70,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "6c6747a6-b8de-4b5d-9781-87c04a0c3e88"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 71,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "2cae424b-0c87-4c44-acfb-12a63d2479e0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 72,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "fddb4bea-006c-4e8d-80ca-d8b694ae46bd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 73,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "b05201ff-759f-4818-952c-e40539daae3f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 74,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "439bbce4-8325-42a8-bbe3-825b9985307c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 75,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "4bbf920a-e578-48bb-977c-617baa6d6c43"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 76,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "472461ca-b838-4066-8aa2-036090b82d56"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 77,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "76bae4ab-ee1b-4e80-a893-de811deb70d1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 78,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "a062de2e-ea67-45f6-9da7-897f7f7922f4"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 79,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "c33957f9-1acb-4fbc-9c72-a5299b9607a3"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 80,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "7465d3f8-8c52-48c4-b618-2a315f76cfab"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 81,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "39baa762-a0f7-433f-92be-7067b29b2345"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 82,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "da9468fb-17c6-4512-96f4-b01984b5bfe7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 83,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "8b15e853-1915-4601-bf4c-fb3617cf6408"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 84,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "b3c5b460-c868-48d2-b549-83aea766d1cf"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 85,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "cf35059e-988c-4e1d-aaa8-a8c8a47a392b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 86,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "4d0892ac-be38-4449-9295-293500688a51"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 87,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "ea447b46-cc89-48d8-8297-4a01ed485dcf"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 88,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "7ba2e608-2292-4e7c-9a8a-cad93d788a59"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 89,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "3987f6ae-3856-4cb8-94e1-fbcd4d482d7a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 90,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "8d442458-4cfd-4178-8a4d-06388596ea1b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 91,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "ee57bfda-9ddb-4f5b-86f8-da266c4d5cc1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 92,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "bdbd23f4-4dbd-4507-996d-f3ca5514f4f1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 93,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "3e20a50a-8e7b-4cff-b3b4-312d894f8296"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 94,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "dfca74f5-b269-45fb-80df-856850a27e88"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 95,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "029f9004-fd18-4202-a96c-1ecbf9ec5c64"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 96,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "0731a6fb-882d-4711-96cb-3bacd9c2dbc0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 97,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "e17f45fc-0821-4fa5-899b-68841ec88b9a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 98,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "8e80d8cd-fc79-49b7-8f74-8c5b6877b100"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 99,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "3d112552-2f85-409e-a0bf-f1a72d3cf9e7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 100,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "aafa461f-b9fe-4450-ba91-fd0dff778688"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 101,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "37fa141d-5dfd-4de7-a9ff-5df1b0fb67a4"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 102,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "0d6546fd-9486-4947-a3eb-f37276b246ee"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 103,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "85cf8503-57d4-44be-8ffe-d71b730a3c18"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 104,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "abd5205b-8c25-42e8-afcd-84d36c7fb893"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 105,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "76c78147-9958-41a0-ae6e-1d2ff002ea32"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 106,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "10df53d6-96e6-4746-beeb-f04f61bb5ff1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 107,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "74a3abc4-c630-4582-8018-17c2bd5ac91f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 108,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "4d1e9b0a-7a20-477e-959d-b48b9709dd2a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 109,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "3a2d018f-fe57-44bf-a6b4-ead75d6972c0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 110,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "3cdce514-c633-464d-98a4-77b9a0532f17"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 111,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "1041fee9-f7ee-479b-98d4-8812ea0aa331"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 112,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "21af6b5b-523d-491a-9544-8e4cfde00eab"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 113,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "54f7ed46-3f5e-4b9e-8863-e326d9081822"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 114,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "797ab47f-b9df-4d1b-93d4-cee6ff2f0021"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 115,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "c24b498a-6a07-4c96-a7e9-7c8cec6175fe"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 116,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "d25af821-3d6d-48f3-8942-635fa6b36ee5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 117,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "a36a79d4-1956-42b6-8a7b-60f3f17e70b6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 118,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "b4c4f923-af94-43d4-8a3d-63725f35e3ad"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 119,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "4ee09f22-6d82-4e07-be70-f5c19ff80e38"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 120,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "34780065-ed80-4187-97c9-10d23b6be88e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 121,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "84b9a648-4a82-473c-97fd-c4dc1547fc95"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 122,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "5a64969d-510f-4e21-95cb-cc31fbde932a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 123,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "d023448c-1f78-4fb2-9fe8-bd8c11ea935d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 124,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "5a66a9b6-e502-429e-857b-2a2cb2435902"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 125,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "dbe406b7-f785-4315-9902-f06de0a71d35"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 126,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "33f48711-b869-4e70-bb75-c1325a46bbda"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 127,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "2b8fa00c-c0c0-481f-88e9-839b507e27d9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 128,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "a03db9b5-201b-4c50-9acd-2f7485a295f2"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 129,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "f74dedd2-1a25-402c-85d8-b14b910a993f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 130,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "c066b504-15cf-4c56-a68a-43fb7ce6c7f3"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 131,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "1aee0cf0-300d-4dcd-8403-9633b6411e8c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 132,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "b58d799d-bf9f-4d2a-8dd6-8aff095c6a07"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 133,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "e20ce5c4-426c-411c-8584-a6d55aa9fabe"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 134,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "2e141c95-2477-4548-a1ab-8220b9352ca3"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 135,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "cfa01d5f-0cec-4041-8911-2d397e386e18"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 136,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "8f0aaf7f-9259-4a94-a467-3a50913001e0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 137,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "64d60401-5421-4db6-b660-e56a288f012e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 138,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "461767a0-da9e-465d-82a3-5058666693f9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 139,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "5c3f10f6-053a-45ab-9d6a-7479a80b5764"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 140,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "5d58157b-6264-45b0-9db9-cc07e35e1103"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 141,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "562c2f53-6244-47aa-91e0-e8c462779cb3"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 142,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "aa57e3ba-8a9c-4abb-bdc6-d0ed1404cb7d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 143,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "8cc43750-07b7-427d-80bc-24cba168e88d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 144,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "1a7c8910-19bd-41bc-b523-b44a6f71828f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 145,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "daa7f966-8c51-4730-bb7f-e8b82bee31d4"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 146,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "6322a966-8c2c-4369-b720-3d1e3dc7f812"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 147,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "e5575cb0-6269-4ed9-bfd2-8c4e49a08b05"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 148,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "5781c9a9-4209-4590-9d80-66d69f0e6d24"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 149,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "190e0872-cb5f-4ac4-becd-b2582056e099"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 150,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "0f1b612f-0e01-4ed1-aba6-1b6cd73b06ec"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 151,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "fc7d18bb-c81b-45fe-b80d-06616b31785c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 152,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "9d9e8cd5-cdeb-4434-a83d-953c352b3b64"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 153,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "bcc32b4d-7a23-463d-8756-0af5a4e68a4d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 154,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "521ac418-1588-4015-a148-e282602700b1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 155,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "55e8e6d4-d629-460c-9670-cc0158feed1c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 156,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "7b0b29f4-8b29-4d87-827a-ff294367c77c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 157,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "396ffef7-cb2b-44f1-a037-5f8874d2380f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 158,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "47f45aab-6d1f-4089-93bb-a4c2c55ca665"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 159,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "0c378c9e-7f63-4b9d-81b3-6ae7d2351eee"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 160,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "c3dac1b2-b19a-4b49-aa28-f518b95d11e9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 161,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "98d11b3d-786d-43a2-8ff4-458bcaa37347"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 162,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "41df3cd1-32b8-494e-ab78-376978fd7f12"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 163,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "5c6d0ef5-3389-46db-87e8-f824f8a1c561"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 164,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "fbac394c-b99a-4561-a7e8-5de29b003fca"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 165,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "8c3de51d-b06f-4a12-9eb9-b0f7f0d92e38"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 166,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "ce280c7a-da23-4251-a1c6-58ae6c6f4587"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 167,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "b9c24808-d86c-4351-884b-a473147f2f65"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 168,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "7e91fe40-ce83-44f4-922f-572aaa3a1006"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 169,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "81b937e9-1f72-4ea9-a68f-350209bfaaa5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 170,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "a5e2d7f2-607c-4f7f-bcc1-90b34a6b8363"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 171,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "81a325a2-e98b-428f-aff0-c3ea9b549dca"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 172,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "3db76819-de80-462b-86e6-f7d6f7f5f19e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 173,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "c8053a8c-e3b7-4b73-9486-dfec0531fd00"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 174,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "3261a073-701f-4b33-87ec-032d48358a51"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 175,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "5b5aefbc-d296-4db2-832e-a7e632a30612"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 176,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "78f4ce86-30e5-4b9c-a0a9-49fffbc9aa53"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 177,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "f66627c2-03b9-460c-8883-b1afb5854e31"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 178,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "94908665-ea8a-4f3b-aa99-46cc5c1535bd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 179,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "ec5368b6-27d4-498c-aac4-9a5f6425d3c1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 180,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "0c022f10-f53b-4ec9-8a7b-38d4e5534621"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 181,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "f63bb487-9f34-4e75-8215-ab8b2c399204"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 182,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "2fa424c7-f92d-4f0f-9ca7-5d66dd6c651a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 183,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "0e758ddc-33f0-41ed-a4e7-e6f3aa10155f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 184,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "a6e7ec8a-3a6c-4b5f-9f7d-e61ce438d7b7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 185,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "9ce21fd8-0385-4c63-9432-5e64058f213b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 186,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "aaf15c15-67ce-4b1c-aacf-685f422f36f4"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 187,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "6cbbd585-e9a3-4c4d-9593-55cb5f056320"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 188,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "17d76658-7738-472c-a1ea-c72870e31e24"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 189,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "f6abf983-5eee-4e5f-98c3-1c7f3887b521"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 190,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "93e83a39-ee31-408f-9c28-3b5113e8f66f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 191,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "8f112bb9-564e-457d-a637-4d10b32332ff"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 192,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "4868a465-1776-4c67-9041-8afb4247cd44"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 193,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "bb7ef9d1-87fa-457d-ba22-d6f639fa406a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 194,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "a2571e23-dcb8-4513-b377-73b63e3de5d5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 195,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "cc2e91cb-0520-4257-ac00-950359713232"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 196,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "bc85b519-f110-4e22-90bc-188394c95312"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 197,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "04e51f50-b294-4f66-9692-b3ad7b4390f3"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 198,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "3c296fcd-5d07-4eab-926c-ac7e88434a13"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 199,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "8c517b95-0a6f-4120-8cb7-96df22adba65"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 200,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "9132d22f-ff32-4618-a825-9b363354e1e6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 201,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "051716b0-6b91-4f5f-97c3-9aed066a29ab"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 202,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "cb625308-80e8-4554-b7d0-78f9dee13a0a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 203,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "c5e7dc94-a4f5-4656-8aca-433e10d02f02"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 204,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "fcf5881e-0ee3-462c-89d4-5a648405ff1e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 205,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "c97b8440-386c-459d-b83d-8b1b901fab3f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 206,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "90e722fa-d53d-4403-8154-7076de6de267"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 207,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "a3a80f07-a165-45e6-9828-27896153bf53"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 208,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "510ec4e6-7b8a-40e0-a362-58bc559c5edd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 209,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "04002824-ba3f-4174-9371-d7fc700e84a8"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 210,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "3d526586-c94d-4f2a-bd25-7566bb084efc"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 211,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "a7e15a3f-3aca-4645-bd90-b5ea8465853c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 212,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "2c509b7c-24e7-46c9-9af7-06d8129253f5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 213,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "84294c76-e347-44b7-9db8-a1f1e7f59475"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 214,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "28df2935-8d1a-433f-8568-ecb8893e4780"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 215,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "649dbb9d-0a92-43a7-b36b-dd5b18bb891b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 216,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "d5577195-6014-4640-b8e5-cf76f7813867"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 217,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "d2b529a1-6307-45de-8357-9a91e067f7fe"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 218,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "5d1d4c89-7e68-4b92-88d1-8113d1d74b54"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 219,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "a1291d51-2919-4c8c-b7d7-f549b0ef064f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 220,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "f51663bf-2874-4487-a82d-29ed0935921e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 221,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "a8c4f696-e56e-426a-a859-cf3fdf301ad5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 222,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "ef704919-8388-414a-ae38-5c75f0f5cc91"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 223,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "ff3cf1bd-592e-472a-9c0f-275500d3ba95"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 224,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "880e4e2d-ec5c-4ddb-85a7-7c1c3c85a6fb"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 225,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "6963309d-fd1a-4f20-bfd3-95e908baf9af"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 226,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "64dde933-d72e-4879-bf1d-e08ee40f3115"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 227,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "ea3444c6-a06a-4aca-8050-11bd528b83e2"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 228,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "6538020a-66f8-4db8-a7c0-6a5950479b2d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 229,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "f1ca25b1-d428-4c2a-a517-5e5f73731421"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 230,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "315392c3-4a75-4bcd-a398-aa6297a05448"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 231,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "a3a3d0a3-61d7-4718-9f33-b9a5856aa715"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 232,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "2ccb533d-9019-4719-b36a-0195c16b7633"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 233,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "048b6838-9968-43c7-b3b2-54fcc74f65c6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 234,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "7b96ea48-ee9d-4258-bf1d-2a20216beac8"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 235,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "402f4df9-cbeb-4e63-b2aa-25da3ede44ac"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 236,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "e393c816-88e6-4dca-ac1b-3f210db3e7b5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 237,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "95284c8a-5fd9-4b3d-b099-470eaa6a9ccb"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 238,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "60fbaac1-80ad-4818-81e1-63656d2c8275"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 239,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "739e29d4-076b-48d2-a584-e858de7dd760"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 240,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "fa068a25-369a-4a7a-8e4c-20ccf75d976a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 241,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "d2cdda04-94f0-411a-9ba7-86116a4b22c6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 242,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "58202179-d722-4dab-b5b3-b52b79d7baaf"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 243,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "a01231ef-de29-4afe-8368-827e779e6d54"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 244,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "4b29ad13-1674-411f-bc94-ffcafa5b8bcd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 245,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "fe28b12d-3d5f-441a-8cf4-3aa89b5ebb8d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 246,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "2e9e1f20-2cb7-419c-9f53-918eb7f45129"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 247,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "4feb686b-0b9f-487f-96fe-c49828acf5ff"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 248,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "847aedd1-c612-4090-8cf8-0fc10752a5dd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 249,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "e056a4ca-409e-451c-a53e-b3e2e76c2fb6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 250,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "d468c27c-ce23-4a0c-bc79-9e2891486d12"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 251,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "a8639bb1-0631-4009-9288-d67ef8f71cb0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 252,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "dc5ceb14-5155-4b6d-8d07-c292e583422a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 253,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "b070af88-9df8-48ee-a0f7-cdeff44fd04f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 254,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "bd7e4422-71fd-4271-9fb7-7f970c36be8e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 255,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "05a2353e-f7ed-42f9-bcaa-1311dbd3668c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 256,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "2b374b7e-af1c-4c2c-892d-1c848e53ff28"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 257,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "93a48a37-50be-43b4-a592-f4b3aebf6d9e"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 258,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "4f89a4d4-f97f-476b-9d91-86e34bd55cbd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 259,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "da6356cf-29c6-4783-94dc-a559e858eef3"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 260,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "e0d97bef-5fca-4de1-8bc1-39f7693d995c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 261,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "32263a68-67f4-4ba8-85b7-c9da84fa3575"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 262,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "2186ae1b-9961-4d94-a12b-a81bfbdf2b88"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 263,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "9ca68db8-e5f3-4827-92c2-f00831e2ade1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 264,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "eb52a031-b48e-464b-b0de-19359f8439d5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 265,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "1bbf3a80-f49b-4380-8f92-64363dbb40a9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 266,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "0580f499-62ac-4f35-b4f6-f75270c88e6d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 267,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "5830c047-7f20-4c60-8933-213fe2719733"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 268,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "57e76d93-6ea1-42b4-aae3-6439131d2757"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 269,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "89f5ca7b-9e17-4870-835a-1ed9c0a9cb3b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 270,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "1f2660a4-20d4-4889-9da7-e9290f32458d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 271,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "3e4fa038-7d4a-4dbd-9133-1a564ce211c5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 272,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "f320d4f3-6b76-4122-b95c-5eb170317cfd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 273,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "7d91627e-1693-4b61-b445-107f8dccdb9c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 274,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "f72bfae6-0272-4e25-8922-ea840d84f3be"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 275,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "f1042abf-6803-4f78-8fcc-f80acf709684"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 276,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "fb63f937-ab92-4c59-908e-7838a0140c86"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 277,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "e66442c1-6bab-4113-bb65-0e42532470a0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 278,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "56096024-b25b-4eb6-81f2-aca2f373f99c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 279,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "3bf6771a-40ac-4716-b870-53169fb2e05d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 280,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "3c33c687-81a4-412b-8611-dcd75e7483c2"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 281,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "1290e805-1e28-47eb-a510-2212e43a11b6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 282,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "d98ca805-f0c7-4275-a00a-1c33eaf569d9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 283,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "fcd65c5f-54c9-40a2-968e-ec945500f617"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 284,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "bd227dee-4071-418b-a91c-b98c37b89f93"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 285,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "9d923ac3-300f-4190-a22f-09128d99f72c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 286,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "b81223da-9413-4d51-be75-0301402d117b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 287,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "b27aad2d-e950-49bb-8eae-e1a4ab553214"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 288,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "70da08fe-82ae-44a6-b1aa-a253d65fedea"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 289,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "7e6ca650-bd05-4490-a548-052b0ec6cdae"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 290,
+      "cited_text": "Free Chest",
+      "start_char": 22216,
+      "end_char": 22226,
+      "chunk_id": "45a28776-d2fd-4c87-aca9-5230b53f43f9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 291,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "39a877a0-07da-43c5-a73f-9dba71860f3f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 292,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "ff5c8d1c-5853-40b7-9034-9d36a214799a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 293,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "1fbd2266-b8f8-45d1-be07-3af8f1a6bc5a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 294,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "6a75d1ac-ba48-4fff-94af-7dfdb912c0e5"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 295,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "8cce904c-0cfd-4a53-9894-650b2d7d6556"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 296,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "cc149cb2-b125-4851-89bf-936976ad4e84"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 297,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "50c75350-3aaf-4b4c-9619-f97d8fcffb91"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 298,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "521b20d9-5f48-4519-a043-151ab6d9843f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 299,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "0e1520aa-a178-4bed-8fa6-f6a668caf305"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 300,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "5bed56ed-fbbc-4e1e-9694-d9049f6ffb3f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 301,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "1b193fd0-749a-403e-b137-c7abac966ba9"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 302,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "6bec850a-4ede-45f2-8b50-3c6149f3ce1b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 303,
+      "cited_text": "Free Chest",
+      "start_char": 22216,
+      "end_char": 22226,
+      "chunk_id": "ea641904-175e-4517-b9c3-bf7cf7a7f226"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 304,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "a3b3974f-53a8-4380-85cf-a551790b1a74"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 305,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "40f75ebf-52c6-49d6-b730-a0267080643f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 306,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "8174011f-066e-45ee-badd-d81e8bac100d"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 307,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "30d314dc-beb6-4254-b479-48e5b26e95bd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 308,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "108ed47f-a90d-45cf-aed0-4544ae9a5f97"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 309,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "ecbc7c15-a3b3-4baf-9568-310edcefb0ed"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 310,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "eb375a16-3a9a-4c0d-92c5-bf3da06115f2"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 311,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "cb4e3974-5490-4ebd-b083-04bd083a9397"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 312,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "923ec1e9-14e1-467d-ae2f-c441e65ee45a"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 313,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "4a03951a-912d-4e6c-8106-d6bfbf0565c3"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 314,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "61751610-39aa-4c37-b654-417f28172ff6"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 315,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "bd28d260-775c-4fc3-b1bf-e86543f9394f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 316,
+      "cited_text": "Free Chest",
+      "start_char": 22216,
+      "end_char": 22226,
+      "chunk_id": "ca8f0b8f-7920-4e30-8505-9af0966f5b37"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 317,
+      "cited_text": "Collection[ ]",
+      "start_char": 28397,
+      "end_char": 28411,
+      "chunk_id": "8e8f0f31-5bac-4a33-9eeb-5d8da8740b32"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 318,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "6ac5d83e-d192-411e-84bd-21c50b61ac1f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 319,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "1fc1bb79-5531-4135-9baf-e0886d42fe1b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 320,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "2e959d3d-5d10-4e2c-8819-4627a8ca201c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 321,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "88fcd21b-c09b-48e2-9b2e-d06637aa2808"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 322,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "ec2929b5-648a-4795-8a3f-490c791ad0a0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 323,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "b713a709-58d3-4ca6-8621-ec188daccf12"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 324,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "9709f50e-a033-40f5-9774-e90da7439208"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 325,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "aa2bab40-b83f-4d4e-9336-d4c9ebaeddf0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 326,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "b71c6fab-8651-41e3-b2d4-0975fb324dfd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 327,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "35612987-51c7-4eaa-9f03-360c74a07ea7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 328,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "1fac2deb-eeaf-420d-9a02-1a454f6a1a21"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 329,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "070c908f-30b9-46c3-9810-400d1f094789"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 330,
+      "cited_text": "Free Chest",
+      "start_char": 22216,
+      "end_char": 22226,
+      "chunk_id": "173ebb09-0150-4345-be39-b0e525e3b5e1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 331,
+      "cited_text": "Collection[ ]",
+      "start_char": 28397,
+      "end_char": 28411,
+      "chunk_id": "722216f5-ef05-4e37-8a1c-e4d40ea3e560"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 332,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "6ac5d83e-d192-411e-84bd-21c50b61ac1f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 333,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "1fc1bb79-5531-4135-9baf-e0886d42fe1b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 334,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "2e959d3d-5d10-4e2c-8819-4627a8ca201c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 335,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "88fcd21b-c09b-48e2-9b2e-d06637aa2808"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 336,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "ec2929b5-648a-4795-8a3f-490c791ad0a0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 337,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "b713a709-58d3-4ca6-8621-ec188daccf12"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 338,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "9709f50e-a033-40f5-9774-e90da7439208"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 339,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "aa2bab40-b83f-4d4e-9336-d4c9ebaeddf0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 340,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "b71c6fab-8651-41e3-b2d4-0975fb324dfd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 341,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "35612987-51c7-4eaa-9f03-360c74a07ea7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 342,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "1fac2deb-eeaf-420d-9a02-1a454f6a1a21"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 343,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "070c908f-30b9-46c3-9810-400d1f094789"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 344,
+      "cited_text": "Free Chest",
+      "start_char": 22216,
+      "end_char": 22226,
+      "chunk_id": "173ebb09-0150-4345-be39-b0e525e3b5e1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 345,
+      "cited_text": "Collection[ ]",
+      "start_char": 28397,
+      "end_char": 28411,
+      "chunk_id": "722216f5-ef05-4e37-8a1c-e4d40ea3e560"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 346,
+      "cited_text": "Contents",
+      "start_char": 2731,
+      "end_char": 2739,
+      "chunk_id": "6ac5d83e-d192-411e-84bd-21c50b61ac1f"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 347,
+      "cited_text": "Overgrown lava Kraken. The more sulphur it consumes the stronger it becomes.",
+      "start_char": 3152,
+      "end_char": 3228,
+      "chunk_id": "1fc1bb79-5531-4135-9baf-e0886d42fe1b"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 348,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 4468,
+      "end_char": 4487,
+      "chunk_id": "2e959d3d-5d10-4e2c-8819-4627a8ca201c"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 349,
+      "cited_text": "Provided by: Fandom",
+      "start_char": 6381,
+      "end_char": 6400,
+      "chunk_id": "88fcd21b-c09b-48e2-9b2e-d06637aa2808"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 350,
+      "cited_text": null,
+      "start_char": 31394,
+      "end_char": 31700,
+      "chunk_id": "ec2929b5-648a-4795-8a3f-490c791ad0a0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 351,
+      "cited_text": "Barbarian",
+      "start_char": 32141,
+      "end_char": 32150,
+      "chunk_id": "b713a709-58d3-4ca6-8621-ec188daccf12"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 352,
+      "cited_text": "Quick Answers",
+      "start_char": 3757,
+      "end_char": 3770,
+      "chunk_id": "9709f50e-a033-40f5-9774-e90da7439208"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 353,
+      "cited_text": "Kuudra Mandible .",
+      "start_char": 19739,
+      "end_char": 19755,
+      "chunk_id": "aa2bab40-b83f-4d4e-9336-d4c9ebaeddf0"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 354,
+      "cited_text": "Hide v",
+      "start_char": 33298,
+      "end_char": 33304,
+      "chunk_id": "b71c6fab-8651-41e3-b2d4-0975fb324dfd"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 355,
+      "cited_text": null,
+      "start_char": 33758,
+      "end_char": 33958,
+      "chunk_id": "35612987-51c7-4eaa-9f03-360c74a07ea7"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 356,
+      "cited_text": "Loot[ ]",
+      "start_char": 19199,
+      "end_char": 19207,
+      "chunk_id": "1fac2deb-eeaf-420d-9a02-1a454f6a1a21"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 357,
+      "cited_text": "Free Chest",
+      "start_char": 25866,
+      "end_char": 25876,
+      "chunk_id": "070c908f-30b9-46c3-9810-400d1f094789"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 358,
+      "cited_text": "Free Chest",
+      "start_char": 22216,
+      "end_char": 22226,
+      "chunk_id": "173ebb09-0150-4345-be39-b0e525e3b5e1"
+    },
+    {
+      "source_id": "fe198b96-f59c-424b-aa54-85e9bd6c91ec",
+      "citation_number": 359,
+      "cited_text": "Collection[ ]",
+      "start_char": 28397,
+      "end_char": 28411,
+      "chunk_id": "722216f5-ef05-4e37-8a1c-e4d40ea3e560"
+    }
+  ]
+}

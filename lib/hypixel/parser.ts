@@ -21,6 +21,7 @@ import {
   GameStage,
 } from '@/lib/types/player';
 import { parseInventoryNBT, MP_PER_RARITY } from '@/lib/hypixel/nbt';
+import { WEIGHT_SENITHER } from '@/lib/neu/data';
 
 // XP tables
 // Cumulative XP to reach each level (wiki-verified 2026-04-01, levels 0-60)
@@ -320,6 +321,65 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
   };
 }
 
+function parseTrophyFish(member: SkyBlockMember): Record<string, number> {
+  const raw = member.trophy_fish ?? {};
+  const result: Record<string, number> = {};
+  for (const [key, val] of Object.entries(raw)) {
+    if (key === 'rewards' || Array.isArray(val)) continue;
+    if (typeof val === 'number') result[key] = val;
+  }
+  return result;
+}
+
+function computeSeniherWeight(
+  skills: SkillLevels,
+  slayers: SlayerLevels,
+  dungeons: DungeonProgress,
+): number {
+  const sw = WEIGHT_SENITHER;
+  let total = 0;
+
+  // Skill weight: [exponent, divider]
+  const skillXpMap: Record<string, number> = {
+    farming: skills.farming_xp,
+    mining: skills.mining_xp,
+    combat: skills.combat_xp,
+    foraging: skills.foraging_xp,
+    fishing: skills.fishing_xp,
+    enchanting: skills.enchanting_xp,
+    alchemy: skills.alchemy_xp,
+    taming: 0,
+  };
+  for (const [skill, [exp, div]] of Object.entries(sw.skills ?? {})) {
+    const xp = skillXpMap[skill] ?? 0;
+    if (xp > 0 && div > 0) total += Math.pow(xp / div, exp);
+  }
+
+  // Slayer weight: [divider, exponent]
+  const slayerXpMap: Record<string, number> = {
+    zombie: slayers.zombie.xp,
+    spider: slayers.spider.xp,
+    wolf: slayers.wolf.xp,
+    enderman: slayers.enderman.xp,
+  };
+  for (const [boss, [div, exp]] of Object.entries(sw.slayer ?? {})) {
+    const xp = slayerXpMap[boss] ?? 0;
+    if (xp > 0 && div > 0) total += Math.pow(xp / div, exp);
+  }
+
+  // Dungeon weight: catacombs_xp * multiplier + class_xp * class_multiplier
+  const catXP = dungeons.catacombs.xp;
+  if (catXP > 0 && sw.dungeons?.catacombs) {
+    total += catXP * sw.dungeons.catacombs;
+  }
+  for (const [cls, mult] of Object.entries(sw.dungeons?.classes ?? {})) {
+    const clsXP = dungeons.classes[cls]?.xp ?? 0;
+    if (clsXP > 0) total += clsXP * mult;
+  }
+
+  return Math.round(total);
+}
+
 function parseAccessories(member: SkyBlockMember): AccessoryInfo {
   const bag = member.accessory_bag_storage ?? {};
   return {
@@ -370,6 +430,9 @@ export function parseProfile(
   const mining = parseMining(member);
   const farming = parseFarming(member);
 
+  const trophyFish = parseTrophyFish(member);
+  const seniherWeight = computeSeniherWeight(skills, slayers, dungeons);
+
   const partial: PlayerProfile = {
     uuid,
     username,
@@ -390,6 +453,8 @@ export function parseProfile(
     collections: member.collection ?? {},
     magicalPower: accessories.magicalPower,
     fairySouls: member.fairy_soul?.total_collected ?? 0,
+    seniherWeight,
+    trophyFish,
   };
 
   return partial;

@@ -12,6 +12,11 @@ import gardenRaw from '@/data/neu/garden.json';
 import levelingRaw from '@/data/neu/leveling.json';
 import petsRaw from '@/data/neu/pets.json';
 import museumRaw from '@/data/neu/museum.json';
+import petnumsRaw from '@/data/neu/petnums.json';
+import bestiaryRaw from '@/data/neu/bestiary.json';
+import weightRaw from '@/data/neu/weight.json';
+import trophyFishRaw from '@/data/neu/trophyfish.json';
+import fairySoulsRaw from '@/data/neu/fairy_souls.json';
 
 // ─── Garden ───────────────────────────────────────────────────────────────────
 
@@ -150,6 +155,149 @@ export function computePetLevel(
 
   return { level: maxLevel, xpIntoLevel: 0, xpForNextLevel: null, progressPct: 100 };
 }
+
+// ─── Pet Nums ─────────────────────────────────────────────────────────────────
+
+type PetNumData = { otherNums: number[]; statNums: Record<string, number> };
+
+/**
+ * Per-pet stat values at level 1 and level 100 per rarity.
+ * Source: NEU-REPO petnums.json
+ */
+export const PET_NUMS = petnumsRaw as unknown as Record<string, Record<string, Record<string, PetNumData>>>;
+
+/**
+ * Interpolate pet stat bonuses at a given level (1–100) from NEU petnums data.
+ * Linearly interpolates statNums between level 1 and level 100 data.
+ * Returns key stat values (e.g. FARMING_FORTUNE, SEA_CREATURE_CHANCE).
+ */
+export function computePetStats(type: string, tier: string, level: number): Record<string, number> {
+  const petData = PET_NUMS[type];
+  if (!petData) return {};
+  const rarityData = petData[tier.toUpperCase()] ?? petData[Object.keys(petData)[0]];
+  if (!rarityData) return {};
+  const l1 = rarityData['1'];
+  const l100 = rarityData['100'];
+  if (!l1 || !l100) return {};
+  const t = Math.min(1, Math.max(0, (Math.min(level, 100) - 1) / 99));
+  const result: Record<string, number> = {};
+  for (const [stat, val100] of Object.entries(l100.statNums ?? {})) {
+    const val1 = l1.statNums?.[stat] ?? 0;
+    result[stat] = val1 + (val100 - val1) * t;
+  }
+  return result;
+}
+
+// ─── Bestiary ─────────────────────────────────────────────────────────────────
+
+export interface BestiaryMobFamily {
+  name: string;
+  /** Exact API kill keys (e.g. "farming_chicken_1", "enderman_50") */
+  apiKeys: string[];
+  cap: number;
+  bracket: number;
+}
+
+export interface BestiaryZone {
+  key: string;
+  name: string;
+  families: BestiaryMobFamily[];
+}
+
+const _bestiaryRaw = bestiaryRaw as Record<string, unknown>;
+
+/**
+ * Kill count thresholds per bracket tier (1–7).
+ * Milestone level = how many thresholds the player's kills exceed.
+ * Source: NEU-REPO bestiary.json → brackets
+ */
+export const BESTIARY_BRACKETS: Record<string, number[]> =
+  _bestiaryRaw['brackets'] as Record<string, number[]>;
+
+/**
+ * All bestiary zones with mob families and their exact API kill keys.
+ * Source: NEU-REPO bestiary.json
+ */
+export const BESTIARY_ZONES: BestiaryZone[] = (() => {
+  const zones: BestiaryZone[] = [];
+  for (const [zoneKey, zoneData] of Object.entries(_bestiaryRaw)) {
+    if (zoneKey === 'brackets' || zoneKey === 'dynamic') continue;
+    const zone = zoneData as {
+      name: string;
+      mobs?: Array<{ name: string; mobs: string[]; cap: number; bracket: number }>;
+    };
+    if (!zone.mobs) continue;
+    zones.push({
+      key: zoneKey,
+      name: zone.name,
+      families: zone.mobs.map(mob => ({
+        name: mob.name.replace(/§./g, ''), // strip Minecraft color codes
+        apiKeys: mob.mobs,
+        cap: mob.cap,
+        bracket: mob.bracket,
+      })),
+    });
+  }
+  return zones;
+})();
+
+/**
+ * Compute the milestone level for a mob family.
+ * Uses the bracket's kill thresholds, limited by the mob's cap.
+ */
+export function getBestiaryMilestoneLevel(kills: number, cap: number, bracket: number): number {
+  const thresholds = BESTIARY_BRACKETS[String(bracket)] ?? [];
+  let level = 0;
+  for (const threshold of thresholds) {
+    if (threshold > cap) break;
+    if (kills >= threshold) level++;
+    else break;
+  }
+  return level;
+}
+
+/**
+ * Compute the max milestone level for a mob family (total tiers up to cap).
+ */
+export function getBestiaryMaxLevel(cap: number, bracket: number): number {
+  const thresholds = BESTIARY_BRACKETS[String(bracket)] ?? [];
+  return thresholds.filter(t => t <= cap).length;
+}
+
+// ─── Weight (Senither) ────────────────────────────────────────────────────────
+
+/**
+ * Senither Weight coefficients from NEU-REPO weight.json.
+ * Skills: { skill: [exponent, divider] }
+ * Slayer: { boss: [divider, exponent] }
+ * Dungeons: { catacombs: multiplier, classes: { class: multiplier } }
+ */
+export const WEIGHT_SENITHER = (weightRaw as unknown as {
+  senither: {
+    skills: Record<string, [number, number]>;
+    slayer: Record<string, [number, number]>;
+    dungeons: { catacombs: number; classes: Record<string, number> };
+  };
+}).senither;
+
+// ─── Trophy Fish ──────────────────────────────────────────────────────────────
+
+/**
+ * Per-fish kill count thresholds to earn [bronze, silver, gold, diamond] trophy.
+ * Source: NEU-REPO trophyfish.json
+ */
+export const TROPHY_FISH_THRESHOLDS = trophyFishRaw as unknown as Record<string, [number, number, number, number]>;
+
+/** Display name for each trophy fish (derived from ID) */
+export function trophyFishName(id: string): string {
+  return id.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+}
+
+// ─── Fairy Souls ──────────────────────────────────────────────────────────────
+
+/** Maximum fairy souls in the current version. Source: NEU-REPO fairy_souls.json */
+export const FAIRY_SOUL_MAX: number =
+  ((fairySoulsRaw as Record<string, unknown>)['Max Souls'] as number) ?? 267;
 
 // ─── Museum ───────────────────────────────────────────────────────────────────
 

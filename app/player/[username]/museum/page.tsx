@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
-import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
+import { resolvePlayer, getSkyBlockProfiles, getSkyBlockMuseum } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { PlayerProfile } from '@/lib/types/player';
-import { SkyBlockProfile } from '@/lib/types/hypixel';
 import ItemIcon from '@/components/ItemIcon';
 
 interface Props {
@@ -108,8 +107,10 @@ export default async function MuseumPage({ params, searchParams }: Props) {
   const { profile: profileId } = await searchParams;
 
   let profile: PlayerProfile | null = null;
-  let rawProfile: SkyBlockProfile | null = null;
   let error: string | null = null;
+  let donatedItems = new Set<string>();
+  let specialItems: string[] = [];
+  let hasMuseumData = false;
 
   try {
     const { uuid, username: resolvedName } = await resolvePlayer(username);
@@ -124,13 +125,27 @@ export default async function MuseumPage({ params, searchParams }: Props) {
       if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
 
       profile = selectBestProfile([targetProfile], uuid, resolvedName);
-      rawProfile = targetProfile;
+
+      // Museum data is at a separate API endpoint — NOT in the profiles response
+      const museumRes = await getSkyBlockMuseum(targetProfile.profile_id).catch(() => null);
+      if (museumRes?.success && museumRes.members) {
+        hasMuseumData = true;
+        const memberMuseum = museumRes.members[uuid];
+        donatedItems = new Set(Object.keys(memberMuseum?.items ?? {}));
+        specialItems = (memberMuseum?.special ?? []).map((s: unknown) => {
+          if (typeof s === 'object' && s !== null && 'tag' in s) {
+            const tag = (s as { tag?: { ExtraAttributes?: { id?: string } } }).tag;
+            return tag?.ExtraAttributes?.id ?? '';
+          }
+          return '';
+        }).filter(Boolean);
+      }
     }
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load profile.';
   }
 
-  if (error || !profile || !rawProfile) {
+  if (error || !profile) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-20 text-center">
         <div className="card p-8">
@@ -145,20 +160,8 @@ export default async function MuseumPage({ params, searchParams }: Props) {
     );
   }
 
-  // ── Parse museum data ──────────────────────────────────────────────────────
-  const museumData = rawProfile.museum;
-  const memberMuseum = museumData?.members?.[profile.uuid ?? ''];
-  const donatedItems: Set<string> = new Set(Object.keys(memberMuseum?.items ?? {}));
-  const specialItems: string[] = (memberMuseum?.special ?? []).map((s: unknown) => {
-    if (typeof s === 'object' && s !== null && 'tag' in s) {
-      const tag = (s as { tag?: { ExtraAttributes?: { id?: string } } }).tag;
-      return tag?.ExtraAttributes?.id ?? '';
-    }
-    return '';
-  }).filter(Boolean);
-
+  // ── Museum value from donated notable items ────────────────────────────────
   const totalDonated = donatedItems.size + specialItems.length;
-  const hasMuseumData = museumData !== undefined;
 
   // Estimate museum value from donated notable items
   let estimatedValue = 0;

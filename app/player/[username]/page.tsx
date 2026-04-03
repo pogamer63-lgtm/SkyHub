@@ -117,6 +117,7 @@ export default async function PlayerPage({ params, searchParams }: Props) {
             <span>Coins <strong className="text-yellow-300">{formatCoins(profile.purseCoins + profile.bankCoins)}</strong></span>
             <span>MP <strong className="text-purple-300">{profile.magicalPower}</strong></span>
             <span>Fairy Souls <strong className="text-pink-300">{profile.fairySouls}</strong></span>
+            {!!profile.seniherWeight && <span>Weight <strong className="text-purple-300">{profile.seniherWeight.toLocaleString()}</strong></span>}
             <span>Networth <strong className="text-emerald-300">{formatCoins(estimateNetworth(profile))}</strong></span>
           </div>
         </div>
