@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { ItemModal, ItemModalData } from '@/components/ItemModal';
+import ItemIcon from '@/components/ItemIcon';
 
 interface ItemResult {
   id: string;
@@ -25,12 +27,23 @@ const CATEGORY_COLOR: Record<string, string> = {
   PET: 'text-emerald-300 bg-emerald-500/10',
 };
 
+function toModalData(item: ItemResult): ItemModalData {
+  return {
+    id: item.id,
+    name: item.name,
+    rarity: 'UNKNOWN',
+    lore: item.lore ? [item.lore] : [],
+    enchantments: {},
+  };
+}
+
 export default function ItemSearchClient({ initial }: { initial: ItemResult[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') ?? '');
   const [results, setResults] = useState<ItemResult[]>(initial);
   const [loading, setLoading] = useState(false);
+  const [activeItem, setActiveItem] = useState<ItemModalData | null>(null);
 
   const search = useCallback(async (q: string) => {
     if (q.length < 2) { setResults([]); return; }
@@ -81,14 +94,21 @@ export default function ItemSearchClient({ initial }: { initial: ItemResult[] })
       {results.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {results.map(item => (
-            <div key={item.id} className="card p-3 hover:border-white/20 transition-colors">
+            <button
+              key={item.id}
+              onClick={() => setActiveItem(toModalData(item))}
+              className="card p-3 hover:border-white/20 transition-colors text-left w-full cursor-pointer"
+            >
               <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <div className="text-sm font-medium text-white truncate">{item.name}</div>
-                  <div className="text-xs text-slate-500 font-mono truncate mt-0.5">{item.id}</div>
-                  {item.lore && (
-                    <div className="text-xs text-slate-400 mt-1 line-clamp-2">{item.lore}</div>
-                  )}
+                <div className="flex items-start gap-2 min-w-0">
+                  <ItemIcon itemId={item.id} size={28} className="shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium text-white truncate">{item.name}</div>
+                    <div className="text-xs text-slate-500 font-mono truncate mt-0.5">{item.id}</div>
+                    {item.lore && (
+                      <div className="text-xs text-slate-400 mt-1 line-clamp-1">{item.lore}</div>
+                    )}
+                  </div>
                 </div>
                 {item.category && (
                   <span className={`shrink-0 text-xs rounded px-1.5 py-0.5 font-medium ${CATEGORY_COLOR[item.category] ?? 'text-slate-400 bg-slate-500/10'}`}>
@@ -96,7 +116,7 @@ export default function ItemSearchClient({ initial }: { initial: ItemResult[] })
                   </span>
                 )}
               </div>
-            </div>
+            </button>
           ))}
         </div>
       )}
@@ -112,6 +132,8 @@ export default function ItemSearchClient({ initial }: { initial: ItemResult[] })
           Type at least 2 characters to search 8,059 SkyBlock items
         </div>
       )}
+
+      <ItemModal item={activeItem} onClose={() => setActiveItem(null)} />
     </div>
   );
 }

@@ -11,6 +11,7 @@ export interface ParsedItem {
   count: number;
   name: string;
   rarity: ItemRarity;
+  lore: string[];       // raw lore lines with §-color codes preserved
   reforge?: string;     // e.g. "lucky"
   enchantments: Record<string, number>;
   petInfo?: { type: string; tier: string };
@@ -129,6 +130,7 @@ function extractItem(rawItem: any): ParsedItem | null {
     count: Number(rawItem.Count?.value ?? 1),
     name,
     rarity,
+    lore: rawLore,
     reforge,
     enchantments,
     petInfo,

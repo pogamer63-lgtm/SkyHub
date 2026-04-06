@@ -1,11 +1,9 @@
 import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
-import { selectBestProfile } from '@/lib/hypixel/parser';
 import { parseInventoryNBT, ParsedItem, ItemRarity } from '@/lib/hypixel/nbt';
 import { SkyBlockProfile } from '@/lib/types/hypixel';
-import { formatCoins } from '@/lib/utils/format';
-import ItemIcon from '@/components/ItemIcon';
 import { GEMSTONE_TYPES, ESSENCE_COSTS } from '@/lib/neu/data';
+import { ClickableItemGrid, SerializableItem } from '@/components/ClickableItemGrid';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -402,39 +400,18 @@ export default async function GearPage({ params, searchParams }: Props) {
       <div className="card p-6">
         <h2 className="text-lg font-semibold text-white mb-4">Armor Slots</h2>
         {hasArmorData ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {armorItems.slice(0, 4).map((item, i) => {
-              const isEmpty = !item.id || item.id === 'AIR' || !item.name;
-              const info = isEmpty ? null : lookupArmorTier(item.id);
-              const colorClass = isEmpty ? 'text-slate-500 border-slate-700 bg-slate-800/40' : RARITY_COLORS[item.rarity] ?? RARITY_COLORS.UNKNOWN;
-              return (
-                <div key={i} className={`rounded-lg border p-3 ${colorClass}`}>
-                  <div className="text-xs text-slate-500 mb-1">{armorSlotIcon(i)} {slotLabel(i, true)}</div>
-                  {isEmpty ? (
-                    <div className="text-slate-600 text-sm italic">Empty</div>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-2 mb-1">
-                        <ItemIcon itemId={item.id} size={24} />
-                        <div className="text-sm font-medium leading-snug">{item.name || item.id}</div>
-                      </div>
-                      {item.reforge && (
-                        <div className="text-xs text-slate-400">Reforge: {item.reforge}</div>
-                      )}
-                      {Object.keys(item.enchantments).length > 0 && (
-                        <div className="text-xs text-slate-400">{Object.keys(item.enchantments).length} enchants</div>
-                      )}
-                      {info && (
-                        <div className={`text-xs mt-1 font-medium ${tierColor(info.tier)}`}>
-                          {info.stage} — {tierLabel(info.tier)}
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              );
+          <ClickableItemGrid
+            items={armorItems.slice(0, 4).map((item, i): SerializableItem => {
+              const info = lookupArmorTier(item.id);
+              return {
+                ...item,
+                slotLabel: slotLabel(i, true),
+                slotIcon: armorSlotIcon(i),
+                tierLabel: info ? `${info.stage} — ${tierLabel(info.tier)}` : undefined,
+                tierColor: info ? tierColor(info.tier) : undefined,
+              };
             })}
-          </div>
+          />
         ) : (
           <div className="text-slate-400 text-sm italic py-4 text-center">
             Armor data not available from API (requires recent login).
@@ -446,36 +423,19 @@ export default async function GearPage({ params, searchParams }: Props) {
       <div className="card p-6">
         <h2 className="text-lg font-semibold text-white mb-4">Equipment Slots</h2>
         {hasEquipData ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {equipItems.slice(0, 6).map((item, i) => {
-              const isEmpty = !item.id || item.id === 'AIR' || !item.name;
-              const info = isEmpty ? null : lookupEquipTier(item.id);
-              const colorClass = isEmpty ? 'text-slate-500 border-slate-700 bg-slate-800/40' : RARITY_COLORS[item.rarity] ?? RARITY_COLORS.UNKNOWN;
-              return (
-                <div key={i} className={`rounded-lg border p-3 ${colorClass}`}>
-                  <div className="text-xs text-slate-500 mb-1">{equipSlotIcon(i)} {slotLabel(i, false)}</div>
-                  {isEmpty ? (
-                    <div className="text-slate-600 text-sm italic">Empty</div>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-2 mb-1">
-                        <ItemIcon itemId={item.id} size={24} />
-                        <div className="text-sm font-medium leading-snug">{item.name || item.id}</div>
-                      </div>
-                      {item.reforge && (
-                        <div className="text-xs text-slate-400">Reforge: {item.reforge}</div>
-                      )}
-                      {info && (
-                        <div className={`text-xs mt-1 font-medium ${tierColor(info.tier)}`}>
-                          {info.stage} {info.set ? `— ${info.set}` : ''}
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              );
+          <ClickableItemGrid
+            gridCols="grid-cols-2 sm:grid-cols-3"
+            items={equipItems.slice(0, 6).map((item, i): SerializableItem => {
+              const info = lookupEquipTier(item.id);
+              return {
+                ...item,
+                slotLabel: slotLabel(i, false),
+                slotIcon: equipSlotIcon(i),
+                tierLabel: info ? `${info.stage}${info.set ? ` — ${info.set}` : ''}` : undefined,
+                tierColor: info ? tierColor(info.tier) : undefined,
+              };
             })}
-          </div>
+          />
         ) : (
           <div className="text-slate-400 text-sm italic py-4 text-center">
             Equipment data not available from API.
@@ -487,32 +447,18 @@ export default async function GearPage({ params, searchParams }: Props) {
       {invWeapons.length > 0 && (
         <div className="card p-6">
           <h2 className="text-lg font-semibold text-white mb-4">Detected Weapons</h2>
-          <div className="space-y-2">
-            {invWeapons.map((item, i) => {
+          <ClickableItemGrid
+            layout="list"
+            items={invWeapons.map((item): SerializableItem => {
               const info = lookupWeaponTier(item.id);
-              const colorClass = RARITY_COLORS[item.rarity] ?? RARITY_COLORS.UNKNOWN;
-              return (
-                <div key={i} className={`flex items-center justify-between rounded-lg border px-4 py-2 ${colorClass}`}>
-                  <div className="flex items-center gap-2">
-                    <ItemIcon itemId={item.id} size={24} useModel={false} />
-                    <div>
-                      <span className="font-medium text-sm">{item.name || item.id}</span>
-                      {item.reforge && <span className="text-xs text-slate-400 ml-2">({item.reforge})</span>}
-                      {Object.keys(item.enchantments).length > 0 && (
-                        <span className="text-xs text-slate-400 ml-2">{Object.keys(item.enchantments).length} enchants</span>
-                      )}
-                    </div>
-                  </div>
-                  {info && (
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className="text-slate-400">{info.type}</span>
-                      <span className={`font-medium ${tierColor(info.tier)}`}>{info.stage}</span>
-                    </div>
-                  )}
-                </div>
-              );
+              return {
+                ...item,
+                weaponType: info?.type,
+                weaponStage: info?.stage,
+                tierColor: info ? tierColor(info.tier) : undefined,
+              };
             })}
-          </div>
+          />
         </div>
       )}
 
