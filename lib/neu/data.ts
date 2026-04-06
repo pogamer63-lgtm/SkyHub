@@ -334,7 +334,8 @@ export interface ReforgeStone {
   internalName: string;
   reforgeName: string;
   reforgeType: string;
-  itemTypes: string | string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  itemTypes: string | string[] | Record<string, any>;
   requiredRarities: string[];
   reforgeCosts: Record<string, number>;
   reforgeStats: Record<string, Record<string, number>>;

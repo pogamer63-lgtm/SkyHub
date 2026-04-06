@@ -61,8 +61,9 @@ function formatCoins(n: number): string {
 }
 
 function getItemTypes(s: ReforgeStone): string[] {
+  if (typeof s.itemTypes === 'string') return s.itemTypes.split(',').map(t => t.trim());
   if (Array.isArray(s.itemTypes)) return s.itemTypes;
-  return s.itemTypes.split(',').map(t => t.trim());
+  return []; // object form (specific item IDs) — skip for type filter
 }
 
 // Get unique item types from all reforge stones
