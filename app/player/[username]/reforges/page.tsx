@@ -60,9 +60,14 @@ function formatCoins(n: number): string {
   return String(n);
 }
 
+function getItemTypes(s: ReforgeStone): string[] {
+  if (Array.isArray(s.itemTypes)) return s.itemTypes;
+  return s.itemTypes.split(',').map(t => t.trim());
+}
+
 // Get unique item types from all reforge stones
 const ALL_TYPES = [...new Set(
-  REFORGE_STONES.flatMap(s => s.itemTypes.split(',').map(t => t.trim()))
+  REFORGE_STONES.flatMap(s => getItemTypes(s))
 )].sort();
 
 // Get all unique stats across all reforges
@@ -78,7 +83,7 @@ export default async function ReforgesPage({ params, searchParams }: Props) {
 
   // Filter reforges by item type
   const filtered: ReforgeStone[] = filterType
-    ? REFORGE_STONES.filter(s => s.itemTypes.includes(filterType))
+    ? REFORGE_STONES.filter(s => getItemTypes(s).includes(filterType))
     : REFORGE_STONES;
 
   // Sort by highest stat value at LEGENDARY rarity if filtering by stat
@@ -158,7 +163,7 @@ export default async function ReforgesPage({ params, searchParams }: Props) {
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <div className="text-white font-semibold">{stone.reforgeName}</div>
-                  <div className="text-xs text-slate-500">{stone.itemTypes} · {stone.reforgeType.split('/').pop()}</div>
+                  <div className="text-xs text-slate-500">{getItemTypes(stone).join(', ')} · {stone.reforgeType.split('/').pop()}</div>
                 </div>
                 {filterStat && (legendaryStats[filterStat] ?? 0) > 0 && (
                   <div className="text-yellow-300 font-bold text-sm">

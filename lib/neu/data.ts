@@ -334,7 +334,7 @@ export interface ReforgeStone {
   internalName: string;
   reforgeName: string;
   reforgeType: string;
-  itemTypes: string;
+  itemTypes: string | string[];
   requiredRarities: string[];
   reforgeCosts: Record<string, number>;
   reforgeStats: Record<string, Record<string, number>>;
