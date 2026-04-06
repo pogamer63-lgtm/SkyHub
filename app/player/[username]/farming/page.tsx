@@ -318,6 +318,7 @@ export default async function FarmingPage({ params, searchParams }: Props) {
   let armorItems: ParsedItem[] = [];
   let equipItems: ParsedItem[] = [];
   let error: string | null = null;
+  let composter = { organicsMatter: 0, fuelUnits: 0, compostUnits: 0, taps: 0 };
 
   try {
     const { uuid, username: resolvedName } = await resolvePlayer(username);
@@ -334,7 +335,7 @@ export default async function FarmingPage({ params, searchParams }: Props) {
 
       // Parse armor + equipment NBT for real FF values
       const member = targetProfile.members[uuid] ?? {};
-      const armorData = member.inventory?.armor?.data;
+      const armorData = member.inventory?.inv_armor?.data;
       if (armorData) {
         try { armorItems = await parseInventoryNBT(armorData, true); } catch { /* non-fatal */ }
       }
@@ -342,6 +343,15 @@ export default async function FarmingPage({ params, searchParams }: Props) {
       if (equipData) {
         try { equipItems = await parseInventoryNBT(equipData, true); } catch { /* non-fatal */ }
       }
+
+      // Composter data
+      const cd = (member.garden_player_data?.composter_data ?? {}) as Record<string, unknown>;
+      composter = {
+        organicsMatter: (cd.organics_matter as number) ?? 0,
+        fuelUnits:      (cd.fuel_units as number) ?? 0,
+        compostUnits:   (cd.compost_units as number) ?? 0,
+        taps:           (cd.conversion_taps as number) ?? 0,
+      };
     }
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load profile.';
@@ -520,6 +530,9 @@ export default async function FarmingPage({ params, searchParams }: Props) {
         <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
           🏅 Jacob&apos;s Farming
           <span className="text-xs font-normal text-slate-500">{profile.farming.contestsParticipated} contests entered</span>
+          {profile.farming.participationMilestones > 0 && (
+            <span className="ml-auto text-xs font-normal text-emerald-400">{profile.farming.participationMilestones} milestones</span>
+          )}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
@@ -544,6 +557,30 @@ export default async function FarmingPage({ params, searchParams }: Props) {
             <div className="flex flex-wrap gap-1.5">
               {profile.farming.uniqueGolds.map(crop => (
                 <span key={crop} className="rounded-full border border-yellow-500/30 bg-yellow-500/10 px-2 py-0.5 text-xs text-yellow-300 capitalize">
+                  {crop.replace(/_/g, ' ').toLowerCase()}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+        {profile.farming.uniquePlatinums.length > 0 && (
+          <div>
+            <div className="text-xs text-cyan-400 font-medium mb-2">🏆 Platinum Medal Crops ({profile.farming.uniquePlatinums.length})</div>
+            <div className="flex flex-wrap gap-1.5">
+              {profile.farming.uniquePlatinums.map(crop => (
+                <span key={crop} className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-xs text-cyan-300 capitalize">
+                  {crop.replace(/_/g, ' ').toLowerCase()}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+        {profile.farming.uniqueDiamonds.length > 0 && (
+          <div>
+            <div className="text-xs text-blue-400 font-medium mb-2">💎 Diamond Medal Crops ({profile.farming.uniqueDiamonds.length})</div>
+            <div className="flex flex-wrap gap-1.5">
+              {profile.farming.uniqueDiamonds.map(crop => (
+                <span key={crop} className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-0.5 text-xs text-blue-300 capitalize">
                   {crop.replace(/_/g, ' ').toLowerCase()}
                 </span>
               ))}
@@ -585,6 +622,60 @@ export default async function FarmingPage({ params, searchParams }: Props) {
           ))}
         </div>
       </div>
+
+      {/* Garden Extra Stats */}
+      {(profile.visitorsServed > 0 || profile.larvaeConsumed > 0) && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-white mb-3">🌿 Garden Stats</h2>
+          <div className="grid grid-cols-2 gap-4">
+            {profile.visitorsServed > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-emerald-300">{profile.visitorsServed.toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Visitors Served</div>
+              </div>
+            )}
+            {profile.larvaeConsumed > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-green-300">{profile.larvaeConsumed.toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Larvae Consumed</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Composter */}
+      {(composter.organicsMatter > 0 || composter.fuelUnits > 0 || composter.compostUnits > 0 || composter.taps > 0) && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-white mb-3">🌱 Composter</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {composter.organicsMatter > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-lime-300">{composter.organicsMatter.toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Organic Matter</div>
+              </div>
+            )}
+            {composter.fuelUnits > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-yellow-300">{composter.fuelUnits.toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Fuel Units</div>
+              </div>
+            )}
+            {composter.compostUnits > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-brown-300 text-amber-700">{composter.compostUnits.toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Compost Units</div>
+              </div>
+            )}
+            {composter.taps > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-sky-300">{composter.taps}</div>
+                <div className="text-xs text-slate-500 mt-1">Conversion Taps</div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

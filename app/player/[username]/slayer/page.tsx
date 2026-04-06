@@ -3,6 +3,7 @@ import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { getBazaarPrices, getBazaarBuyPrice, BazaarPrices } from '@/lib/api/bazaar';
 import { PlayerProfile, SlayerInfo } from '@/lib/types/player';
+import { SLAYER_COST } from '@/lib/neu/data';
 import ItemIcon from '@/components/ItemIcon';
 
 interface Props {
@@ -318,6 +319,29 @@ export default async function SlayerPage({ params, searchParams }: Props) {
         </span>
       </div>
 
+      {/* Active Quest Banner */}
+      {profile.slayerQuest?.type && (() => {
+        const stateLabel: Record<number, string> = { 0: 'Spawning', 1: 'Active', 2: 'Boss Spawned', 3: 'Boss Killed', 4: 'Completed' };
+        const q = profile.slayerQuest!;
+        return (
+          <div className="card px-4 py-3 mb-4 border-yellow-500/30 bg-yellow-500/5 flex items-start gap-3">
+            <span className="text-lg">⚔️</span>
+            <div>
+              <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">Active Quest</div>
+              <div className="text-sm font-semibold text-yellow-300">
+                {q.type?.replace(/_/g, ' ')} T{q.tier} — {stateLabel[q.completion_state ?? 0] ?? 'Unknown'}
+              </div>
+              {q.killed_mobs != null && q.killed_mobs > 0 && (
+                <div className="text-xs text-slate-400 mt-0.5">{q.killed_mobs} mobs killed this quest</div>
+              )}
+              {q.last_killed_mob_island && (
+                <div className="text-xs text-slate-400 mt-0.5">Last kill: {q.last_killed_mob_island.replace(/_/g, ' ')}</div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
         <StatCard label="Total Slayer XP" value={formatNum(totalSlayerXP)} color="text-white" />
@@ -336,6 +360,9 @@ export default async function SlayerPage({ params, searchParams }: Props) {
         const rewards = SLAYER_REWARDS[config.key as string] ?? [];
         const nextRewards = rewards.filter(r => r.level > slayer.level).slice(0, 3);
         const maxed = slayer.level >= config.maxLevel;
+        const unclaimedLevels = Object.entries(slayer.claimedLevels)
+          .filter(([, claimed]) => !claimed)
+          .map(([key]) => key.replace('level_', 'Lv '));
 
         return (
           <div key={config.key} className={`card p-5 mb-4 ${slayer.level > 0 ? '' : 'opacity-60'}`}>
@@ -402,6 +429,9 @@ export default async function SlayerPage({ params, searchParams }: Props) {
                         </div>
                         <div className="text-xs text-slate-500">{kills} kills</div>
                         {!unlocked && <div className="text-xs text-slate-600">Lv {tier.unlockLevel}</div>}
+                        {unlocked && (SLAYER_COST[tier.tier - 1] ?? 0) > 0 && (
+                          <div className="text-xs text-yellow-700">{formatNum(SLAYER_COST[tier.tier - 1])}c</div>
+                        )}
                       </div>
                     );
                   })}
@@ -439,6 +469,11 @@ export default async function SlayerPage({ params, searchParams }: Props) {
                 </div>
               )}
             </div>
+            {unclaimedLevels.length > 0 && (
+              <div className="mt-3 rounded border border-yellow-500/20 bg-yellow-500/5 px-3 py-2 text-xs text-yellow-300">
+                ⚠️ Unclaimed rewards: {unclaimedLevels.join(', ')}
+              </div>
+            )}
           </div>
         );
       })}

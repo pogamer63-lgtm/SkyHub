@@ -1,9 +1,12 @@
 import { Metadata } from 'next';
-import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
+import { resolvePlayer, getSkyBlockProfiles, getSkyBlockMuseum } from '@/lib/hypixel/client';
 import { selectBestProfile, enrichWithNBT } from '@/lib/hypixel/parser';
 import { generateRecommendations } from '@/lib/recommendations/engine';
 import { getAvatarUrl } from '@/lib/providers/skins/skin-provider';
 import { getBazaarPrices } from '@/lib/api/bazaar';
+import { getElectionData } from '@/lib/api/election';
+import { getFireSales, isActive, formatTimeLeft } from '@/lib/api/firesales';
+import { ITEMS_INDEX } from '@/lib/neu/data';
 import { formatCoins, levelColor, priorityColor, scoreColor } from '@/lib/utils/format';
 import { SKILL_XP_TABLE, xpToNextLevel, levelProgress } from '@/lib/data/xp-tables';
 import { PlayerProfile, Recommendation } from '@/lib/types/player';
@@ -82,9 +85,17 @@ export default async function PlayerPage({ params, searchParams }: Props) {
   }
 
   // Fetch Bazaar prices for recommendation cost estimates (non-fatal)
-  const bazaar = await getBazaarPrices().catch(() => undefined);
+  const [bazaar, election, fireSales, museumRes] = await Promise.all([
+    getBazaarPrices().catch(() => undefined),
+    getElectionData().catch(() => null),
+    getFireSales().catch(() => []),
+    getSkyBlockMuseum(profile.profileId).catch(() => null),
+  ]);
   const recs = generateRecommendations(profile, bazaar);
   const avatarUrl = getAvatarUrl(profile.uuid, 128);
+  const activeSales = fireSales.filter(isActive);
+  const memberMuseum = museumRes?.members?.[profile.uuid];
+  const museumItemCount = Object.keys(memberMuseum?.items ?? {}).length + (memberMuseum?.special?.length ?? 0);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -117,8 +128,20 @@ export default async function PlayerPage({ params, searchParams }: Props) {
             <span>Coins <strong className="text-yellow-300">{formatCoins(profile.purseCoins + profile.bankCoins)}</strong></span>
             <span>MP <strong className="text-purple-300">{profile.magicalPower}</strong></span>
             <span>Fairy Souls <strong className="text-pink-300">{profile.fairySouls}</strong></span>
+            {profile.bestiaryMilestones > 0 && (
+              <span>Bestiary <strong className="text-red-300">{profile.bestiaryMilestones}/{profile.bestiaryMaxMilestones}</strong></span>
+            )}
+            {museumItemCount > 0 && (
+              <span>Museum <strong className="text-amber-300">{museumItemCount}</strong></span>
+            )}
+            {profile.completedTasksCount > 0 && (
+              <span>Tasks <strong className="text-slate-300">{profile.completedTasksCount}</strong></span>
+            )}
             {!!profile.seniherWeight && <span>Weight <strong className="text-purple-300">{profile.seniherWeight.toLocaleString()}</strong></span>}
             <span>Networth <strong className="text-emerald-300">{formatCoins(estimateNetworth(profile))}</strong></span>
+            {profile.lastDeath !== undefined && (
+              <span className="text-xs">Last death <strong className="text-slate-300">{timeAgo(profile.lastDeath)}</strong></span>
+            )}
           </div>
         </div>
         {/* Profile selector */}
@@ -159,7 +182,90 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         <a href={`/player/${profile.username}/bestiary`}     className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 transition-colors">📖 Bestiary</a>
         <a href={`/player/${profile.username}/chocolate`}    className="flex items-center gap-1.5 rounded-lg border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-300 transition-colors">🍫 Chocolate</a>
         <a href={`/player/${profile.username}/reforges`}     className="flex items-center gap-1.5 rounded-lg border border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-300 transition-colors">🔨 Reforges</a>
+        <a href={`/player/${profile.username}/crimson`}     className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 transition-colors">🔥 Crimson Isle</a>
+        <a href={`/player/${profile.username}/rift`}        className="flex items-center gap-1.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300 transition-colors">👻 The Rift</a>
       </div>
+
+      {/* Mayor + Fire Sales */}
+      {(election || activeSales.length > 0) && (
+        <div className="flex flex-wrap gap-3 mb-6">
+          {election && (
+            <div className="card px-4 py-3 flex items-start gap-3 min-w-0">
+              <span className="text-lg shrink-0">🏛️</span>
+              <div className="min-w-0">
+                <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">Current Mayor</div>
+                <div className="text-sm font-semibold text-white">{election.currentMayor.name}</div>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {election.currentMayor.perks.map(p => (
+                    <span key={p.name} className={`text-xs rounded px-1.5 py-0.5 ${p.minister ? 'bg-yellow-500/10 text-yellow-300' : 'bg-white/5 text-slate-300'}`} title={p.description}>
+                      {p.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          {activeSales.map(sale => {
+            const item = ITEMS_INDEX[sale.itemId];
+            return (
+              <div key={sale.itemId} className="card px-4 py-3 flex items-start gap-3 border-orange-500/20 bg-orange-500/5">
+                <span className="text-lg shrink-0">🔥</span>
+                <div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">Fire Sale</div>
+                  <div className="text-sm font-semibold text-orange-300">{item?.name ?? sale.itemId.replace(/_/g, ' ')}</div>
+                  <div className="text-xs text-slate-400">{sale.price.toLocaleString()} Gems · {sale.amount.toLocaleString()} left · {formatTimeLeft(sale.end)} remaining</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Active Potions */}
+      {profile.activeEffects.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-3">
+          {profile.activeEffects.map((eff, i) => (
+            <span key={i} className="inline-flex items-center gap-1 rounded-full border border-violet-500/30 bg-violet-500/10 px-2.5 py-1 text-xs text-violet-300">
+              🧪 {eff.effect.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase())} {eff.level > 1 ? `${eff.level}` : ''}
+              {eff.infinite ? ' ∞' : ''}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Emblems */}
+      {Object.keys(profile.emblemUnlocks).length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-3">
+          {Object.entries(profile.emblemUnlocks).map(([name, level]) => (
+            <span key={name} className="inline-flex items-center gap-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-1 text-xs text-indigo-300">
+              🏅 {name.replace(/_/g, ' ')} {level > 1 ? `Lv ${level}` : ''}
+              {profile.freeEmblemsClaimed.includes(name) && <span className="text-slate-500 ml-0.5">(free)</span>}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Active Temp Stat Buffs (cookie / booster) */}
+      {profile.tempStatBuffs.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {profile.tempStatBuffs.map((buff, i) => {
+            const timeLeft = buff.expire_at - Date.now();
+            const hoursLeft = Math.floor(timeLeft / 3_600_000);
+            const minsLeft = Math.floor((timeLeft % 3_600_000) / 60_000);
+            const expired = timeLeft <= 0;
+            return (
+              <span key={i} className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs ${
+                expired
+                  ? 'border-slate-600/30 bg-slate-600/10 text-slate-500'
+                  : 'border-orange-500/30 bg-orange-500/10 text-orange-300'
+              }`}>
+                🍪 {buff.key.replace(/_/g, ' ')} +{buff.amount}
+                {!expired && <span className="text-slate-500 ml-1">{hoursLeft}h{minsLeft}m</span>}
+              </span>
+            );
+          })}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Stats Overview */}
@@ -215,6 +321,13 @@ const PET_TIER_VALUE: Record<string, number> = {
   LEGENDARY: 30_000_000,
   MYTHIC: 80_000_000,
 };
+
+function timeAgo(ms: number): string {
+  const days = Math.floor((Date.now() - ms) / 86_400_000);
+  if (days === 0) return 'today';
+  if (days === 1) return 'yesterday';
+  return `${days}d ago`;
+}
 
 function estimateNetworth(profile: PlayerProfile): number {
   const coins = profile.purseCoins + profile.bankCoins;

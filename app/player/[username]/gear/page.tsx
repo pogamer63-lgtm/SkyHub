@@ -270,6 +270,10 @@ export default async function GearPage({ params, searchParams }: Props) {
   let armorItems: ParsedItem[] = [];
   let equipItems: ParsedItem[] = [];
   let invWeapons: ParsedItem[] = [];
+  let potionItems: ParsedItem[] = [];
+  let fishingBagItems: ParsedItem[] = [];
+  let quiverItems: ParsedItem[] = [];
+  let sacksItems: ParsedItem[] = [];
   let rawProfile: SkyBlockProfile | null = null;
   let uuid = '';
   let resolvedName = username;
@@ -292,7 +296,7 @@ export default async function GearPage({ params, searchParams }: Props) {
       const member = target.members[uuid] ?? {};
 
       // Parse armor NBT
-      const armorData = member.inventory?.armor?.data;
+      const armorData = member.inventory?.inv_armor?.data;
       if (armorData) {
         try { armorItems = await parseInventoryNBT(armorData, true); } catch { /* skip */ }
       }
@@ -311,6 +315,15 @@ export default async function GearPage({ params, searchParams }: Props) {
           invWeapons = inv.filter(i => i.id && lookupWeaponTier(i.id) !== null);
         } catch { /* skip */ }
       }
+
+      // Parse bags
+      const bagContents = member.inventory?.bag_contents;
+      await Promise.all([
+        bagContents?.potion_bag?.data ? parseInventoryNBT(bagContents.potion_bag.data).then(r => { potionItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
+        bagContents?.fishing_bag?.data ? parseInventoryNBT(bagContents.fishing_bag.data).then(r => { fishingBagItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
+        bagContents?.quiver?.data ? parseInventoryNBT(bagContents.quiver.data).then(r => { quiverItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
+        bagContents?.sacks_bag?.data ? parseInventoryNBT(bagContents.sacks_bag.data).then(r => { sacksItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
+      ]);
     }
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load profile.';
@@ -510,6 +523,37 @@ export default async function GearPage({ params, searchParams }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Bags */}
+      {(potionItems.length > 0 || fishingBagItems.length > 0 || quiverItems.length > 0 || sacksItems.length > 0) && (
+        <div className="card p-6 space-y-5">
+          <h2 className="text-lg font-semibold text-white">🎒 Bags</h2>
+          {potionItems.length > 0 && (
+            <div>
+              <h3 className="text-sm font-medium text-slate-300 mb-2">Potion Bag ({potionItems.length})</h3>
+              <ClickableItemGrid items={potionItems.map(i => ({ ...i }))} gridCols="grid-cols-4 sm:grid-cols-8" />
+            </div>
+          )}
+          {fishingBagItems.length > 0 && (
+            <div>
+              <h3 className="text-sm font-medium text-slate-300 mb-2">Fishing Bag ({fishingBagItems.length})</h3>
+              <ClickableItemGrid items={fishingBagItems.map(i => ({ ...i }))} gridCols="grid-cols-4 sm:grid-cols-8" />
+            </div>
+          )}
+          {quiverItems.length > 0 && (
+            <div>
+              <h3 className="text-sm font-medium text-slate-300 mb-2">Quiver ({quiverItems.length})</h3>
+              <ClickableItemGrid items={quiverItems.map(i => ({ ...i }))} gridCols="grid-cols-4 sm:grid-cols-8" />
+            </div>
+          )}
+          {sacksItems.length > 0 && (
+            <div>
+              <h3 className="text-sm font-medium text-slate-300 mb-2">Sacks Bag ({sacksItems.length})</h3>
+              <ClickableItemGrid items={sacksItems.map(i => ({ ...i }))} gridCols="grid-cols-4 sm:grid-cols-8" />
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Reforge Guide */}
       <div className="card p-6">

@@ -248,7 +248,7 @@ export type PetTier = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY' | 'M
 
 export interface InventoryData {
   inv_contents?: NBTData;
-  armor?: NBTData;
+  inv_armor?: NBTData;
   equipment_contents?: NBTData;
   wardrobe_contents?: NBTData;
   ender_chest_contents?: NBTData;

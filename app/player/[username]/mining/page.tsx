@@ -272,6 +272,13 @@ const HOTM_NODES: HOTMNode[] = [
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function timeAgoMs(ms: number): string {
+  const days = Math.floor((Date.now() - ms) / 86_400_000);
+  if (days === 0) return 'today';
+  if (days === 1) return 'yesterday';
+  return `${days}d ago`;
+}
+
 function formatNum(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(0)}k`;
@@ -376,7 +383,7 @@ export default async function MiningPage({ params, searchParams }: Props) {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
         <StatCard label="HOTM Level" value={`${mining.hotmLevel}/10`} color="text-sky-300" />
         <StatCard label="Mithril" value={formatNum(mining.powderMithril)} color="text-cyan-300" />
         <StatCard label="Gemstone" value={formatNum(mining.powderGemstone)} color="text-purple-300" />
@@ -386,7 +393,25 @@ export default async function MiningPage({ params, searchParams }: Props) {
           value={`${(mining.hotmNodes.tokens ?? 0)}`}
           color="text-yellow-300"
         />
+        {mining.dailyOresMined > 0 && (
+          <StatCard label="Daily Ores" value={formatNum(mining.dailyOresMined)} color="text-emerald-300" />
+        )}
+        {!!mining.hotmLastReset && (
+          <StatCard label="HOTM Last Reset" value={timeAgoMs(mining.hotmLastReset)} color="text-sky-300" />
+        )}
+        {!!mining.greaterMinesLastAccess && (
+          <StatCard label="Greater Mines" value={timeAgoMs(mining.greaterMinesLastAccess)} color="text-slate-300" />
+        )}
       </div>
+      {profile.miningFiestaOresMined > 0 && (
+        <div className="card p-4 mb-4 flex items-center gap-3">
+          <span className="text-lg">🎉</span>
+          <div>
+            <div className="text-xs text-slate-500 uppercase tracking-wide">Mining Fiesta Score</div>
+            <div className="text-sm font-semibold text-purple-300">{profile.miningFiestaOresMined.toLocaleString()} ores mined</div>
+          </div>
+        </div>
+      )}
 
       {/* Priority Upgrades */}
       {nextUpgrades.length > 0 && (
@@ -509,6 +534,34 @@ export default async function MiningPage({ params, searchParams }: Props) {
                 <div className="text-xs text-slate-600 mt-0.5">HOTM {node.hotmRequired} required</div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Crystal Hollows */}
+      {Object.keys(profile.mining.crystals).length > 0 && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-white mb-4">💎 Crystal Hollows</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {Object.entries(profile.mining.crystals)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([name, crystal]) => {
+                const state = crystal.state;
+                const placed = state === 'PLACED';
+                const found  = state === 'FOUND';
+                const color  = placed ? 'text-emerald-300 border-emerald-500/20 bg-emerald-500/5'
+                             : found  ? 'text-yellow-300 border-yellow-500/20 bg-yellow-500/5'
+                             :          'text-slate-600 border-white/5';
+                return (
+                  <div key={name} className={`rounded-lg border p-3 ${color}`}>
+                    <div className="text-xs font-medium capitalize">{name.replace(/_/g, ' ')}</div>
+                    <div className="text-xs mt-1 opacity-70">{placed ? 'Placed' : found ? 'Found' : 'Not found'}</div>
+                    {crystal.found > 0 && (
+                      <div className="text-xs opacity-50 mt-0.5">{crystal.found}× found</div>
+                    )}
+                  </div>
+                );
+              })}
           </div>
         </div>
       )}

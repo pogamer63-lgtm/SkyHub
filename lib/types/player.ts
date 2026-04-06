@@ -1,5 +1,7 @@
 // Normalized player types used throughout the app
 import type { ParsedItem } from '@/lib/hypixel/nbt';
+import type { DungeonRun, ActiveEffect, SlayerQuest, TempStatBuff } from '@/lib/types/hypixel';
+export type { DungeonRun, ActiveEffect, SlayerQuest, TempStatBuff } from '@/lib/types/hypixel';
 
 export interface PlayerProfile {
   uuid: string;
@@ -41,6 +43,35 @@ export interface PlayerProfile {
   /** Chocolate factory prestige level */
   chocolatePrestige?: number;
 
+  // Crimson Isle / Nether
+  crimson: CrimsonProgress;
+  // The Rift
+  rift: RiftProgress;
+
+  // Player combat/social stats
+  playerStats: PlayerStats;
+  fairyExchanges: number;
+  highestPetScore: number;
+
+  // Chocolate factory detail
+  chocolateLevel: number;
+  chocolateEmployees: Record<string, number>;
+
+  // Accessory bag detail
+  accessoryBagUpgrades: number;
+  unlockedPowers: string[];
+
+  // Mining biomes
+  miningBiomes: Record<string, unknown>;
+
+  // Misc scalars
+  deathCount: number;
+  firstJoin?: number;
+  visitorsServed: number;
+  larvaeConsumed: number;
+  /** Crafted (unique) minion IDs */
+  minions: string[];
+
   // Populated by enrichWithNBT — undefined until enriched
   armorItems?: ParsedItem[];
   equipmentItems?: ParsedItem[];
@@ -48,6 +79,38 @@ export interface PlayerProfile {
   enderChestItems?: ParsedItem[];
   wardrobeItems?: ParsedItem[];
   backpackItems?: ParsedItem[];
+  potionItems?: ParsedItem[];
+  fishingBagItems?: ParsedItem[];
+  quiverItems?: ParsedItem[];
+  sacksItems?: ParsedItem[];
+  /** Active potion/effect buffs from player_data.active_effects */
+  activeEffects: ActiveEffect[];
+  /** Active temporary stat buffs (cookie, booster, etc.) */
+  tempStatBuffs: TempStatBuff[];
+  /** Emblem unlock levels (name → level) */
+  emblemUnlocks: Record<string, number>;
+  /** Emblem names claimed for free */
+  freeEmblemsClaimed: string[];
+  /** Chocolate earned since last prestige */
+  chocolateSincePrestige?: number;
+
+  // Bestiary milestone totals
+  bestiaryMilestones: number;
+  bestiaryMaxMilestones: number;
+
+  // Active slayer quest (undefined when no quest is running)
+  slayerQuest?: SlayerQuest;
+
+  // Leveling extras
+  completedTasksCount: number;
+  currentBadge?: number;
+  selectedSymbol?: string;
+  miningFiestaOresMined: number;
+  fishingFestivalSharksKilled: number;
+
+  // Player misc
+  lastDeath?: number;
+  visitedZonesCount: number;
 }
 
 export type { ParsedItem };
@@ -89,21 +152,32 @@ export interface SlayerInfo {
   level: number;
   xp: number;
   kills: Record<string, number>;
+  claimedLevels: Record<string, boolean>;
+}
+
+export interface DungeonFloorStats {
+  floorCompletions: Record<string, number>;
+  timesPlayed: Record<string, number>;
+  fastestTimes: Record<string, number>;
+  fastestTimesS: Record<string, number>;
+  fastestTimesSPlus: Record<string, number>;
+  bestScores: Record<string, number>;
+  mobsKilled: Record<string, number>;
+  bestRuns: Record<string, DungeonRun[]>;
+  mostHealing: Record<string, number>;
+  watcherKills: Record<string, number>;
 }
 
 export interface DungeonProgress {
   selectedClass: string;
   classes: Record<string, { level: number; xp: number }>;
-  catacombs: {
+  catacombs: DungeonFloorStats & {
     level: number;
     xp: number;
     highestFloor: number;
-    floorCompletions: Record<string, number>;
-    fastestTimes: Record<string, number>;
   };
-  masterMode: {
+  masterMode: DungeonFloorStats & {
     highestFloor: number;
-    floorCompletions: Record<string, number>;
   };
 }
 
@@ -131,6 +205,37 @@ export interface AccessoryInfo {
   ownedIds?: Set<string>;
 }
 
+export interface CrystalState {
+  state: string;
+  found: number;
+  placed: number;
+}
+
+export interface DojoChallenge {
+  score: number;
+  wave?: number;
+}
+
+export interface CrimsonProgress {
+  selectedFaction: string;
+  magesReputation: number;
+  barbiansReputation: number;
+  kuudraTiers: Record<string, number>;
+  dojo: Record<string, DojoChallenge>;
+  fairySoulCollected: number;
+  abiphoneContacts: number;
+}
+
+export interface RiftProgress {
+  enigmaSouls: number;
+  deadCats: number;
+  galleryTrophies: number;
+  witherEyes: number;
+  grubberStacks: number;
+  motesPurse: number;
+  motesOrbPickup: number;
+}
+
 export interface MiningProgress {
   hotmLevel: number;
   hotmNodes: Record<string, number>;
@@ -143,6 +248,11 @@ export interface MiningProgress {
   powderGlacite: number;
   powderGlaciteTotal: number;
   xp: number;
+  crystals: Record<string, CrystalState>;
+  selectedPickaxeAbility?: string;
+  dailyOresMined: number;
+  hotmLastReset?: number;
+  greaterMinesLastAccess?: number;
 }
 
 export interface FarmingProgress {
@@ -159,7 +269,18 @@ export interface FarmingProgress {
   copper: number;
   farmingFortune: number;
   uniqueGolds: string[];
+  uniquePlatinums: string[];
+  uniqueDiamonds: string[];
   contestsParticipated: number;
+  participationMilestones: number;
+}
+
+export interface PlayerStats {
+  totalKills: number;
+  totalDeaths: number;
+  riftMotesEarned: number;
+  giftsGiven: number;
+  giftsReceived: number;
 }
 
 // Recommendation types

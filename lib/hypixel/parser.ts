@@ -19,9 +19,12 @@ import {
   MiningProgress,
   FarmingProgress,
   GameStage,
+  CrimsonProgress,
+  RiftProgress,
+  PlayerStats,
 } from '@/lib/types/player';
 import { parseInventoryNBT, MP_PER_RARITY } from '@/lib/hypixel/nbt';
-import { WEIGHT_SENITHER } from '@/lib/neu/data';
+import { WEIGHT_SENITHER, BESTIARY_ZONES, getBestiaryMilestoneLevel, getBestiaryMaxLevel } from '@/lib/neu/data';
 
 // XP tables
 // Cumulative XP to reach each level (wiki-verified 2026-04-01, levels 0-60)
@@ -112,7 +115,8 @@ function parseSlayers(member: SkyBlockMember): SlayerLevels {
       const k = (boss as Record<string, unknown>)[`boss_kills_tier_${t}`];
       if (typeof k === 'number' && k > 0) kills[`tier_${t + 1}`] = k;
     }
-    return { level, xp, kills };
+    const claimedLevels: Record<string, boolean> = boss.claimed_levels ?? {};
+    return { level, xp, kills, claimedLevels };
   }
 
   return {
@@ -127,11 +131,11 @@ function parseSlayers(member: SkyBlockMember): SlayerLevels {
 
 function parseDungeons(member: SkyBlockMember): DungeonProgress {
   const dungeons = member.dungeons ?? {};
-  const catacombsData = dungeons.dungeon_types?.catacombs ?? {};
+  const catData = dungeons.dungeon_types?.catacombs ?? {};
   const masterData = dungeons.dungeon_types?.master_catacombs ?? {};
   const classes = dungeons.player_classes ?? {};
 
-  const catacombsXP = catacombsData.experience ?? 0;
+  const catacombsXP = catData.experience ?? 0;
   const catacombsLevel = xpToLevel(catacombsXP, DUNGEON_XP_TABLE);
 
   const parsedClasses: Record<string, { level: number; xp: number }> = {};
@@ -146,13 +150,30 @@ function parseDungeons(member: SkyBlockMember): DungeonProgress {
     catacombs: {
       level: catacombsLevel,
       xp: catacombsXP,
-      highestFloor: catacombsData.highest_tier_completed ?? 0,
-      floorCompletions: catacombsData.tier_completions ?? {},
-      fastestTimes: catacombsData.fastest_time ?? {},
+      highestFloor: catData.highest_tier_completed ?? 0,
+      floorCompletions: catData.tier_completions ?? {},
+      timesPlayed: catData.times_played ?? {},
+      fastestTimes: catData.fastest_time ?? {},
+      fastestTimesS: catData.fastest_time_s ?? {},
+      fastestTimesSPlus: catData.fastest_time_s_plus ?? {},
+      bestScores: catData.best_score ?? {},
+      mobsKilled: catData.mobs_killed ?? {},
+      bestRuns: catData.best_runs ?? {},
+      mostHealing:  catData.most_healing  ?? {},
+      watcherKills: catData.watcher_kills ?? {},
     },
     masterMode: {
       highestFloor: masterData.highest_tier_completed ?? 0,
       floorCompletions: masterData.tier_completions ?? {},
+      timesPlayed: masterData.times_played ?? {},
+      fastestTimes: masterData.fastest_time ?? {},
+      fastestTimesS: masterData.fastest_time_s ?? {},
+      fastestTimesSPlus: masterData.fastest_time_s_plus ?? {},
+      bestScores: masterData.best_score ?? {},
+      mobsKilled: masterData.mobs_killed ?? {},
+      bestRuns: masterData.best_runs ?? {},
+      mostHealing:  masterData.most_healing  ?? {},
+      watcherKills: masterData.watcher_kills ?? {},
     },
   };
 }
@@ -251,6 +272,15 @@ function parseMining(member: SkyBlockMember): MiningProgress {
   const powderGlacite = member.powder_glacite ?? mc.powder_glacite ?? 0;
   const powderGlaciteTotal = ((member.powder_glacite ?? 0) + (member.powder_spent_glacite ?? 0)) || (mc.powder_glacite_total ?? 0);
 
+  const crystals: Record<string, { state: string; found: number; placed: number }> = {};
+  for (const [k, v] of Object.entries(mc.crystals ?? {})) {
+    crystals[k] = {
+      state: v.state ?? 'NOT_FOUND',
+      found: v.total_found ?? 0,
+      placed: v.total_placed ?? 0,
+    };
+  }
+
   return {
     hotmLevel,
     hotmNodes: mc.nodes ?? {},
@@ -263,7 +293,25 @@ function parseMining(member: SkyBlockMember): MiningProgress {
     powderGlacite,
     powderGlaciteTotal,
     xp: exp,
+    crystals,
+    selectedPickaxeAbility: mc.selected_pickaxe_ability,
+    dailyOresMined: mc.daily_ores_mined ?? 0,
+    hotmLastReset: mc.last_reset,
+    greaterMinesLastAccess: mc.greater_mines_last_access,
   };
+}
+
+function parseBestiary(member: SkyBlockMember): { total: number; max: number } {
+  const rawKills = member.bestiary?.kills ?? {};
+  let total = 0, max = 0;
+  for (const zone of BESTIARY_ZONES) {
+    for (const family of zone.families) {
+      const kills = family.apiKeys.reduce((s, k) => s + (rawKills[k] ?? 0), 0);
+      total += getBestiaryMilestoneLevel(kills, family.cap, family.bracket);
+      max   += getBestiaryMaxLevel(family.cap, family.bracket);
+    }
+  }
+  return { total, max };
 }
 
 function parseFarming(member: SkyBlockMember): FarmingProgress {
@@ -316,8 +364,11 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
     copper: garden.copper ?? 0,
     farmingFortune: 0,
     // unique_brackets is the modern format; unique_golds2 is legacy
-    uniqueGolds: jacob.unique_brackets?.gold ?? jacob.unique_golds2 ?? [],
+    uniqueGolds:     jacob.unique_brackets?.gold     ?? jacob.unique_golds2 ?? [],
+    uniquePlatinums: jacob.unique_brackets?.platinum ?? [],
+    uniqueDiamonds:  jacob.unique_brackets?.diamond  ?? [],
     contestsParticipated,
+    participationMilestones: jacob.participation_milestones ?? 0,
   };
 }
 
@@ -327,6 +378,7 @@ function parseChocolateFactory(member: SkyBlockMember): {
   totalChocolate: number;
   chocolatePerSecond: number;
   prestige: number;
+  chocolateSincePrestige?: number;
 } {
   const h = member.hoppity ?? {};
   const rabbits: Record<string, number> = {};
@@ -340,6 +392,7 @@ function parseChocolateFactory(member: SkyBlockMember): {
     totalChocolate: typeof h.total_chocolate === 'number' ? h.total_chocolate : 0,
     chocolatePerSecond: 0, // computed later from rabbit count
     prestige: typeof h.prestige === 'object' && h.prestige ? (h.prestige.level ?? 0) : 0,
+    chocolateSincePrestige: typeof h.chocolate_since_prestige === 'number' ? h.chocolate_since_prestige : undefined,
   };
 }
 
@@ -402,6 +455,61 @@ function computeSeniherWeight(
   return Math.round(total);
 }
 
+function parseCrimson(member: SkyBlockMember): CrimsonProgress {
+  const n = member.nether_island_player_data ?? {};
+
+  // Dojo: raw keys are like "dojo_points_mob_kb", "dojo_stage_mob_kb"
+  const rawDojo = (n.dojo ?? {}) as Record<string, unknown>;
+  const dojo: CrimsonProgress['dojo'] = {};
+  for (const [key, val] of Object.entries(rawDojo)) {
+    if (key.startsWith('dojo_points_')) {
+      const challenge = key.replace('dojo_points_', '');
+      if (!dojo[challenge]) dojo[challenge] = { score: 0 };
+      dojo[challenge].score = typeof val === 'number' ? val : 0;
+    } else if (key.startsWith('dojo_stage_')) {
+      const challenge = key.replace('dojo_stage_', '');
+      if (!dojo[challenge]) dojo[challenge] = { score: 0 };
+      dojo[challenge].wave = typeof val === 'number' ? val : undefined;
+    }
+  }
+
+  return {
+    selectedFaction: n.selected_faction ?? '',
+    magesReputation: n.mages_reputation ?? 0,
+    barbiansReputation: n.barbarians_reputation ?? 0,
+    kuudraTiers: n.kuudra_completed_tiers ?? {},
+    dojo,
+    fairySoulCollected: n.fairy_soul_collected ?? 0,
+    abiphoneContacts: Object.keys(n.abiphone ?? {}).length,
+  };
+}
+
+function parseRift(member: SkyBlockMember): RiftProgress {
+  const r = member.rift ?? {};
+  return {
+    enigmaSouls: (r.enigma?.found_souls ?? []).length,
+    deadCats: (r.dead_cats?.found_cats ?? []).length,
+    galleryTrophies: (r.gallery?.secured_trophies ?? []).length,
+    witherEyes: (r.wither_cage?.killed_eyes ?? []).length,
+    grubberStacks: r.castle?.grubber_stacks ?? 0,
+    motesPurse: member.currencies?.motes_purse ?? 0,
+    motesOrbPickup: member.player_stats?.rift?.motes_orb_pickup ?? 0,
+  };
+}
+
+function parsePlayerStats(member: SkyBlockMember): PlayerStats {
+  const ps = member.player_stats ?? {};
+  const kills = ps.kills ?? {};
+  const deaths = ps.deaths ?? {};
+  return {
+    totalKills: Object.values(kills).reduce((s, v) => s + v, 0),
+    totalDeaths: Object.values(deaths).reduce((s, v) => s + v, 0),
+    riftMotesEarned: ps.rift?.lifetime_motes_earned ?? 0,
+    giftsGiven: ps.gifts?.total_given ?? 0,
+    giftsReceived: ps.gifts?.total_received ?? 0,
+  };
+}
+
 function parseAccessories(member: SkyBlockMember): AccessoryInfo {
   const bag = member.accessory_bag_storage ?? {};
   return {
@@ -451,8 +559,12 @@ export function parseProfile(
   const accessories = parseAccessories(member);
   const mining = parseMining(member);
   const farming = parseFarming(member);
+  const crimson = parseCrimson(member);
+  const rift = parseRift(member);
+  const playerStats = parsePlayerStats(member);
 
   const trophyFish = parseTrophyFish(member);
+  const bestiaryTotals = parseBestiary(member);
   const seniherWeight = computeSeniherWeight(skills, slayers, dungeons);
   const cf = parseChocolateFactory(member);
 
@@ -482,6 +594,41 @@ export function parseProfile(
     chocolate: cf.chocolate,
     totalChocolate: cf.totalChocolate,
     chocolatePrestige: cf.prestige,
+    crimson,
+    rift,
+    playerStats,
+    fairyExchanges: member.fairy_soul?.fairy_exchanges ?? 0,
+    highestPetScore: member.leveling?.highest_pet_score ?? 0,
+    chocolateLevel: typeof member.hoppity?.chocolate_level === 'number' ? member.hoppity.chocolate_level : 0,
+    chocolateEmployees: Object.fromEntries(
+      Object.entries((member.hoppity?.employees ?? {}) as Record<string, unknown>)
+        .filter(([, v]) => typeof v === 'number')
+        .map(([k, v]) => [k, v as number]),
+    ),
+    accessoryBagUpgrades: member.accessory_bag_storage?.bag_upgrades_purchased ?? 0,
+    unlockedPowers: member.accessory_bag_storage?.unlocked_powers ?? [],
+    miningBiomes: member.mining_core?.biomes ?? {},
+    deathCount: member.player_data?.death_count ?? 0,
+    firstJoin: member.profile?.first_join,
+    visitorsServed: member.garden_player_data?.visitors_served ?? 0,
+    larvaeConsumed: member.garden_player_data?.larva_consumed ?? 0,
+    minions: member.crafted_generators ?? [],
+    activeEffects: member.player_data?.active_effects ?? [],
+    tempStatBuffs: member.player_data?.temp_stat_buffs ?? [],
+    emblemUnlocks: member.leveling?.emblem_unlocks ?? {},
+    freeEmblemsClaimed: member.leveling?.free_emblems_claimed ?? [],
+    chocolateSincePrestige: cf.chocolateSincePrestige,
+    sacksItems: undefined,
+    bestiaryMilestones: bestiaryTotals.total,
+    bestiaryMaxMilestones: bestiaryTotals.max,
+    slayerQuest: member.slayer?.slayer_quest,
+    completedTasksCount: member.leveling?.completed_tasks?.length ?? 0,
+    currentBadge: member.leveling?.current_badge,
+    selectedSymbol: member.leveling?.selected_symbol,
+    miningFiestaOresMined: member.leveling?.mining_fiesta_ores_mined ?? 0,
+    fishingFestivalSharksKilled: member.leveling?.fishing_festival_sharks_killed ?? 0,
+    lastDeath: member.player_data?.last_death,
+    visitedZonesCount: member.player_data?.visited_zones?.length ?? 0,
   };
 
   return partial;
@@ -530,6 +677,8 @@ export async function enrichWithNBT(
   const inv = member.inventory;
   if (!inv) return profile;
 
+  const backpackKeys = Object.values(inv.backpack_contents ?? {});
+
   // Parse all slots in parallel
   const [
     accessories,
@@ -538,16 +687,24 @@ export async function enrichWithNBT(
     inventoryItems,
     wardrobeItems,
     enderChestItems,
+    potionItems,
+    fishingBagItems,
+    quiverItems,
+    sacksItems,
     ...backpackArrays
   ] = await Promise.all([
     safeParseNBT(inv.bag_contents?.talisman_bag?.data),
-    safeParseNBT(inv.armor?.data),
+    safeParseNBT(inv.inv_armor?.data),
     safeParseNBT(inv.equipment_contents?.data),
     safeParseNBT(inv.inv_contents?.data),
     safeParseNBT(inv.wardrobe_contents?.data),
     safeParseNBT(inv.ender_chest_contents?.data),
+    safeParseNBT(inv.bag_contents?.potion_bag?.data),
+    safeParseNBT(inv.bag_contents?.fishing_bag?.data),
+    safeParseNBT(inv.bag_contents?.quiver?.data),
+    safeParseNBT(inv.bag_contents?.sacks_bag?.data),
     // Each backpack slot is a separate NBT blob
-    ...Object.values(inv.backpack_contents ?? {}).map(bp => safeParseNBT(bp?.data)),
+    ...backpackKeys.map(bp => safeParseNBT(bp?.data)),
   ]);
 
   const filteredAccessories = accessories.filter(i => i.id && !i.id.startsWith('NONE'));
@@ -566,11 +723,15 @@ export async function enrichWithNBT(
       ownedIds,
     },
     magicalPower: Math.max(profile.magicalPower, realMP),
-    armorItems:    armorItems.filter(i => !!i.id),
-    equipmentItems:equipmentItems.filter(i => !!i.id),
-    inventoryItems:inventoryItems.filter(i => !!i.id),
-    wardrobeItems: wardrobeItems.filter(i => !!i.id),
-    enderChestItems:enderChestItems.filter(i => !!i.id),
-    backpackItems: backpackItems.filter(i => !!i.id),
+    armorItems:      armorItems.filter(i => !!i.id),
+    equipmentItems:  equipmentItems.filter(i => !!i.id),
+    inventoryItems:  inventoryItems.filter(i => !!i.id),
+    wardrobeItems:   wardrobeItems.filter(i => !!i.id),
+    enderChestItems: enderChestItems.filter(i => !!i.id),
+    backpackItems:   backpackItems.filter(i => !!i.id),
+    potionItems:     potionItems.filter(i => !!i.id),
+    fishingBagItems: fishingBagItems.filter(i => !!i.id),
+    quiverItems:     quiverItems.filter(i => !!i.id),
+    sacksItems:      sacksItems.filter(i => !!i.id),
   };
 }

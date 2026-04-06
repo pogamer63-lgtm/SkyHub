@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
-import { PlayerProfile, DungeonProgress } from '@/lib/types/player';
+import { PlayerProfile, DungeonProgress, DungeonFloorStats } from '@/lib/types/player';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -61,15 +61,59 @@ function formatMs(ms: number): string {
   return `${min}:${sec.toString().padStart(2, '0')}`;
 }
 
+function formatLargeNum(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}k`;
+  return n.toLocaleString();
+}
+
 function getCompletions(dungeons: DungeonProgress, floor: number, master = false): number {
   const key = String(floor);
   if (master) return dungeons.masterMode.floorCompletions[key] ?? 0;
   return dungeons.catacombs.floorCompletions[key] ?? 0;
 }
 
-function getFastestTime(dungeons: DungeonProgress, floor: number): number | null {
-  const t = dungeons.catacombs.fastestTimes[String(floor)];
+function getTimesPlayed(dungeons: DungeonProgress, floor: number, master = false): number {
+  const key = String(floor);
+  if (master) return dungeons.masterMode.timesPlayed[key] ?? 0;
+  return dungeons.catacombs.timesPlayed[key] ?? 0;
+}
+
+function getFastestTime(dungeons: DungeonProgress, floor: number, rank: 'any' | 's' | 'splus' = 'any'): number | null {
+  let t: number | undefined;
+  if (rank === 'splus') t = dungeons.catacombs.fastestTimesSPlus[String(floor)];
+  else if (rank === 's') t = dungeons.catacombs.fastestTimesS[String(floor)];
+  else t = dungeons.catacombs.fastestTimes[String(floor)];
   return typeof t === 'number' ? t : null;
+}
+
+function getBestScore(dungeons: DungeonProgress, floor: number): number | null {
+  const s = dungeons.catacombs.bestScores[String(floor)];
+  return typeof s === 'number' ? s : null;
+}
+
+function scoreGrade(score: number): string {
+  if (score >= 300) return 'S+';
+  if (score >= 270) return 'S';
+  if (score >= 240) return 'A';
+  if (score >= 175) return 'B';
+  if (score >= 100) return 'C';
+  return 'D';
+}
+
+function getMostHealing(dt: DungeonFloorStats, floor: number): number {
+  return dt.mostHealing?.[String(floor)] ?? 0;
+}
+function getWatcherKills(dt: DungeonFloorStats, floor: number): number {
+  return dt.watcherKills?.[String(floor)] ?? 0;
+}
+
+function scoreGradeColor(score: number): string {
+  if (score >= 300) return 'text-yellow-300';
+  if (score >= 270) return 'text-emerald-300';
+  if (score >= 240) return 'text-blue-300';
+  if (score >= 175) return 'text-purple-300';
+  return 'text-slate-400';
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -125,6 +169,10 @@ export default async function DungeonsPage({ params, searchParams }: Props) {
   // Class levels sorted
   const classEntries = Object.entries(dungeons.classes).sort(([, a], [, b]) => b.level - a.level);
   const selectedClass = dungeons.selectedClass;
+
+  // Check if healing / watcher data is present for any floor
+  const hasHealing = Object.values(dungeons.catacombs.mostHealing).some(v => v > 0);
+  const hasWatcher = Object.values(dungeons.catacombs.watcherKills).some(v => v > 0);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -182,7 +230,13 @@ export default async function DungeonsPage({ params, searchParams }: Props) {
         <div className="space-y-2">
           {FLOORS.map(floor => {
             const completions = getCompletions(dungeons, floor.floor);
-            const fastest = getFastestTime(dungeons, floor.floor);
+            const runs = getTimesPlayed(dungeons, floor.floor);
+            const fastest = getFastestTime(dungeons, floor.floor, 'any');
+            const fastestS = getFastestTime(dungeons, floor.floor, 's');
+            const fastestSplus = getFastestTime(dungeons, floor.floor, 'splus');
+            const bestScore = getBestScore(dungeons, floor.floor);
+            const healing = getMostHealing(dungeons.catacombs, floor.floor);
+            const watcher = getWatcherKills(dungeons.catacombs, floor.floor);
             const cleared = floor.floor <= highestFloor;
             const isNext = floor.floor === highestFloor + 1;
 
@@ -195,9 +249,9 @@ export default async function DungeonsPage({ params, searchParams }: Props) {
                   'border-white/5 opacity-50'
                 }`}
               >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className={`text-sm font-medium w-6 text-center ${cleared ? 'text-emerald-400' : 'text-slate-600'}`}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <span className={`text-sm font-medium w-6 text-center mt-0.5 ${cleared ? 'text-emerald-400' : 'text-slate-600'}`}>
                       {cleared ? '✓' : `F${floor.floor}`}
                     </span>
                     <div>
@@ -207,13 +261,30 @@ export default async function DungeonsPage({ params, searchParams }: Props) {
                       {floor.keyGear && cleared && (
                         <div className="text-xs text-yellow-300/70">{floor.keyGear}</div>
                       )}
+                      {cleared && (
+                        <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
+                          {fastest && <span className="text-xs text-slate-500">Any: {formatMs(fastest)}</span>}
+                          {fastestS && <span className="text-xs text-emerald-400/80">S: {formatMs(fastestS)}</span>}
+                          {fastestSplus && <span className="text-xs text-yellow-300/80">S+: {formatMs(fastestSplus)}</span>}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="text-right shrink-0">
                     {cleared ? (
                       <>
-                        <div className="text-xs text-emerald-400">{completions}× cleared</div>
-                        {fastest && <div className="text-xs text-slate-500">{formatMs(fastest)}</div>}
+                        <div className="text-xs text-emerald-400">{runs > 0 ? runs : completions}× runs</div>
+                        {bestScore != null && (
+                          <div className={`text-xs font-medium ${scoreGradeColor(bestScore)}`}>
+                            Best: {scoreGrade(bestScore)} ({bestScore})
+                          </div>
+                        )}
+                        {hasHealing && healing > 0 && (
+                          <div className="text-xs text-pink-400">❤ {formatLargeNum(healing)} hp</div>
+                        )}
+                        {hasWatcher && watcher > 0 && (
+                          <div className="text-xs text-slate-400">👁 {watcher} watcher</div>
+                        )}
                       </>
                     ) : (
                       <div className="text-xs text-slate-600">Not cleared</div>
@@ -233,6 +304,10 @@ export default async function DungeonsPage({ params, searchParams }: Props) {
           <div className="space-y-2">
             {MASTER_FLOORS.map(floor => {
               const completions = getCompletions(dungeons, floor.floor, true);
+              const runs = getTimesPlayed(dungeons, floor.floor, true);
+              const fastestS = dungeons.masterMode.fastestTimesS[String(floor.floor)];
+              const fastestSplus = dungeons.masterMode.fastestTimesSPlus[String(floor.floor)];
+              const bestScore = dungeons.masterMode.bestScores[String(floor.floor)];
               const cleared = floor.floor <= highestMM;
               const isNext = floor.floor === highestMM + 1;
 
@@ -245,20 +320,35 @@ export default async function DungeonsPage({ params, searchParams }: Props) {
                     'border-white/5 opacity-50'
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className={`text-sm w-5 ${cleared ? 'text-emerald-400' : 'text-slate-600'}`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-3">
+                      <span className={`text-sm w-5 mt-0.5 ${cleared ? 'text-emerald-400' : 'text-slate-600'}`}>
                         {cleared ? '✓' : '○'}
                       </span>
                       <div>
                         <div className="text-sm text-white font-medium">{floor.name}</div>
                         {floor.keyGear && cleared && <div className="text-xs text-yellow-300/70">{floor.keyGear}</div>}
+                        {cleared && (
+                          <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
+                            {fastestS && <span className="text-xs text-emerald-400/80">S: {formatMs(fastestS)}</span>}
+                            {fastestSplus && <span className="text-xs text-yellow-300/80">S+: {formatMs(fastestSplus)}</span>}
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="text-xs text-right">
-                      {cleared
-                        ? <span className="text-emerald-400">{completions}× cleared</span>
-                        : <span className="text-slate-600">Cat {floor.minCatLevel} req.</span>}
+                      {cleared ? (
+                        <>
+                          <span className="text-emerald-400">{runs > 0 ? runs : completions}× runs</span>
+                          {bestScore != null && (
+                            <div className={`text-xs font-medium ${scoreGradeColor(bestScore)}`}>
+                              {scoreGrade(bestScore)} ({bestScore})
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <span className="text-slate-600">Cat {floor.minCatLevel} req.</span>
+                      )}
                     </div>
                   </div>
                 </div>

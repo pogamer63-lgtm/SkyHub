@@ -166,6 +166,18 @@ export default async function ChocolatePage({ params, searchParams }: Props) {
           <div className="text-xs text-slate-500 mt-1">Prestige Level</div>
           {prestigeMultiplier > 0 && <div className="text-xs text-slate-600">+{(prestigeMultiplier * 100).toFixed(0)}% chocolate</div>}
         </div>
+        {!!profile.chocolateSincePrestige && profile.chocolateSincePrestige > 0 && (
+          <div className="card p-4 text-center">
+            <div className="text-2xl font-bold text-amber-300">{formatChocolate(profile.chocolateSincePrestige)}</div>
+            <div className="text-xs text-slate-500 mt-1">Since Last Prestige</div>
+          </div>
+        )}
+        {profile.chocolateLevel > 0 && (
+          <div className="card p-4 text-center">
+            <div className="text-2xl font-bold text-orange-300">{profile.chocolateLevel}</div>
+            <div className="text-xs text-slate-500 mt-1">Factory Level</div>
+          </div>
+        )}
       </div>
 
       {totalChocolate > 0 && (
@@ -285,6 +297,23 @@ export default async function ChocolatePage({ params, searchParams }: Props) {
           )}
         </div>
       </div>
+
+      {/* Employees */}
+      {Object.keys(profile.chocolateEmployees).length > 0 && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-white mb-3">👷 Employees</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {Object.entries(profile.chocolateEmployees)
+              .sort(([, a], [, b]) => b - a)
+              .map(([name, level]) => (
+                <div key={name} className="flex items-center justify-between rounded-lg border border-white/5 px-3 py-2">
+                  <span className="text-sm text-slate-300 capitalize">{name.replace(/_/g, ' ')}</span>
+                  <span className="text-sm font-mono text-amber-300">Lv {level}</span>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

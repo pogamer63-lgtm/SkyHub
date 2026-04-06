@@ -393,6 +393,16 @@ export default async function FishingPage({ params, searchParams }: Props) {
           </div>
         </div>
       </div>
+      {/* Fishing Festival Score */}
+      {profile.fishingFestivalSharksKilled > 0 && (
+        <div className="card p-4 flex items-center gap-3">
+          <span className="text-2xl">🦈</span>
+          <div>
+            <div className="text-xs text-slate-500 uppercase tracking-wide">Fishing Festival</div>
+            <div className="text-sm font-semibold text-red-300">{profile.fishingFestivalSharksKilled.toLocaleString()} sharks killed</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

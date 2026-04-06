@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { PlayerProfile, ParsedPet } from '@/lib/types/player';
-import { computePetLevel, computePetStats } from '@/lib/neu/data';
+import { computePetLevel, computePetStats, PET_SCORE_REWARDS } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -202,6 +202,13 @@ export default async function PetsPage({ params, searchParams }: Props) {
 
   // Check which BIS pets the player owns
   const ownedTypes = new Set(pets.map(p => p.type));
+
+  // Pet score milestones
+  const petScore = profile.highestPetScore;
+  const petScoreMilestones = Object.entries(PET_SCORE_REWARDS)
+    .map(([s, stats]) => ({ score: Number(s), stats, earned: petScore >= Number(s) }))
+    .sort((a, b) => a.score - b.score);
+  const nextPetMilestone = petScoreMilestones.find(m => !m.earned);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 space-y-6">
@@ -449,6 +456,34 @@ export default async function PetsPage({ params, searchParams }: Props) {
           </div>
         </div>
       </div>
+      {/* Pet Score Milestones */}
+      {petScoreMilestones.length > 0 && (
+        <div className="card p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-white">🐾 Pet Score Bonuses</h2>
+            <div className="text-right">
+              <div className="text-lg font-bold text-yellow-300">{petScore}</div>
+              <div className="text-xs text-slate-500">Pet Score</div>
+            </div>
+          </div>
+          {nextPetMilestone && (
+            <div className="mb-3 rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-xs text-amber-300">
+              Next milestone: <strong>{nextPetMilestone.score}</strong> — {Object.entries(nextPetMilestone.stats).map(([k, v]) => `+${v} ${k.replace(/_/g, ' ')}`).join(', ')}
+            </div>
+          )}
+          <div className="space-y-1">
+            {petScoreMilestones.map(m => (
+              <div key={m.score} className={`flex items-center gap-3 text-sm rounded px-3 py-1.5 ${m.earned ? 'bg-yellow-500/5' : 'opacity-40'}`}>
+                <span className={`w-10 text-xs font-mono shrink-0 ${m.earned ? 'text-yellow-300' : 'text-slate-500'}`}>{m.score}</span>
+                <span className="text-slate-300 flex-1 text-xs">
+                  {Object.entries(m.stats).map(([k, v]) => `+${v} ${k.replace(/_/g, ' ').toLowerCase()}`).join(', ')}
+                </span>
+                {m.earned && <span className="text-yellow-400 text-xs shrink-0">✓</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

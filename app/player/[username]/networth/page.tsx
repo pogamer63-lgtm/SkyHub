@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile, enrichWithNBT } from '@/lib/hypixel/parser';
 import { getBazaarPrices, getBazaarSellPrice } from '@/lib/api/bazaar';
+import { getAHPrices, getAHPrice } from '@/lib/api/auction';
 import { PlayerProfile, ParsedPet } from '@/lib/types/player';
 import { formatCoins } from '@/lib/utils/format';
 import { getItemName } from '@/lib/neu/data';
@@ -97,8 +98,9 @@ const COLLECTION_ITEMS_VALUE: Array<{ id: string; bazaarId: string; name: string
 const FAIRY_SOUL_PER_VALUE = 1_000; // rough per-soul value in coins
 
 // HOTM XP + powder to coins conversion
-const MITHRIL_POWDER_RATE = 3; // ~3 coins per mithril powder (rough)
+const MITHRIL_POWDER_RATE = 3;  // ~3 coins per mithril powder (rough)
 const GEMSTONE_POWDER_RATE = 8; // ~8 coins per gemstone powder
+const GLACITE_POWDER_RATE = 3;  // ~3 coins per glacite powder (rough)
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -144,8 +146,11 @@ export default async function NetworthPage({ params, searchParams }: Props) {
     );
   }
 
-  let bazaarPrices = null;
-  try { bazaarPrices = await getBazaarPrices(); } catch { /* non-fatal */ }
+  const [bazaarPrices, ahPrices] = await Promise.allSettled([getBazaarPrices(), getAHPrices()])
+    .then(([b, a]) => [
+      b.status === 'fulfilled' ? b.value : null,
+      a.status === 'fulfilled' ? a.value : null,
+    ] as const);
 
   // ── Calculate components ──
 
@@ -178,20 +183,31 @@ export default async function NetworthPage({ params, searchParams }: Props) {
   // 5. Mining powder (convertible to coins eventually)
   const mithrilPowderValue = profile.mining.powderMithrilTotal * MITHRIL_POWDER_RATE;
   const gemstonePowderValue = profile.mining.powderGemstoneTotal * GEMSTONE_POWDER_RATE;
-  const powderValue = mithrilPowderValue + gemstonePowderValue;
+  const glacitePowderValue = profile.mining.powderGlaciteTotal * GLACITE_POWDER_RATE;
+  const powderValue = mithrilPowderValue + gemstonePowderValue + glacitePowderValue;
 
   // 6. Real inventory value from NBT-parsed items × bazaar prices
   let inventoryValue = 0;
   const topInventoryItems: Array<{ name: string; count: number; value: number }> = [];
-  const hasNBTItems = !!(profile.inventoryItems?.length || profile.enderChestItems?.length || profile.backpackItems?.length);
+  const hasNBTItems = !!(
+    profile.inventoryItems?.length || profile.enderChestItems?.length ||
+    profile.backpackItems?.length || profile.wardrobeItems?.length ||
+    profile.potionItems?.length || profile.fishingBagItems?.length ||
+    profile.quiverItems?.length || profile.sacksItems?.length
+  );
 
-  if (bazaarPrices && hasNBTItems) {
+  if ((bazaarPrices || ahPrices) && hasNBTItems) {
     const allItems = [
       ...(profile.inventoryItems ?? []),
       ...(profile.enderChestItems ?? []),
       ...(profile.backpackItems ?? []),
       ...(profile.armorItems ?? []),
       ...(profile.equipmentItems ?? []),
+      ...(profile.wardrobeItems ?? []),
+      ...(profile.potionItems ?? []),
+      ...(profile.fishingBagItems ?? []),
+      ...(profile.quiverItems ?? []),
+      ...(profile.sacksItems ?? []),
     ];
     const itemTotals = new Map<string, number>();
     for (const item of allItems) {
@@ -200,12 +216,14 @@ export default async function NetworthPage({ params, searchParams }: Props) {
       }
     }
     for (const [id, count] of itemTotals) {
-      const price = getBazaarSellPrice(bazaarPrices, id);
+      const name = getItemName(id);
+      const bazaarPrice = bazaarPrices ? getBazaarSellPrice(bazaarPrices, id) : 0;
+      const price = bazaarPrice > 0 ? bazaarPrice : (ahPrices ? (getAHPrice(ahPrices, name) ?? 0) : 0);
       if (price > 0) {
         const value = price * count;
         inventoryValue += value;
         if (value > 10_000) {
-          topInventoryItems.push({ name: getItemName(id), count, value });
+          topInventoryItems.push({ name, count, value });
         }
       }
     }
@@ -229,7 +247,7 @@ export default async function NetworthPage({ params, searchParams }: Props) {
     { label: 'Gear / Armor', value: gearValue, color: 'bg-slate-400', pct: 0, note: gearValue > 0 ? `${gearItems.length} known pieces` : 'Requires NBT data' },
     { label: 'Inventory & Storage', value: inventoryValue, color: 'bg-indigo-500', pct: 0, note: hasNBTItems ? `${topInventoryItems.length} bazaar items found` : 'Requires NBT data' },
     { label: 'Fairy Souls', value: fairySoulValue, color: 'bg-fuchsia-500', pct: 0, note: `${profile.fairySouls} souls × ~1k` },
-    { label: 'Mining Powder', value: powderValue, color: 'bg-sky-500', pct: 0, note: `${profile.mining.powderMithrilTotal.toLocaleString()} mithril · ${profile.mining.powderGemstoneTotal.toLocaleString()} gemstone` },
+    { label: 'Mining Powder', value: powderValue, color: 'bg-sky-500', pct: 0, note: `${profile.mining.powderMithrilTotal.toLocaleString()} mithril · ${profile.mining.powderGemstoneTotal.toLocaleString()} gemstone · ${profile.mining.powderGlaciteTotal.toLocaleString()} glacite` },
   ].filter(c => c.value > 0).map(c => ({ ...c, pct: totalNetworth > 0 ? (c.value / totalNetworth) * 100 : 0 }))
    .sort((a, b) => b.value - a.value);
 
@@ -325,7 +343,7 @@ export default async function NetworthPage({ params, searchParams }: Props) {
       {powderValue > 0 && (
         <div className="card p-5">
           <h2 className="font-semibold text-white mb-4">⛏ Mining Powder</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="bg-slate-800/50 rounded-lg p-3 text-center">
               <div className="text-lg font-bold text-sky-300">{profile.mining.powderMithrilTotal.toLocaleString()}</div>
               <div className="text-xs text-slate-500 mt-1">Mithril Powder</div>
@@ -336,6 +354,13 @@ export default async function NetworthPage({ params, searchParams }: Props) {
               <div className="text-xs text-slate-500 mt-1">Gemstone Powder</div>
               <div className="text-xs text-slate-600">~{formatCoins(gemstonePowderValue)}</div>
             </div>
+            {profile.mining.powderGlaciteTotal > 0 && (
+              <div className="bg-slate-800/50 rounded-lg p-3 text-center">
+                <div className="text-lg font-bold text-cyan-300">{profile.mining.powderGlaciteTotal.toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Glacite Powder</div>
+                <div className="text-xs text-slate-600">~{formatCoins(glacitePowderValue)}</div>
+              </div>
+            )}
           </div>
           <p className="text-xs text-slate-600 mt-2">Powder value is an approximation based on item conversion rates.</p>
         </div>
@@ -344,8 +369,8 @@ export default async function NetworthPage({ params, searchParams }: Props) {
       {/* Inventory & Storage */}
       {topInventoryItems.length > 0 && (
         <div className="card p-5">
-          <h2 className="font-semibold text-white mb-1">📦 Inventory &amp; Storage (Bazaar Items)</h2>
-          <p className="text-xs text-slate-500 mb-4">Items found in your inventory, ender chest, and backpacks that are tradable on the Bazaar.</p>
+          <h2 className="font-semibold text-white mb-1">📦 Inventory &amp; Storage</h2>
+          <p className="text-xs text-slate-500 mb-4">Items found across all bags and storage — priced via Bazaar or Auction House.</p>
           <div className="space-y-2">
             {topInventoryItems.slice(0, 15).map((item, i) => (
               <div key={i} className="flex items-center justify-between text-sm">
@@ -371,8 +396,8 @@ export default async function NetworthPage({ params, searchParams }: Props) {
       {/* Accuracy note */}
       <div className="rounded-lg border border-slate-700/50 bg-slate-800/30 p-4 text-xs text-slate-500 space-y-1">
         <div className="font-medium text-slate-400 mb-1">About this estimate</div>
-        <div>• Inventory value only includes Bazaar-tradable items — non-tradable gear, swords, etc. are not priced.</div>
-        <div>• Auction house listings and sack contents are not included.</div>
+        <div>• Inventory value includes Bazaar-tradable items and Auction House BIN listings across all bags and storage.</div>
+        <div>• Non-tradable items (custom gear, swords, etc.) are not priced; sack contents are not yet included.</div>
         <div>• Pet values are approximations — actual market price may differ by 20-50%.</div>
         <div>• Powder conversion rates are rough estimates, not real Bazaar prices.</div>
         <div>• For a more accurate networth, use sky.shiiyu.moe or similar dedicated calculators.</div>

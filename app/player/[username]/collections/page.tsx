@@ -2,8 +2,10 @@ import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { getBazaarPrices, getBazaarSellPrice } from '@/lib/api/bazaar';
+import { getAHPrices, getAHPrice } from '@/lib/api/auction';
 import { PlayerProfile } from '@/lib/types/player';
 import { formatCoins } from '@/lib/utils/format';
+import { MINION_XP } from '@/lib/neu/data';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -146,8 +148,11 @@ export default async function CollectionsPage({ params, searchParams }: Props) {
     );
   }
 
-  let bazaarPrices = null;
-  try { bazaarPrices = await getBazaarPrices(); } catch { /* non-fatal */ }
+  const [bazaarPrices, ahPrices] = await Promise.allSettled([getBazaarPrices(), getAHPrices()])
+    .then(([b, a]) => [
+      b.status === 'fulfilled' ? b.value : null,
+      a.status === 'fulfilled' ? a.value : null,
+    ] as const);
 
   // ── Parse minion data ──
   // craftedMinions: ["COBBLESTONE_1", "COBBLESTONE_2", "WHEAT_5", ...]
@@ -166,6 +171,15 @@ export default async function CollectionsPage({ params, searchParams }: Props) {
   const nextThreshold = getNextSlotThreshold(uniqueMinions);
   const totalTiers = Object.values(minionMap).reduce((s, t) => s + t, 0);
 
+  // Minion investment analysis
+  const totalMinionXP = Object.values(minionMap).reduce(
+    (sum, tier) => sum + (MINION_XP[String(tier)] ?? 0), 0
+  );
+  const atMaxTier = Object.values(minionMap).filter(t => t >= 12).length;
+  const tierCounts = Object.values(minionMap).reduce<Record<number, number>>((acc, t) => {
+    acc[t] = (acc[t] ?? 0) + 1; return acc;
+  }, {});
+
   // Sort minions by name
   const minionEntries = Object.entries(minionMap)
     .map(([id, tier]) => ({ id, name: id.split('_').map(w => w[0] + w.slice(1).toLowerCase()).join(' '), tier }))
@@ -175,7 +189,8 @@ export default async function CollectionsPage({ params, searchParams }: Props) {
   const collections = profile.collections;
   const enrichedCollections = NOTABLE_COLLECTIONS.map(col => {
     const count = collections[col.id] ?? 0;
-    const bazaarPrice = col.bazaarId && bazaarPrices ? getBazaarSellPrice(bazaarPrices, col.bazaarId) : null;
+    const rawBazaar = col.bazaarId && bazaarPrices ? getBazaarSellPrice(bazaarPrices, col.bazaarId) : 0;
+    const bazaarPrice = rawBazaar > 0 ? rawBazaar : (ahPrices ? (getAHPrice(ahPrices, col.name) ?? null) : null);
     const nextMilestone = col.milestones.find(m => m > count);
     const milestoneIdx = nextMilestone ? col.milestones.indexOf(nextMilestone) : col.milestones.length;
     const progress = nextMilestone
@@ -282,6 +297,43 @@ export default async function CollectionsPage({ params, searchParams }: Props) {
           <p className="text-amber-300 text-sm">
             ⚠ No minion data available. The Hypixel API may not include crafted generators for this profile, or no minions have been crafted.
           </p>
+        </div>
+      )}
+
+      {/* Minion Investment Analysis */}
+      {uniqueMinions > 0 && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-white mb-4">📈 Minion Investment</h2>
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="text-center">
+              <div className="text-xl font-bold text-emerald-300">{uniqueMinions}</div>
+              <div className="text-xs text-slate-500 mt-1">Unique Types</div>
+            </div>
+            <div className="text-center">
+              <div className="text-xl font-bold text-yellow-300">{atMaxTier}</div>
+              <div className="text-xs text-slate-500 mt-1">At Max Tier (T12)</div>
+            </div>
+            <div className="text-center">
+              <div className="text-xl font-bold text-purple-300">{formatCoins(totalMinionXP)}</div>
+              <div className="text-xs text-slate-500 mt-1">XP Invested</div>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {Array.from({ length: 12 }, (_, i) => i + 1).map(tier => {
+              const count = tierCounts[tier] ?? 0;
+              if (count === 0) return null;
+              return (
+                <span key={tier} className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${
+                  tier >= 12 ? 'border-yellow-500/40 bg-yellow-500/10 text-yellow-300' :
+                  tier >= 9  ? 'border-purple-500/40 bg-purple-500/10 text-purple-300' :
+                  tier >= 6  ? 'border-blue-500/40 bg-blue-500/10 text-blue-300' :
+                  'border-slate-500/30 bg-slate-500/10 text-slate-400'
+                }`}>
+                  T{tier}: {count}
+                </span>
+              );
+            })}
+          </div>
         </div>
       )}
 
