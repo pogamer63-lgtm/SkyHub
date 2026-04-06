@@ -310,11 +310,14 @@ function processItem(item, index, bazaarIds, bazaarMatch) {
   if (!id) return; // skip malformed entries
 
   const name     = stripCodes(item.displayname || '');
-  const loreArr  = Array.isArray(item.lore) ? item.lore : [];
-  const firstLore = stripCodes(loreArr.find((l) => l && stripCodes(l)) || '');
+  // Keep full lore WITH §-codes so the modal can render Minecraft colors.
+  // Filter completely blank lines (empty string or only whitespace).
+  const loreArr  = (Array.isArray(item.lore) ? item.lore : []).filter(
+    (l) => typeof l === 'string'
+  );
   const category = deriveCategory(item);
 
-  index[id] = { name, lore: firstLore, category };
+  index[id] = { name, lore: loreArr, category };
 
   if (bazaarIds.has(id)) {
     bazaarMatch.push(id);

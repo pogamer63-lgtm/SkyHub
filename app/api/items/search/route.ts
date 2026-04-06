@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get('q')?.toLowerCase().trim() ?? '';
   if (q.length < 2) return Response.json([]);
 
-  const results: Array<{ id: string; name: string; lore: string; category: string }> = [];
+  const results: Array<{ id: string; name: string; lore: string[]; category: string }> = [];
 
   for (const [id, entry] of Object.entries(ITEMS_INDEX)) {
     if (id.toLowerCase().includes(q) || entry.name.toLowerCase().includes(q)) {

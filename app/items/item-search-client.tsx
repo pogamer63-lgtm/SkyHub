@@ -8,7 +8,7 @@ import ItemIcon from '@/components/ItemIcon';
 interface ItemResult {
   id: string;
   name: string;
-  lore: string;
+  lore: string[];
   category: string;
 }
 
@@ -32,7 +32,7 @@ function toModalData(item: ItemResult): ItemModalData {
     id: item.id,
     name: item.name,
     rarity: 'UNKNOWN',
-    lore: item.lore ? [item.lore] : [],
+    lore: item.lore ?? [],
     enchantments: {},
   };
 }
@@ -105,8 +105,10 @@ export default function ItemSearchClient({ initial }: { initial: ItemResult[] })
                   <div className="min-w-0">
                     <div className="text-sm font-medium text-white truncate">{item.name}</div>
                     <div className="text-xs text-slate-500 font-mono truncate mt-0.5">{item.id}</div>
-                    {item.lore && (
-                      <div className="text-xs text-slate-400 mt-1 line-clamp-1">{item.lore}</div>
+                    {item.lore?.length > 0 && (
+                      <div className="text-xs text-slate-400 mt-1 line-clamp-1">
+                        {item.lore.map(l => l.replace(/§[0-9a-fklmnor]/gi, '')).find(l => l.trim()) ?? ''}
+                      </div>
                     )}
                   </div>
                 </div>

@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: 'SkyHub — Item Database' };
 
 function serverSearch(q: string) {
   if (q.length < 2) return [];
-  const results: Array<{ id: string; name: string; lore: string; category: string }> = [];
+  const results: Array<{ id: string; name: string; lore: string[]; category: string }> = [];
   for (const [id, entry] of Object.entries(ITEMS_INDEX)) {
     if (id.toLowerCase().includes(q) || entry.name.toLowerCase().includes(q)) {
       results.push({ id, name: entry.name, lore: entry.lore, category: entry.category });

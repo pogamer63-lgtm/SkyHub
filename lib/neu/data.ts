@@ -487,7 +487,7 @@ export const BONUS_STATS: Record<string, Record<string, number>> = _bonusesData.
 
 export interface ItemIndexEntry {
   name: string;
-  lore: string;
+  lore: string[];    // full lore lines with §-codes preserved
   category: string;
 }
 
