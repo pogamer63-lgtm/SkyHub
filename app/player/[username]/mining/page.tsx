@@ -390,7 +390,7 @@ export default async function MiningPage({ params, searchParams }: Props) {
         <StatCard label="Glacite" value={formatNum(mining.powderGlacite)} color="text-blue-300" />
         <StatCard
           label="Tokens Available"
-          value={`${(mining.hotmNodes.tokens ?? 0)}`}
+          value={`${mining.hotmTokensAvailable}`}
           color="text-yellow-300"
         />
         {mining.dailyOresMined > 0 && (
@@ -533,6 +533,62 @@ export default async function MiningPage({ params, searchParams }: Props) {
                 <div className="text-xs text-slate-400 font-medium">{node.displayName}</div>
                 <div className="text-xs text-slate-600 mt-0.5">HOTM {node.hotmRequired} required</div>
               </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Glacite Mines */}
+      {profile.glacite && (profile.glacite.mineshaftsEntered > 0 || profile.glacite.fossilDust > 0 || profile.glacite.fossilsDonated.length > 0) && (
+        <div className="card p-5 mb-6">
+          <h2 className="font-semibold text-white mb-4">🧊 Glacite Mines</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+            {profile.glacite.mineshaftsEntered > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-blue-300">{profile.glacite.mineshaftsEntered.toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Mineshafts Entered</div>
+              </div>
+            )}
+            {profile.glacite.fossilDust > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-amber-300">{profile.glacite.fossilDust.toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Fossil Dust</div>
+              </div>
+            )}
+            {profile.glacite.fossilsDonated.length > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-emerald-300">{profile.glacite.fossilsDonated.length}</div>
+                <div className="text-xs text-slate-500 mt-1">Fossils Donated</div>
+              </div>
+            )}
+            {Object.keys(profile.glacite.corpsesLooted).length > 0 && (
+              <div className="text-center">
+                <div className="text-xl font-bold text-red-300">{Object.values(profile.glacite.corpsesLooted).reduce((s, v) => s + v, 0).toLocaleString()}</div>
+                <div className="text-xs text-slate-500 mt-1">Corpses Looted</div>
+              </div>
+            )}
+          </div>
+          {Object.keys(profile.glacite.corpsesLooted).length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(profile.glacite.corpsesLooted).map(([type, count]) => (
+                <span key={type} className="rounded-full border border-red-500/20 bg-red-500/5 px-2.5 py-1 text-xs text-red-300 capitalize">
+                  {type.replace(/_/g, ' ')} × {count}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Dwarven Biomes */}
+      {Object.keys(profile.miningBiomes).length > 0 && (
+        <div className="card p-5 mb-6">
+          <h2 className="font-semibold text-white mb-3">🏔 Dwarven Biomes Discovered</h2>
+          <div className="flex flex-wrap gap-2">
+            {Object.keys(profile.miningBiomes).map(biome => (
+              <span key={biome} className="rounded-full border border-sky-500/20 bg-sky-500/5 px-3 py-1 text-xs text-sky-300">
+                {biome.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+              </span>
             ))}
           </div>
         </div>

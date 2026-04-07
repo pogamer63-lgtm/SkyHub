@@ -49,15 +49,19 @@ function extractRarity(lore: string[]): ItemRarity {
     // Color code at start tells us rarity
     const colorCode = raw.slice(0, 2);
     const text = stripColor(raw).toUpperCase();
+    // "VERY SPECIAL" appears with a space in lore; normalize before keyword matching
+    const normalizedText = text.replace('VERY SPECIAL', 'VERY_SPECIAL');
     for (const rarity of RARITY_KEYWORDS) {
-      if (text.startsWith(rarity)) {
+      if (normalizedText.startsWith(rarity)) {
         return rarity;
       }
     }
     if (COLOR_RARITY[colorCode] && text.length > 0) {
       for (const rarity of RARITY_KEYWORDS) {
-        if (text.includes(rarity)) return rarity;
+        if (normalizedText.includes(rarity)) return rarity;
       }
+      // Color code matched a rarity but text had no keyword — fall back to color mapping
+      return COLOR_RARITY[colorCode];
     }
   }
   return 'UNKNOWN';

@@ -139,11 +139,24 @@ git push origin main
 
 Hypixel: 300 req/min — SkyHub caches all responses (5min TTL). Mojang: UUID lookups cached 1hr.
 
+## What's Implemented
+
+- [x] Farming Fortune calculator (Garden, pets, equipment, buffs, no-API sources)
+- [x] HOTM node optimizer (powder costs, commission unlocks, peak progression)
+- [x] Accessory upgrade tracker with live Bazaar prices
+- [x] Networth estimation
+- [x] Mining, Dungeon, Slayer, Fishing, Foraging planners
+- [x] Money-making opportunity analyzer (Pest farming, Crimson, Rift, etc.)
+- [x] Recommendation engine with 27+ checks across all categories
+- [x] Early/Mid/Late/Endgame game-stage filters on recommendations
+- [x] Item tooltip modal with lore, enchants, reforges
+- [x] Item textures (FurfSky-compatible local assets + sky.coflnet.com CDN fallback)
+- [x] Animated item sprite support (245 items with mcmeta animation data)
+
 ## Roadmap
 
-- [ ] Farming Fortune calculator
-- [ ] HOTM node optimizer  
-- [ ] Accessory upgrade tracker with Bazaar prices
-- [ ] Networth estimation
-- [ ] PostgreSQL persistence
-- [ ] Redis caching layer
+- [ ] PostgreSQL persistence (profile snapshots, history tracking)
+- [ ] Redis caching layer (reduce API calls, improve cold-start perf)
+- [ ] Foraging Fortune: Equipment reforge detection (requires NBT from API)
+- [ ] Garden Chip bonuses (Crop Shot, Vermin Vaporizer) — no API field currently
+- [ ] Accessory count fix (NBT fallback working; parser.ts:521 TODO remains)

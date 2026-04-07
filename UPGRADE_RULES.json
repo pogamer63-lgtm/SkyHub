@@ -114,12 +114,23 @@
   },
 
   "slayers": {
+    "unlock_chain": {
+      "order": "Zombie → Spider → Wolf → Enderman → Blaze → Vampire (Rift)",
+      "gates": {
+        "zombie_to_spider": "Zombie T2",
+        "spider_to_wolf": "Spider T2",
+        "wolf_to_enderman": "Wolf T4",
+        "enderman_to_blaze": "Enderman T3",
+        "blaze_to_vampire": "NOT via Blaze — Vampire requires Rift progression (enter Rift → Stillgore Château → Maddox)"
+      },
+      "confidence": "high",
+      "source": "User interview verification April 2026 (Pass 10)"
+    },
     "zombie": {
       "boss_name": "Revenant Horror",
       "armor_equip_level": 4,
       "armor_craft_level": 5,
       "note": "Level 4 to WEAR Revenant armor, Level 5 to CRAFT chestplate",
-      "old_code_value": "Level 5 unlocks armor",
       "confidence": "high"
     },
     "spider": {
@@ -130,17 +141,27 @@
     "wolf": {
       "boss_name": "Sven Packmaster",
       "armor_equip_level": 4,
+      "unlock_next_at": "T4 (unlocks Enderman Slayer)",
       "confidence": "high"
     },
     "enderman": {
       "boss_name": "Voidgloom Seraph",
       "armor_equip_level": 3,
-      "confidence": "medium"
+      "unlock_next_at": "T3 (unlocks Blaze Slayer)",
+      "confidence": "high"
     },
     "blaze": {
       "boss_name": "Inferno Demonlord",
       "armor_equip_level": 4,
-      "confidence": "medium"
+      "confidence": "high"
+    },
+    "vampire": {
+      "boss_name": "Riftstalker Bloodfiend",
+      "unlock_method": "Rift progression — enter Rift (Thaumaturgist in Hub), reach Stillgore Château, find Maddox",
+      "required_gear": "Rift-specific: Coven Leggings + Steak Stake or Silver-Laced Karambit. Holy Ice for T2+.",
+      "note": "Completely independent from overworld progression. NOT unlocked by Blaze T3.",
+      "confidence": "high",
+      "source": "User interview verification April 2026 (Pass 10)"
     }
   },
 

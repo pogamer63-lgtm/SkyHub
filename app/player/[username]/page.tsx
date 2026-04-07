@@ -1,17 +1,17 @@
 import { Metadata } from 'next';
-import { resolvePlayer, getSkyBlockProfiles, getSkyBlockMuseum } from '@/lib/hypixel/client';
-import { selectBestProfile, enrichWithNBT } from '@/lib/hypixel/parser';
+import { resolvePlayer, getSkyBlockProfiles, getSkyBlockMuseum, getSkyBlockGarden } from '@/lib/hypixel/client';
+import { selectBestProfile, enrichWithNBT, enrichWithGarden } from '@/lib/hypixel/parser';
 import { generateRecommendations } from '@/lib/recommendations/engine';
 import { getAvatarUrl } from '@/lib/providers/skins/skin-provider';
 import { getBazaarPrices } from '@/lib/api/bazaar';
 import { getElectionData } from '@/lib/api/election';
-import { getFireSales, isActive, formatTimeLeft } from '@/lib/api/firesales';
-import { ITEMS_INDEX } from '@/lib/neu/data';
 import { formatCoins, levelColor, priorityColor, scoreColor } from '@/lib/utils/format';
+import { PET_MAX_200_TYPES, CROP_MILESTONE_THRESHOLDS, GARDEN_PLOT_COUNT } from '@/lib/neu/data';
 import { SKILL_XP_TABLE, xpToNextLevel, levelProgress } from '@/lib/data/xp-tables';
 import { PlayerProfile, Recommendation } from '@/lib/types/player';
 import { saveSnapshot, loadSnapshot } from '@/lib/db/snapshots';
 import RecommendationsPanel from './recommendations-panel';
+import AvatarImage from './avatar-image';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -58,11 +58,27 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
 
         const parsed = selectBestProfile([targetProfile], uuid, resolvedName);
-        // Enrich with NBT (real accessories) — non-fatal if it fails
-        profile = await enrichWithNBT(parsed, targetProfile, uuid).catch(() => parsed);
+        // Enrich with NBT (real accessories) — non-fatal if it fails.
+        // Only save enriched profiles to the snapshot cache; if enrichment fails, serve
+        // the unenriched profile for this request but don't persist it so the next
+        // request gets a fresh attempt at enrichment.
+        let enriched: typeof parsed | null = null;
+        try {
+          enriched = await enrichWithNBT(parsed, targetProfile, uuid);
+        } catch {
+          // enrichment failed — use un-enriched data but don't cache it
+        }
+        profile = enriched ?? parsed;
 
-        // Persist snapshot for future requests
-        if (profile) saveSnapshot(profile).catch(() => {});
+        // Enrich with garden API (separate endpoint — not in profiles response)
+        try {
+          const gardenRes = await getSkyBlockGarden(targetProfile.profile_id);
+          if (gardenRes.success && gardenRes.garden) {
+            profile = enrichWithGarden(profile, gardenRes.garden);
+          }
+        } catch { /* non-fatal */ }
+
+        if (enriched) saveSnapshot(enriched).catch(() => {});
       }
     }
   } catch (err) {
@@ -85,15 +101,13 @@ export default async function PlayerPage({ params, searchParams }: Props) {
   }
 
   // Fetch Bazaar prices for recommendation cost estimates (non-fatal)
-  const [bazaar, election, fireSales, museumRes] = await Promise.all([
+  const [bazaar, election, museumRes] = await Promise.all([
     getBazaarPrices().catch(() => undefined),
     getElectionData().catch(() => null),
-    getFireSales().catch(() => []),
     getSkyBlockMuseum(profile.profileId).catch(() => null),
   ]);
-  const recs = generateRecommendations(profile, bazaar);
+  const recs = generateRecommendations(profile, bazaar, election);
   const avatarUrl = getAvatarUrl(profile.uuid, 128);
-  const activeSales = fireSales.filter(isActive);
   const memberMuseum = museumRes?.members?.[profile.uuid];
   const museumItemCount = Object.keys(memberMuseum?.items ?? {}).length + (memberMuseum?.special?.length ?? 0);
 
@@ -101,14 +115,7 @@ export default async function PlayerPage({ params, searchParams }: Props) {
     <div className="mx-auto max-w-7xl px-4 py-8">
       {/* Profile Header */}
       <div className="card p-6 mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <img
-          src={avatarUrl}
-          alt={`${profile.username}'s avatar`}
-          width={80}
-          height={80}
-          className="rounded-xl border border-white/10"
-          onError={undefined}
-        />
+        <AvatarImage src={avatarUrl} uuid={profile.uuid} username={profile.username} />
         <div className="flex-1">
           <div className="flex flex-wrap items-center gap-3 mb-1">
             <h1 className="text-3xl font-bold text-white">{profile.username}</h1>
@@ -124,24 +131,10 @@ export default async function PlayerPage({ params, searchParams }: Props) {
           <div className="flex flex-wrap gap-4 text-sm text-slate-400">
             <span>SkyBlock Level <strong className="text-white">{profile.skyblockLevel}</strong></span>
             <span>Skill Avg <strong className="text-white">{(profile.skills.average ?? 0).toFixed(1)}</strong></span>
-            <span>Catacombs <strong className="text-white">{profile.dungeons.catacombs.level}</strong></span>
             <span>Coins <strong className="text-yellow-300">{formatCoins(profile.purseCoins + profile.bankCoins)}</strong></span>
             <span>MP <strong className="text-purple-300">{profile.magicalPower}</strong></span>
             <span>Fairy Souls <strong className="text-pink-300">{profile.fairySouls}</strong></span>
-            {profile.bestiaryMilestones > 0 && (
-              <span>Bestiary <strong className="text-red-300">{profile.bestiaryMilestones}/{profile.bestiaryMaxMilestones}</strong></span>
-            )}
-            {museumItemCount > 0 && (
-              <span>Museum <strong className="text-amber-300">{museumItemCount}</strong></span>
-            )}
-            {profile.completedTasksCount > 0 && (
-              <span>Tasks <strong className="text-slate-300">{profile.completedTasksCount}</strong></span>
-            )}
-            {!!profile.seniherWeight && <span>Weight <strong className="text-purple-300">{profile.seniherWeight.toLocaleString()}</strong></span>}
             <span>Networth <strong className="text-emerald-300">{formatCoins(estimateNetworth(profile))}</strong></span>
-            {profile.lastDeath !== undefined && (
-              <span className="text-xs">Last death <strong className="text-slate-300">{timeAgo(profile.lastDeath)}</strong></span>
-            )}
           </div>
         </div>
         {/* Profile selector */}
@@ -167,6 +160,7 @@ export default async function PlayerPage({ params, searchParams }: Props) {
       {/* Planner Navigation */}
       <div className="flex gap-2 mb-6 flex-wrap">
         <a href={`/player/${profile.username}/farming`}     className="flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300 transition-colors">🌾 Farming</a>
+        <a href={`/player/${profile.username}/foraging`}    className="flex items-center gap-1.5 rounded-lg border border-lime-500/20 bg-lime-500/5 hover:bg-lime-500/10 px-4 py-2 text-sm font-medium text-lime-300 transition-colors">🌲 Foraging</a>
         <a href={`/player/${profile.username}/mining`}      className="flex items-center gap-1.5 rounded-lg border border-sky-500/20 bg-sky-500/5 hover:bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-300 transition-colors">⛏ Mining</a>
         <a href={`/player/${profile.username}/dungeons`}    className="flex items-center gap-1.5 rounded-lg border border-orange-500/20 bg-orange-500/5 hover:bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-300 transition-colors">🏰 Dungeons</a>
         <a href={`/player/${profile.username}/slayer`}      className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 transition-colors">⚔️ Slayer</a>
@@ -185,41 +179,6 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         <a href={`/player/${profile.username}/crimson`}     className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 transition-colors">🔥 Crimson Isle</a>
         <a href={`/player/${profile.username}/rift`}        className="flex items-center gap-1.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300 transition-colors">👻 The Rift</a>
       </div>
-
-      {/* Mayor + Fire Sales */}
-      {(election || activeSales.length > 0) && (
-        <div className="flex flex-wrap gap-3 mb-6">
-          {election && (
-            <div className="card px-4 py-3 flex items-start gap-3 min-w-0">
-              <span className="text-lg shrink-0">🏛️</span>
-              <div className="min-w-0">
-                <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">Current Mayor</div>
-                <div className="text-sm font-semibold text-white">{election.currentMayor.name}</div>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {election.currentMayor.perks.map(p => (
-                    <span key={p.name} className={`text-xs rounded px-1.5 py-0.5 ${p.minister ? 'bg-yellow-500/10 text-yellow-300' : 'bg-white/5 text-slate-300'}`} title={p.description}>
-                      {p.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-          {activeSales.map(sale => {
-            const item = ITEMS_INDEX[sale.itemId];
-            return (
-              <div key={sale.itemId} className="card px-4 py-3 flex items-start gap-3 border-orange-500/20 bg-orange-500/5">
-                <span className="text-lg shrink-0">🔥</span>
-                <div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">Fire Sale</div>
-                  <div className="text-sm font-semibold text-orange-300">{item?.name ?? sale.itemId.replace(/_/g, ' ')}</div>
-                  <div className="text-xs text-slate-400">{sale.price.toLocaleString()} Gems · {sale.amount.toLocaleString()} left · {formatTimeLeft(sale.end)} remaining</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
 
       {/* Active Potions */}
       {profile.activeEffects.length > 0 && (
@@ -271,6 +230,7 @@ export default async function PlayerPage({ params, searchParams }: Props) {
         {/* Left: Stats Overview */}
         <div className="lg:col-span-1 space-y-4">
           <SkillsPanel skills={profile.skills} />
+          <GardenPanel farming={profile.farming} username={profile.username} />
           <SlayerPanel slayers={profile.slayers} />
           <DungeonPanel dungeons={profile.dungeons} />
           <PetsPanel pets={profile.pets} />
@@ -334,7 +294,7 @@ function estimateNetworth(profile: PlayerProfile): number {
   // Rough pet portfolio estimate: base value × (level / max_level)^1.5
   const petValue = profile.pets.reduce((sum, pet) => {
     const base = PET_TIER_VALUE[pet.tier] ?? 500;
-    const maxLevel = pet.tier === 'LEGENDARY' || pet.tier === 'MYTHIC' ? 200 : 100;
+    const maxLevel = PET_MAX_200_TYPES.has(pet.type) ? 200 : 100;
     const levelFactor = Math.pow(pet.level / maxLevel, 1.5);
     return sum + base * levelFactor;
   }, 0);
@@ -352,7 +312,7 @@ function SkillsPanel({ skills }: { skills: PlayerProfile['skills'] }) {
     { name: 'Fishing',    level: skills.fishing,    xp: skills.fishing_xp },
     { name: 'Enchanting', level: skills.enchanting, xp: skills.enchanting_xp },
     { name: 'Alchemy',    level: skills.alchemy,    xp: skills.alchemy_xp },
-    { name: 'Taming',     level: skills.taming,     xp: 0 },
+    { name: 'Taming',     level: skills.taming,     xp: skills.taming_xp },
   ];
 
   function fmtXP(n: number): string {
@@ -391,6 +351,85 @@ function SkillsPanel({ skills }: { skills: PlayerProfile['skills'] }) {
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+function GardenPanel({ farming, username }: { farming: PlayerProfile['farming']; username: string }) {
+  // Compute total crop milestone FF (sum of achieved milestone tiers across all crops)
+  let totalMilestoneFF = 0;
+  for (const [apiKey, thresholds] of Object.entries(CROP_MILESTONE_THRESHOLDS)) {
+    const collected = farming.gardenResources[apiKey] ?? 0;
+    for (const t of thresholds) {
+      if (collected >= t) totalMilestoneFF++;
+      else break;
+    }
+  }
+
+  const medals = farming.jacobMedalsEarned;
+
+  return (
+    <div className="card p-4">
+      <h3 className="font-medium text-white mb-3 text-sm flex items-center gap-2">
+        🌾 Garden
+        <a href={`/player/${username}/farming`} className="ml-auto text-xs text-emerald-400 hover:text-emerald-300 transition-colors">
+          Details →
+        </a>
+      </h3>
+      <div className="space-y-2 text-xs">
+        <div className="flex justify-between">
+          <span className="text-slate-400">Garden Level</span>
+          <span className={`font-medium ${farming.gardenLevel >= 15 ? 'text-yellow-300' : 'text-emerald-300'}`}>
+            {farming.gardenLevel}/15
+          </span>
+        </div>
+        <div className="h-1 rounded-full bg-white/5">
+          <div
+            className="h-full rounded-full bg-emerald-500/60"
+            style={{ width: `${(farming.gardenLevel / 15) * 100}%` }}
+          />
+        </div>
+        <div className="flex justify-between">
+          <span className="text-slate-400">Plots Unlocked</span>
+          <span className="text-white">{farming.plots}/{GARDEN_PLOT_COUNT}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-slate-400">Farming Fortune</span>
+          <span className="text-yellow-300 font-medium">+{farming.farmingFortune}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-slate-400">Crop Milestone FF</span>
+          <span className="text-white">+{totalMilestoneFF}</span>
+        </div>
+        {farming.copper > 0 && (
+          <div className="flex justify-between">
+            <span className="text-slate-400">Copper</span>
+            <span className="text-orange-300">{farming.copper.toLocaleString()}</span>
+          </div>
+        )}
+        {farming.contestsParticipated > 0 && (
+          <div className="flex justify-between">
+            <span className="text-slate-400">Jacob Contests</span>
+            <span className="text-white">{farming.contestsParticipated}</span>
+          </div>
+        )}
+        {(medals.diamond > 0 || medals.platinum > 0 || medals.gold > 0 || medals.silver > 0) && (
+          <div className="flex gap-3 pt-0.5">
+            {medals.diamond > 0 && (
+              <span className="text-blue-300">💎 {medals.diamond}</span>
+            )}
+            {medals.platinum > 0 && (
+              <span className="text-cyan-300">🔷 {medals.platinum}</span>
+            )}
+            {medals.gold > 0 && (
+              <span className="text-yellow-300">🥇 {medals.gold}</span>
+            )}
+            {medals.silver > 0 && (
+              <span className="text-slate-300">🥈 {medals.silver}</span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -475,7 +514,9 @@ function PetsPanel({ pets }: { pets: PlayerProfile['pets'] }) {
       {active && (
         <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/5 px-3 py-2 mb-3 flex items-center justify-between text-xs">
           <span className="text-yellow-300 font-medium">Active: {active.type.replace(/_/g, ' ')}</span>
-          <span className="text-slate-400">Lv {active.level} {active.tier}</span>
+          <span className="text-slate-400">
+            {active.maxed ? <span className="text-green-400">MAXED</span> : `Lv ${active.level}`}{' '}{active.tier}
+          </span>
         </div>
       )}
       <div className="space-y-1.5">
@@ -483,7 +524,10 @@ function PetsPanel({ pets }: { pets: PlayerProfile['pets'] }) {
           <div key={i} className="flex items-center justify-between text-xs">
             <span className="text-slate-300 truncate">{pet.type.replace(/_/g, ' ')}</span>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="text-slate-500">Lv {pet.level}</span>
+              {pet.maxed
+                ? <span className="text-green-400">MAXED</span>
+                : <span className="text-slate-500">Lv {pet.level}</span>
+              }
               <span className={`font-medium ${TIER_COLOR[pet.tier] ?? 'text-slate-400'}`}>{pet.tier.slice(0, 3)}</span>
               {pet.active && <span className="text-yellow-400">★</span>}
             </div>

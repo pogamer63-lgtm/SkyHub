@@ -77,8 +77,8 @@ function getFishingFortuneSources(profile: PlayerProfile): FFishingSource[] {
   return [
     {
       name: 'Fishing Skill',
-      current: profile.skills.fishing * 4,
-      max: 50 * 4,
+      current: 0,
+      max: 0,
       category: 'Skill',
       tip: `Level ${profile.skills.fishing}/50 — each level gives +4 HP (not Fishing Fortune)`,
     },
@@ -199,7 +199,7 @@ export default async function FishingPage({ params, searchParams }: Props) {
         <div className="card p-4 text-center">
           <div className="text-xs text-slate-400 mb-1">Fishing Level</div>
           <div className={`text-2xl font-bold ${fishingLevel >= 50 ? 'text-yellow-300' : fishingLevel >= 30 ? 'text-blue-300' : 'text-slate-200'}`}>{fishingLevel}</div>
-          <div className="text-xs text-slate-500">/ 60</div>
+          <div className="text-xs text-slate-500">/ 50</div>
         </div>
         <div className="card p-4 text-center">
           <div className="text-xs text-slate-400 mb-1">Fishing Fortune</div>

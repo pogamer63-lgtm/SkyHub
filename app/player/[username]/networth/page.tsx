@@ -166,12 +166,21 @@ export default async function NetworthPage({ params, searchParams }: Props) {
     .sort((a, b) => b.value - a.value)
     .slice(0, 5);
 
-  // 3. Gear value (from NBT-parsed items if available)
-  const ownedIds = profile.accessories.ownedIds ?? new Set<string>();
+  // 3. Gear value — search all inventory locations, not just the talisman bag.
+  // accessories.ownedIds only contains talisman bag items; gear lives in armor/inventory slots.
+  const allInventoryIds = new Set<string>([
+    ...(profile.armorItems ?? []).map(i => i.id).filter(Boolean) as string[],
+    ...(profile.equipmentItems ?? []).map(i => i.id).filter(Boolean) as string[],
+    ...(profile.inventoryItems ?? []).map(i => i.id).filter(Boolean) as string[],
+    ...(profile.enderChestItems ?? []).map(i => i.id).filter(Boolean) as string[],
+    ...(profile.backpackItems ?? []).map(i => i.id).filter(Boolean) as string[],
+    ...(profile.wardrobeItems ?? []).map(i => i.id).filter(Boolean) as string[],
+    ...(profile.vaultItems ?? []).map(i => i.id).filter(Boolean) as string[],
+  ]);
   let gearValue = 0;
   const gearItems: Array<{ name: string; value: number }> = [];
   for (const [itemId, value] of Object.entries(GEAR_TIER_VALUES)) {
-    if (ownedIds.has(itemId)) {
+    if (allInventoryIds.has(itemId)) {
       gearValue += value;
       gearItems.push({ name: getItemName(itemId), value });
     }
@@ -193,7 +202,9 @@ export default async function NetworthPage({ params, searchParams }: Props) {
     profile.inventoryItems?.length || profile.enderChestItems?.length ||
     profile.backpackItems?.length || profile.wardrobeItems?.length ||
     profile.potionItems?.length || profile.fishingBagItems?.length ||
-    profile.quiverItems?.length || profile.sacksItems?.length
+    profile.quiverItems?.length || profile.sacksItems?.length ||
+    profile.vaultItems?.length ||
+    profile.candyItems?.length
   );
 
   if ((bazaarPrices || ahPrices) && hasNBTItems) {
@@ -208,6 +219,8 @@ export default async function NetworthPage({ params, searchParams }: Props) {
       ...(profile.fishingBagItems ?? []),
       ...(profile.quiverItems ?? []),
       ...(profile.sacksItems ?? []),
+      ...(profile.vaultItems ?? []),
+      ...(profile.candyItems ?? []),
     ];
     const itemTotals = new Map<string, number>();
     for (const item of allItems) {

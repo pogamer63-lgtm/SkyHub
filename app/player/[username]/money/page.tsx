@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
-import { getBazaarPrices, getBazaarSellPrice } from '@/lib/api/bazaar';
+import { getBazaarPrices } from '@/lib/api/bazaar';
+import { getElectionData } from '@/lib/api/election';
 import { PlayerProfile } from '@/lib/types/player';
 import { formatCoins } from '@/lib/utils/format';
 
@@ -290,6 +291,24 @@ const INCOME_METHODS: IncomeMethod[] = [
     consistency: 'variable',
   },
   {
+    id: 'slayer_wolf',
+    name: 'Wolf Slayer (Sven Packmaster)',
+    category: 'slayer',
+    icon: '🐺',
+    requirements: ['Wolf Slayer Level 3+', 'Combat 18+'],
+    isUnlocked: p => p.slayers.wolf.level >= 3 && p.skills.combat >= 18,
+    estimateCoinsPerHr: (p, _bz) => {
+      const level = p.slayers.wolf.level;
+      // T3: ~500k/hr, T4: ~1.5M/hr, T5: ~3M/hr (Spirit Rune + Wolf Armor pieces)
+      const base = level >= 5 ? 3_000_000 : level >= 4 ? 1_500_000 : 500_000;
+      return base;
+    },
+    description: 'Wolf Armor + Spirit Rune + Couture Rune drops. Decent mid-game slayer income.',
+    tips: ['Spirit Rune can sell for 1M+.', 'T4 gives best time vs reward ratio.', 'Also drops Sludge Juice used for Blaze tier-up costs.', 'Primary value is progression unlock (Enderman Slayer) over raw income.'],
+    difficulty: 3,
+    consistency: 'variable',
+  },
+  {
     id: 'slayer_blaze',
     name: 'Blaze Slayer (Inferno Demonlord)',
     category: 'slayer',
@@ -305,6 +324,25 @@ const INCOME_METHODS: IncomeMethod[] = [
     description: 'Crimson essence + Mage Outfit drops make this very lucrative.',
     tips: ['Mage Outfit pieces sell for 5M+.', 'Good Crimson essence income per hour.', 'Requires solid gear for efficient T4/T5 kills.'],
     difficulty: 4,
+    consistency: 'variable',
+  },
+
+  {
+    id: 'slayer_vampire',
+    name: 'Vampire Slayer (Riftstalker)',
+    category: 'slayer',
+    icon: '🧛',
+    requirements: ['In The Rift', 'Vampire Slayer Level 2+'],
+    isUnlocked: p => p.slayers.vampire.level >= 2,
+    estimateCoinsPerHr: (p, _bz) => {
+      const level = p.slayers.vampire.level;
+      // Rift slayer — lower coins vs overworld due to market size, but farmable as side activity
+      const base = level >= 4 ? 800_000 : level >= 3 ? 400_000 : 150_000;
+      return base;
+    },
+    description: 'Rift-specific slayer. Adrenaline Stone + Vampire Fang drops. Niche but farmable as a side activity in The Rift.',
+    tips: ['Adrenaline Stone is the main valuable drop at level 3+.', 'Best done as side income while doing other Rift content.', 'Lower overall coins/hr vs overworld slayers but unique to The Rift.'],
+    difficulty: 2,
     consistency: 'variable',
   },
 
@@ -325,6 +363,53 @@ const INCOME_METHODS: IncomeMethod[] = [
     tips: ['Use Crystallized Heart in Blazing Fortress for Magma Slug fishing.', 'Trophy Fishing rod upgrades massively improve drop rates.', 'Festival events make fishing extremely lucrative.', 'Shining Compass + Blessed Bait for best trophy rates.'],
     difficulty: 2,
     consistency: 'variable',
+  },
+
+  // ── Farming (advanced) ───────────────────────────────────────────────────
+  {
+    id: 'pest_farming',
+    name: 'Pest/Pelt Farming',
+    category: 'farming',
+    icon: '🦟',
+    requirements: ['Garden Level 5+', 'Farming 30+'],
+    isUnlocked: p => p.farming.gardenLevel >= 5 && p.skills.farming >= 30,
+    estimateCoinsPerHr: (p, _bz) => {
+      // Base: ~40M/hr pest drops + pelts. Scales slightly with garden level.
+      const gardenBonus = Math.max(0, p.farming.gardenLevel - 5) * 500_000;
+      return 40_000_000 + gardenBonus;
+    },
+    description: 'Farm pests while auto-farming crops. Pelts + pest shards sell for 40M–90M/hr (Finnegan mayor doubles rates).',
+    tips: [
+      'Use Mosquito pet to maximize pest spawns, then swap to Hedgehog pet to kill them.',
+      'During Mayor Finnegan pelt rates double — 80M–90M/hr.',
+      'Vermin Vaporizer Garden Chip boosts pest spawn chance.',
+      'Set pet auto-swap rules: Elephant/Mooshroom while farming, Hedgehog during vacuum.',
+    ],
+    difficulty: 3,
+    consistency: 'consistent',
+  },
+  {
+    id: 'greenhouse_plots',
+    name: 'Greenhouse Plots (Ashreath)',
+    category: 'farming',
+    icon: '🌿',
+    requirements: ['Garden Level 12+', '100M+ coins invested'],
+    isUnlocked: p => p.farming.gardenLevel >= 12,
+    estimateCoinsPerHr: (p, _bz) => {
+      // Active Ashreath mutation: ~45M/hr. Semi-passive (twice daily): ~30M/day → ~1.25M/hr equivalent.
+      // Show active rate since this is an income methods page.
+      const gardenBonus = Math.max(0, p.farming.gardenLevel - 12) * 1_000_000;
+      return 45_000_000 + gardenBonus;
+    },
+    description: 'Unlock all 3 Greenhouse plots (~100M investment). Ashreath mutation active clearing nets 40–50M/hr; twice-daily harvesting yields 30M/day passive.',
+    tips: [
+      'Ashreath mutation is ~20% better than alternatives for raw NPC value.',
+      'Requires ~100M in Ethereal Vines + compost to unlock all plots.',
+      'Semi-passive: harvest twice daily for ~30M/day with minimal time.',
+      'Unlocks at Garden Level 12 from the Garden Desk.',
+    ],
+    difficulty: 4,
+    consistency: 'consistent',
   },
 
   // ── Misc ──────────────────────────────────────────────────────────────────
@@ -438,17 +523,24 @@ export default async function MoneyPage({ params, searchParams }: Props) {
     );
   }
 
-  // Fetch Bazaar prices
+  // Fetch Bazaar prices and election data
   let bazaarMap: Record<string, number> = {};
   let bazaarFetchedAt: string | null = null;
   let bazaarItemCount = 0;
+  let isFinnegan = false;
   try {
-    const prices = await getBazaarPrices();
-    bazaarFetchedAt = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-    for (const [id, p] of Object.entries(prices)) {
-      bazaarMap[id] = (p as { sellPrice?: number; buyPrice?: number }).sellPrice ?? 0;
-      bazaarItemCount++;
+    const [prices, election] = await Promise.all([
+      getBazaarPrices().catch(() => null),
+      getElectionData().catch(() => null),
+    ]);
+    if (prices) {
+      bazaarFetchedAt = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      for (const [id, p] of Object.entries(prices)) {
+        bazaarMap[id] = (p as { sellPrice?: number; buyPrice?: number }).buyPrice ?? 0;
+        bazaarItemCount++;
+      }
     }
+    isFinnegan = election?.currentMayor.name === 'Finnegan';
   } catch { /* non-fatal */ }
 
   // Evaluate all methods
@@ -484,6 +576,17 @@ export default async function MoneyPage({ params, searchParams }: Props) {
           <p className="text-slate-400 text-sm">{resolvedName} — Account-specific income analysis</p>
         </div>
       </div>
+
+      {/* Finnegan alert */}
+      {isFinnegan && (
+        <div className="rounded-lg border border-orange-400/30 bg-orange-400/10 p-4 flex items-start gap-3">
+          <span className="text-xl shrink-0">🔥</span>
+          <div>
+            <div className="font-semibold text-orange-300 mb-0.5">Mayor Finnegan is Active</div>
+            <div className="text-sm text-orange-200/70">Pest Farming and Pelt Farming rates are doubled right now — 80M–90M/hr. If you have Garden Level 5+ and Farming 30+, this is your best method until the next mayor.</div>
+          </div>
+        </div>
+      )}
 
       {/* Summary strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

@@ -83,6 +83,8 @@ export interface PlayerProfile {
   fishingBagItems?: ParsedItem[];
   quiverItems?: ParsedItem[];
   sacksItems?: ParsedItem[];
+  vaultItems?: ParsedItem[];
+  candyItems?: ParsedItem[];
   /** Active potion/effect buffs from player_data.active_effects */
   activeEffects: ActiveEffect[];
   /** Active temporary stat buffs (cookie, booster, etc.) */
@@ -111,6 +113,16 @@ export interface PlayerProfile {
   // Player misc
   lastDeath?: number;
   visitedZonesCount: number;
+  soulflow?: number;
+  peltCount: number;
+  attributeStacks: Record<string, number>;
+  glacite?: GlaciteProgress;
+  foragingTreeTokensSpent: number;
+  foragingTreeNodes: Record<string, number | boolean>;
+  foragingDailyTreesCut: number;
+  foragingWhispers: number;
+  foragingWhispersSpent: number;
+  foragingDailyEffect?: string;
 }
 
 export type { ParsedItem };
@@ -136,6 +148,10 @@ export interface SkillLevels {
   enchanting_xp: number;
   alchemy_xp: number;
   hunting_xp: number;
+  taming_xp: number;
+  carpentry_xp: number;
+  runecrafting_xp: number;
+  social_xp: number;
   average?: number;
 }
 
@@ -190,6 +206,7 @@ export interface ParsedPet {
   heldItem?: string;
   skin?: string;
   candyUsed: number;
+  maxed: boolean;
 }
 
 export interface AccessoryInfo {
@@ -203,6 +220,13 @@ export interface AccessoryInfo {
   powers: string[];
   /** Populated after NBT enrichment */
   ownedIds?: Set<string>;
+}
+
+export interface GlaciteProgress {
+  fossilsDonated: string[];
+  fossilDust: number;
+  corpsesLooted: Record<string, number>;
+  mineshaftsEntered: number;
 }
 
 export interface CrystalState {

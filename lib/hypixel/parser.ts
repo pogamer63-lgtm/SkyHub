@@ -7,6 +7,7 @@ import {
   SkyBlockMember,
   SlayerBoss,
   Pet,
+  GardenApiData,
 } from '@/lib/types/hypixel';
 import {
   PlayerProfile,
@@ -22,9 +23,10 @@ import {
   CrimsonProgress,
   RiftProgress,
   PlayerStats,
+  GlaciteProgress,
 } from '@/lib/types/player';
 import { parseInventoryNBT, MP_PER_RARITY } from '@/lib/hypixel/nbt';
-import { WEIGHT_SENITHER, BESTIARY_ZONES, getBestiaryMilestoneLevel, getBestiaryMaxLevel } from '@/lib/neu/data';
+import { WEIGHT_SENITHER, BESTIARY_ZONES, getBestiaryMilestoneLevel, getBestiaryMaxLevel, CROP_MILESTONE_THRESHOLDS, PET_MAX_200_TYPES, GARDEN_LEVEL_TABLE } from '@/lib/neu/data';
 
 // XP tables
 // Cumulative XP to reach each level (wiki-verified 2026-04-01, levels 0-60)
@@ -56,6 +58,7 @@ const DUNGEON_XP_TABLE = [
   5559640, 7459640, 9959640, 13259640, 17559640, 23159640, 30359640, 39559640,
   51559640, 66559640, 85559640, 109559640, 139559640, 174559640, 216559640,
   265559640, 323559640, 390559640,
+  506809640, // L50: +116,250,000 (NEU-verified April 2026)
 ];
 
 function xpToLevel(xp: number, table: number[]): number {
@@ -92,6 +95,10 @@ function parseSkills(member: SkyBlockMember): SkillLevels {
     enchanting_xp: get('enchanting'),
     alchemy_xp: get('alchemy'),
     hunting_xp: get('hunting'),
+    taming_xp: get('taming'),
+    carpentry_xp: get('carpentry'),
+    runecrafting_xp: get('runecrafting'),
+    social_xp: get('social') / 2, // shared XP, halved same as level calc
   };
 
   const mainSkills = ['farming', 'mining', 'combat', 'foraging', 'fishing', 'enchanting', 'alchemy', 'taming'] as const;
@@ -125,7 +132,7 @@ function parseSlayers(member: SkyBlockMember): SlayerLevels {
     wolf: parseOne('wolf', [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000]),
     enderman: parseOne('enderman', [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000]),
     blaze: parseOne('blaze', [10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000]),
-    vampire: parseOne('vampire', [20, 75, 240, 840]), // max level 4 (wiki-confirmed)
+    vampire: parseOne('vampire', [20, 75, 240, 840, 2400]), // max level 5
   };
 }
 
@@ -186,16 +193,21 @@ function parsePets(member: SkyBlockMember): ParsedPet[] {
     if (Array.isArray(fallback)) pets = fallback as Pet[];
     else if (fallback && !Array.isArray(fallback)) pets = (fallback as { pets?: Pet[] }).pets ?? [];
   }
-  return pets.map(p => ({
-    type: p.type,
-    tier: p.tier,
-    level: calculatePetLevel(p.exp, p.tier),
-    xp: p.exp,
-    active: p.active,
-    heldItem: p.heldItem,
-    skin: p.skin,
-    candyUsed: p.candyUsed ?? 0,
-  }));
+  return pets.map(p => {
+    const level = calculatePetLevel(p.exp, p.type);
+    const maxLevel = PET_MAX_200_TYPES.has(p.type) ? 200 : 100;
+    return {
+      type: p.type,
+      tier: p.tier,
+      level,
+      xp: p.exp,
+      active: p.active,
+      heldItem: p.heldItem,
+      skin: p.skin,
+      candyUsed: p.candyUsed ?? 0,
+      maxed: level >= maxLevel,
+    };
+  });
 }
 
 // Cumulative XP thresholds to reach each pet level (1-indexed: index 0 = level 1).
@@ -213,10 +225,10 @@ const PET_XP_TABLE_BASE = [
   2346500, 2416500, 2487500, 2559500, 2632500, 2706500, 2781500, 2857500,
   2934500, 3012500, 3091500, 3171500, 3252500, 3334500, 3417500, 3501500,
   3586500, 3672500, 3759500, 3847500, 3936500, 4026500, 4117500, 4209500,
-  4302500, 4396500,
+  4302500, 4396500, 4491500, // 100 entries: index i = cumulative XP threshold for level (i+1)
 ];
 
-// Per-level XP costs for L101→L200 (Legendary/Mythic only). Source: SkyCrypt/NEU.
+// Per-level XP costs for L101→L200 (dragon pets only). Source: SkyCrypt/NEU.
 const PET_XP_PER_LEVEL_L101_200 = [
   490000, 510000, 530000, 550000, 570000, 590000, 610000, 630000, 650000, 670000,
   700000, 730000, 760000, 790000, 820000, 850000, 890000, 930000, 970000, 1020000,
@@ -240,10 +252,10 @@ const PET_XP_LEGENDARY: number[] = [...PET_XP_TABLE_BASE];
   }
 }
 
-function calculatePetLevel(xp: number, tier: string): number {
-  const isLegendary = tier === 'LEGENDARY' || tier === 'MYTHIC';
-  const table = isLegendary ? PET_XP_LEGENDARY : PET_XP_TABLE_BASE;
-  const maxLevel = isLegendary ? 200 : 100;
+function calculatePetLevel(xp: number, petType: string): number {
+  const isDragon = PET_MAX_200_TYPES.has(petType);
+  const table = isDragon ? PET_XP_LEGENDARY : PET_XP_TABLE_BASE;
+  const maxLevel = isDragon ? 200 : 100;
 
   let level = 1;
   for (let i = 0; i < table.length; i++) {
@@ -265,12 +277,19 @@ function parseMining(member: SkyBlockMember): MiningProgress {
 
   // Powder fields: in newer API they live at the member level (member.powder_mithril),
   // older API versions put them inside mining_core. Support both.
+  // Use explicit undefined check (not ||) so a player with 0 powder is not misread as absent.
   const powderMithril = member.powder_mithril ?? mc.powder_mithril ?? 0;
-  const powderMithrilTotal = ((member.powder_mithril ?? 0) + (member.powder_spent_mithril ?? 0)) || (mc.powder_mithril_total ?? 0);
+  const powderMithrilTotal = member.powder_mithril !== undefined
+    ? (member.powder_mithril ?? 0) + (member.powder_spent_mithril ?? 0)
+    : (mc.powder_mithril_total ?? 0);
   const powderGemstone = member.powder_gemstone ?? mc.powder_gemstone ?? 0;
-  const powderGemstoneTotal = ((member.powder_gemstone ?? 0) + (member.powder_spent_gemstone ?? 0)) || (mc.powder_gemstone_total ?? 0);
+  const powderGemstoneTotal = member.powder_gemstone !== undefined
+    ? (member.powder_gemstone ?? 0) + (member.powder_spent_gemstone ?? 0)
+    : (mc.powder_gemstone_total ?? 0);
   const powderGlacite = member.powder_glacite ?? mc.powder_glacite ?? 0;
-  const powderGlaciteTotal = ((member.powder_glacite ?? 0) + (member.powder_spent_glacite ?? 0)) || (mc.powder_glacite_total ?? 0);
+  const powderGlaciteTotal = member.powder_glacite !== undefined
+    ? (member.powder_glacite ?? 0) + (member.powder_spent_glacite ?? 0)
+    : (mc.powder_glacite_total ?? 0);
 
   const crystals: Record<string, { state: string; found: number; placed: number }> = {};
   for (const [k, v] of Object.entries(mc.crystals ?? {})) {
@@ -319,12 +338,11 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
   // API uses jacobs_contest in v2; jacobs_farming is legacy fallback
   const jacob = member.jacobs_contest ?? member.jacobs_farming ?? {};
 
-  // Garden level from XP — max level is 15 (wiki-confirmed, updated April 2026)
+  // Garden level from XP — derived from NEU-REPO garden.json (GARDEN_LEVEL_TABLE, max level 15)
   const gardenXP = garden.garden_experience ?? 0;
-  const gardenTable = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500, 6600, 7800, 9100, 10500, 12000];
   let gardenLevel = 0;
-  for (let i = 0; i < gardenTable.length; i++) {
-    if (gardenXP >= gardenTable[i]) gardenLevel = i;
+  for (let i = 0; i < GARDEN_LEVEL_TABLE.length; i++) {
+    if (gardenXP >= GARDEN_LEVEL_TABLE[i]) gardenLevel = i;
     else break;
   }
 
@@ -362,7 +380,7 @@ function parseFarming(member: SkyBlockMember): FarmingProgress {
     jacobPerks: jacob.perks ?? {},
     gardenResources: garden.resources_collected ?? {},
     copper: garden.copper ?? 0,
-    farmingFortune: 0,
+    farmingFortune: 0, // computed in parseProfile after skills are available
     // unique_brackets is the modern format; unique_golds2 is legacy
     uniqueGolds:     jacob.unique_brackets?.gold     ?? jacob.unique_golds2 ?? [],
     uniquePlatinums: jacob.unique_brackets?.platinum ?? [],
@@ -423,7 +441,7 @@ function computeSeniherWeight(
     fishing: skills.fishing_xp,
     enchanting: skills.enchanting_xp,
     alchemy: skills.alchemy_xp,
-    taming: 0,
+    taming: skills.taming_xp,
   };
   for (const [skill, [exp, div]] of Object.entries(sw.skills ?? {})) {
     const xp = skillXpMap[skill] ?? 0;
@@ -480,7 +498,7 @@ function parseCrimson(member: SkyBlockMember): CrimsonProgress {
     kuudraTiers: n.kuudra_completed_tiers ?? {},
     dojo,
     fairySoulCollected: n.fairy_soul_collected ?? 0,
-    abiphoneContacts: Object.keys(n.abiphone ?? {}).length,
+    abiphoneContacts: n.abiphone?.contacts?.length ?? 0,
   };
 }
 
@@ -520,7 +538,7 @@ function parseAccessories(member: SkyBlockMember): AccessoryInfo {
     missingRare: [],
     missingEpic: [],
     selectedPower: bag.selected_power,
-    powers: bag.powers ?? [],
+    powers: bag.unlocked_powers ?? [],
   };
 }
 
@@ -545,11 +563,25 @@ function determineGameStage(profile: PlayerProfile): GameStage {
   return 'endgame';
 }
 
+function parseGlacite(member: SkyBlockMember): GlaciteProgress | undefined {
+  const g = member.glacite_player_data;
+  if (!g) return undefined;
+  return {
+    fossilsDonated: g.fossils_donated ?? [],
+    fossilDust: g.fossil_dust ?? 0,
+    corpsesLooted: g.corpses_looted ?? {},
+    mineshaftsEntered: g.mineshafts_entered ?? 0,
+  };
+}
+
 export function parseProfile(
   profile: SkyBlockProfile,
   uuid: string,
   username: string,
 ): PlayerProfile {
+  if (!profile.members[uuid]) {
+    console.warn(`[SkyHub] UUID ${uuid} not found in profile ${profile.profile_id} — returning empty stats`);
+  }
   const member = profile.members[uuid] ?? {};
 
   const skills = parseSkills(member);
@@ -559,6 +591,26 @@ export function parseProfile(
   const accessories = parseAccessories(member);
   const mining = parseMining(member);
   const farming = parseFarming(member);
+
+  // Compute farming fortune from API-available sources (armor/equipment/reforges require NBT
+  // and are added by the individual pages that parse NBT locally).
+  // Sources included here: Farming skill (+4/level), Garden plots (+3/plot),
+  // Anita's FF perk (+4/level), Crop milestones (+1/milestone level).
+  {
+    const jacobFFLevel = farming.jacobPerks['farming_fortune'] ?? 0;
+    let cropMilestoneFF = 0;
+    for (const [cropKey, thresholds] of Object.entries(CROP_MILESTONE_THRESHOLDS)) {
+      const collected = farming.gardenResources[cropKey] ?? 0;
+      let level = 0;
+      for (const t of thresholds) {
+        if (collected >= t) level++;
+        else break;
+      }
+      cropMilestoneFF += level;
+    }
+    farming.farmingFortune = skills.farming * 4 + (farming.plots ?? 0) * 3 + jacobFFLevel * 4 + cropMilestoneFF;
+  }
+
   const crimson = parseCrimson(member);
   const rift = parseRift(member);
   const playerStats = parsePlayerStats(member);
@@ -629,6 +681,16 @@ export function parseProfile(
     fishingFestivalSharksKilled: member.leveling?.fishing_festival_sharks_killed ?? 0,
     lastDeath: member.player_data?.last_death,
     visitedZonesCount: member.player_data?.visited_zones?.length ?? 0,
+    soulflow: member.item_data?.soulflow,
+    peltCount: member.quests?.trapper_quest?.pelt_count ?? 0,
+    attributeStacks: member.attributes?.stacks ?? {},
+    glacite: parseGlacite(member),
+    foragingTreeTokensSpent: (member.skill_tree?.tokens_spent?.forest ?? 0),
+    foragingTreeNodes: (member.skill_tree?.nodes ?? {}) as Record<string, number | boolean>,
+    foragingDailyTreesCut: member.foraging_core?.daily_trees_cut ?? 0,
+    foragingWhispers: member.foraging_core?.forests_whispers ?? 0,
+    foragingWhispersSpent: member.foraging_core?.forests_whispers_spent ?? 0,
+    foragingDailyEffect: member.foraging_core?.current_daily_effect,
   };
 
   return partial;
@@ -660,7 +722,10 @@ export function selectBestProfile(
 /** Parse a single optional NBT slot, returning [] on missing/error. */
 async function safeParseNBT(data: string | undefined): Promise<ReturnType<typeof parseInventoryNBT>> {
   if (!data) return [];
-  try { return await parseInventoryNBT(data); } catch { return []; }
+  try { return await parseInventoryNBT(data); } catch (err) {
+    console.error('[SkyHub] NBT parse error:', err instanceof Error ? err.message : err);
+    return [];
+  }
 }
 
 /**
@@ -675,9 +740,10 @@ export async function enrichWithNBT(
 ): Promise<PlayerProfile> {
   const member = rawProfile.members[uuid] ?? {};
   const inv = member.inventory;
-  if (!inv) return profile;
+  const sharedInv = member.shared_inventory;
+  if (!inv && !sharedInv) return profile;
 
-  const backpackKeys = Object.values(inv.backpack_contents ?? {});
+  const backpackKeys = Object.values(inv?.backpack_contents ?? {});
 
   // Parse all slots in parallel
   const [
@@ -687,22 +753,26 @@ export async function enrichWithNBT(
     inventoryItems,
     wardrobeItems,
     enderChestItems,
+    vaultItems,
     potionItems,
     fishingBagItems,
     quiverItems,
     sacksItems,
+    candyItems,
     ...backpackArrays
   ] = await Promise.all([
-    safeParseNBT(inv.bag_contents?.talisman_bag?.data),
-    safeParseNBT(inv.inv_armor?.data),
-    safeParseNBT(inv.equipment_contents?.data),
-    safeParseNBT(inv.inv_contents?.data),
-    safeParseNBT(inv.wardrobe_contents?.data),
-    safeParseNBT(inv.ender_chest_contents?.data),
-    safeParseNBT(inv.bag_contents?.potion_bag?.data),
-    safeParseNBT(inv.bag_contents?.fishing_bag?.data),
-    safeParseNBT(inv.bag_contents?.quiver?.data),
-    safeParseNBT(inv.bag_contents?.sacks_bag?.data),
+    safeParseNBT(inv?.bag_contents?.talisman_bag?.data),
+    safeParseNBT(inv?.inv_armor?.data),
+    safeParseNBT(inv?.equipment_contents?.data),
+    safeParseNBT(inv?.inv_contents?.data),
+    safeParseNBT(inv?.wardrobe_contents?.data),
+    safeParseNBT(inv?.ender_chest_contents?.data),
+    safeParseNBT(inv?.personal_vault_contents?.data),
+    safeParseNBT(inv?.bag_contents?.potion_bag?.data),
+    safeParseNBT(inv?.bag_contents?.fishing_bag?.data),
+    safeParseNBT(inv?.bag_contents?.quiver?.data),
+    safeParseNBT(inv?.bag_contents?.sacks_bag?.data),
+    safeParseNBT(sharedInv?.candy_inventory_contents?.data),
     // Each backpack slot is a separate NBT blob
     ...backpackKeys.map(bp => safeParseNBT(bp?.data)),
   ]);
@@ -733,5 +803,57 @@ export async function enrichWithNBT(
     fishingBagItems: fishingBagItems.filter(i => !!i.id),
     quiverItems:     quiverItems.filter(i => !!i.id),
     sacksItems:      sacksItems.filter(i => !!i.id),
+    vaultItems:      vaultItems.filter(i => !!i.id),
+    candyItems:      candyItems.filter(i => !!i.id),
+  };
+}
+
+/**
+ * Enriches a parsed profile with data from the /v2/skyblock/garden endpoint.
+ * Must be called separately since garden_player_data is NOT in the profiles response.
+ */
+export function enrichWithGarden(profile: PlayerProfile, garden: GardenApiData): PlayerProfile {
+  // Garden level from XP
+  const gardenXP = garden.garden_experience ?? 0;
+  let gardenLevel = 0;
+  for (let i = 0; i < GARDEN_LEVEL_TABLE.length; i++) {
+    if (gardenXP >= GARDEN_LEVEL_TABLE[i]) gardenLevel = i;
+    else break;
+  }
+
+  const gardenResources = garden.resources_collected ?? {};
+  const plots = typeof garden.plots_unlocked === 'number'
+    ? garden.plots_unlocked
+    : Array.isArray(garden.plots_unlocked)
+      ? (garden.plots_unlocked as unknown[]).length
+      : 0;
+  const cropUpgrades = garden.crop_upgrade_levels ?? {};
+  const copper = garden.copper ?? 0;
+
+  // Recompute farming fortune with correct garden data
+  const jacobFFLevel = profile.farming.jacobPerks['farming_fortune'] ?? 0;
+  let cropMilestoneFF = 0;
+  for (const [cropKey, thresholds] of Object.entries(CROP_MILESTONE_THRESHOLDS)) {
+    const collected = gardenResources[cropKey] ?? 0;
+    for (const t of thresholds) {
+      if (collected >= t) cropMilestoneFF++;
+      else break;
+    }
+  }
+  const farmingFortune = profile.skills.farming * 4 + plots * 3 + jacobFFLevel * 4 + cropMilestoneFF;
+
+  return {
+    ...profile,
+    farming: {
+      ...profile.farming,
+      gardenLevel,
+      plots,
+      gardenResources,
+      cropUpgrades,
+      copper,
+      farmingFortune,
+    },
+    visitorsServed: garden.visitors_served ?? profile.visitorsServed,
+    larvaeConsumed: garden.larva_consumed ?? profile.larvaeConsumed,
   };
 }

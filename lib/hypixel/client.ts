@@ -3,7 +3,7 @@
  * Never import this in client components.
  */
 
-import { HypixelPlayerResponse, HypixelProfilesResponse, MojangProfile } from '@/lib/types/hypixel';
+import { HypixelPlayerResponse, HypixelProfilesResponse, MojangProfile, MuseumMember, GardenApiData } from '@/lib/types/hypixel';
 
 const HYPIXEL_BASE = 'https://api.hypixel.net';
 const MOJANG_PROFILE_BASE = 'https://api.mojang.com';
@@ -203,14 +203,16 @@ export async function getSkyBlockProfile(profileId: string): Promise<{ success: 
   return hypixelFetch(`/v2/skyblock/profile?profile=${profileId}`, 3 * 60 * 1000);
 }
 
+export async function getSkyBlockGarden(profileId: string): Promise<{
+  success: boolean;
+  garden?: GardenApiData;
+}> {
+  return hypixelFetch(`/v2/skyblock/garden?profile=${profileId}`, 3 * 60 * 1000);
+}
+
 export async function getSkyBlockMuseum(profileId: string): Promise<{
   success: boolean;
-  members?: Record<string, {
-    items?: Record<string, { donated_time?: number; borrowing?: boolean; [key: string]: unknown }>;
-    special?: unknown[];
-    value?: number;
-    appraisal?: boolean;
-  }>;
+  members?: Record<string, MuseumMember>;
 }> {
   return hypixelFetch(`/v2/skyblock/museum?profile=${profileId}`, 10 * 60 * 1000);
 }

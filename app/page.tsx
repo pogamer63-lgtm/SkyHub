@@ -1,5 +1,58 @@
 import { getRecentSearches } from '@/lib/db/snapshots';
+import { getElectionData } from '@/lib/api/election';
+import { getFireSales, isActive, formatTimeLeft } from '@/lib/api/firesales';
+import { getItemName } from '@/lib/neu/data';
+import FireSaleItemImage from './fire-sale-item-image';
 import SearchForm from './search-form';
+
+// ─── Minecraft § color-code renderer ─────────────────────────────────────────
+
+const MC_COLORS: Record<string, string> = {
+  '0': '#000000', '1': '#0000AA', '2': '#00AA00', '3': '#00AAAA',
+  '4': '#AA0000', '5': '#AA00AA', '6': '#FFAA00', '7': '#AAAAAA',
+  '8': '#555555', '9': '#5555FF', 'a': '#55FF55', 'b': '#55FFFF',
+  'c': '#FF5555', 'd': '#FF55FF', 'e': '#FFFF55', 'f': '#FFFFFF',
+};
+
+interface Span { text: string; color?: string; bold?: boolean }
+
+function parseMinecraftText(raw: string): Span[] {
+  const spans: Span[] = [];
+  let color: string | undefined;
+  let bold = false;
+  let i = 0;
+  while (i < raw.length) {
+    if (raw[i] === '§' && i + 1 < raw.length) {
+      const code = raw[i + 1].toLowerCase();
+      if (MC_COLORS[code]) { color = MC_COLORS[code]; bold = false; }
+      else if (code === 'l') { bold = true; }
+      else if (code === 'r') { color = undefined; bold = false; }
+      i += 2;
+    } else {
+      // collect until next §
+      let end = raw.indexOf('§', i);
+      if (end === -1) end = raw.length;
+      spans.push({ text: raw.slice(i, end), color, bold });
+      i = end;
+    }
+  }
+  return spans.filter(s => s.text);
+}
+
+function McText({ text }: { text: string }) {
+  const spans = parseMinecraftText(text);
+  return (
+    <>
+      {spans.map((s, i) => (
+        <span key={i} style={{ color: s.color ?? 'var(--text-muted)', fontWeight: s.bold ? 700 : undefined }}>
+          {s.text}
+        </span>
+      ))}
+    </>
+  );
+}
+
+// ─── Feature groups ───────────────────────────────────────────────────────────
 
 const FEATURE_GROUPS = [
   {
@@ -24,9 +77,10 @@ const FEATURE_GROUPS = [
     label: 'Gathering',
     accent: '#10b981',
     items: [
-      { title: 'Farming Planner', desc: 'Farming Fortune sources, Garden upgrades, and crop paths.' },
-      { title: 'Mining Planner',  desc: 'HOTM tree, powder allocation, mining speed and fortune.' },
-      { title: 'Fishing Planner', desc: 'Trophy fish progress, rod tiers, Fishing Fortune sources.' },
+      { title: 'Farming Planner',  desc: 'Farming Fortune sources, Garden upgrades, and crop paths.' },
+      { title: 'Mining Planner',   desc: 'HOTM tree, powder allocation, mining speed and fortune.' },
+      { title: 'Fishing Planner',  desc: 'Trophy fish progress, rod tiers, Fishing Fortune sources.' },
+      { title: 'Foraging Planner', desc: 'Foraging Fortune, Skill Tree whispers, best pets, and daily trees.' },
     ],
   },
   {
@@ -58,15 +112,20 @@ const FEATURE_GROUPS = [
 ];
 
 const STATS = [
-  { value: '22',   label: 'Pages' },
-  { value: '14+',  label: 'Planners' },
-  { value: '15',   label: 'Rules' },
+  { value: '23',   label: 'Pages' },
+  { value: '15+',  label: 'Planners' },
+  { value: '29',   label: 'Rule Checks' },
   { value: 'Live', label: 'Prices' },
 ];
 
 export default async function HomePage() {
-  const recentRows  = await getRecentSearches(6);
+  const [recentRows, election, fireSales] = await Promise.all([
+    getRecentSearches(6),
+    getElectionData().catch(() => null),
+    getFireSales().catch(() => [] as Awaited<ReturnType<typeof getFireSales>>),
+  ]);
   const recentNames = recentRows.map(r => r.username);
+  const activeSales = fireSales.filter(isActive);
 
   return (
     <div className="hero-glow">
@@ -131,6 +190,144 @@ export default async function HomePage() {
 
         </div>
       </section>
+
+      {/* ── Mayor + Fire Sales ────────────────────────────────── */}
+      {(election || activeSales.length > 0) && (
+        <section className="px-4 pb-10">
+          <div className="mx-auto max-w-5xl">
+            <div className="flex flex-wrap gap-4 items-start">
+
+              {/* Mayor card — Minecraft tooltip style */}
+              {election && (
+                <div
+                  className="shrink-0"
+                  style={{
+                    minWidth: 240,
+                    maxWidth: 320,
+                    background: 'linear-gradient(160deg, #0d1a2a 0%, #0a1520 100%)',
+                    border: '2px solid',
+                    borderColor: '#1a6060',
+                    borderImage: 'linear-gradient(180deg, #55FFFF 0%, #1a6060 60%, #002222 100%) 1',
+                    borderImageSlice: 1,
+                    borderRadius: 0,
+                    boxShadow: 'inset 0 0 0 1px rgba(85,255,255,0.07), 0 4px 24px rgba(0,0,0,0.6)',
+                    padding: '10px 12px',
+                    fontFamily: 'var(--font-mono, monospace)',
+                    fontSize: 13,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {/* Mayor name */}
+                  <div style={{ color: '#FFAA00', fontWeight: 700, marginBottom: 6 }}>
+                    Mayor {election.currentMayor.name}
+                  </div>
+
+                  {/* Mayor description */}
+                  <div style={{ color: '#AAAAAA', fontSize: 12, marginBottom: 8, lineHeight: 1.55 }}>
+                    The mayor has been elected by the whole SkyBlock community.
+                  </div>
+
+                  {/* Separator */}
+                  <div style={{
+                    height: 1,
+                    background: 'linear-gradient(90deg, transparent, #1a6060 20%, #1a6060 80%, transparent)',
+                    margin: '6px 0 10px',
+                  }} />
+
+                  {/* Perks */}
+                  <div className="space-y-2.5">
+                    {election.currentMayor.perks.map(perk => (
+                      <div key={perk.name}>
+                        <div style={{
+                          color: perk.minister ? '#FFFF55' : '#FF55FF',
+                          fontWeight: 700,
+                          fontSize: 13,
+                          marginBottom: 2,
+                        }}>
+                          {perk.name}
+                          {perk.minister && (
+                            <span style={{ color: '#FFAA00', fontSize: 11, fontWeight: 400, marginLeft: 6 }}>
+                              ✦ minister
+                            </span>
+                          )}
+                        </div>
+                        <div style={{ color: '#AAAAAA', fontSize: 12, lineHeight: 1.55 }}>
+                          <McText text={perk.description} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Separator + footer note */}
+                  <div style={{
+                    height: 1,
+                    background: 'linear-gradient(90deg, transparent, #1a6060 20%, #1a6060 80%, transparent)',
+                    margin: '10px 0 8px',
+                  }} />
+                  <div style={{ color: '#555555', fontSize: 11, lineHeight: 1.5, fontStyle: 'italic' }}>
+                    The listed perks are available to all players until the closing of the next elections.
+                  </div>
+                </div>
+              )}
+
+              {/* Fire Sales */}
+              {activeSales.length > 0 && (
+                <div className="flex-1 min-w-[200px]">
+                  <div
+                    className="text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2"
+                    style={{ color: '#FF5555' }}
+                  >
+                    <span style={{
+                      display: 'inline-block', width: 8, height: 8, borderRadius: '50%',
+                      background: '#FF5555', boxShadow: '0 0 6px #FF5555',
+                    }} />
+                    Active Fire Sales
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {activeSales.map(sale => (
+                      <div key={sale.itemId}>
+                        <div
+                          style={{
+                            background: 'rgba(255,85,0,0.06)',
+                            border: '1px solid rgba(255,85,0,0.25)',
+                            borderRadius: 6,
+                            padding: '8px 12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 10,
+                          }}
+                        >
+                          <span style={{ fontSize: 18, lineHeight: 1 }}>🔥</span>
+                          <div>
+                            <div style={{ color: '#FFAA00', fontWeight: 600, fontSize: 13 }}>
+                              {getItemName(sale.itemId)}
+                            </div>
+                            <div style={{ color: '#AAAAAA', fontSize: 12, marginTop: 1 }}>
+                              <span style={{ color: '#55FF55' }}>{sale.price.toLocaleString()}</span>
+                              {' Gems · '}
+                              <span style={{ color: '#55FFFF' }}>{sale.amount.toLocaleString()}</span>
+                              {' left · '}
+                              <span style={{ color: '#FFFF55' }}>{formatTimeLeft(sale.end)}</span>
+                              {' remaining'}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-3 flex flex-col items-center gap-1.5">
+                          <FireSaleItemImage itemId={sale.itemId} size={160} />
+                          <div style={{ color: '#FFAA00', fontSize: 12, fontWeight: 600, letterSpacing: '0.04em', textAlign: 'center' }}>
+                            {getItemName(sale.itemId)}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── Divider ───────────────────────────────────────────── */}
       <div className="mx-auto max-w-5xl px-4">

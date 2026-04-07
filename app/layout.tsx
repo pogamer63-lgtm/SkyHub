@@ -76,7 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div>
                 <span className="gradient-text font-bold text-base block mb-1">SkyHub</span>
                 <p className="text-xs" style={{ color: 'var(--text-faint)' }}>Not affiliated with Hypixel Inc. or Mojang AB.</p>
-                <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>Player data via Hypixel API · Skins via Crafatar</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>Player data via Hypixel API · Skins via mc-heads.net</p>
               </div>
             </div>
 

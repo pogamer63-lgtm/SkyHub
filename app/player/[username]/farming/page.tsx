@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
-import { selectBestProfile } from '@/lib/hypixel/parser';
+import { resolvePlayer, getSkyBlockProfiles, getSkyBlockGarden } from '@/lib/hypixel/client';
+import { selectBestProfile, enrichWithGarden } from '@/lib/hypixel/parser';
 import { parseInventoryNBT, ParsedItem } from '@/lib/hypixel/nbt';
 import { PlayerProfile } from '@/lib/types/player';
 import { SkyBlockProfile } from '@/lib/types/hypixel';
@@ -62,51 +62,105 @@ function getNextMilestoneAt(cropKey: string, currentLevel: number): number | nul
 
 // ─── Farming Equipment FF Database ───────────────────────────────────────────
 
-/** Known farming armor/equipment items and their FF bonus */
+// ─── Farming Armor FF (per-piece, from NEU items_index — verified April 2026) ──
+// Full set totals: Melon +70, Cropie +90, Squash +110, Fermento +130, Helianthus +150
 const FARMING_ARMOR_FF: Record<string, number> = {
-  // Lotus set (Bazaar, ~5M/piece)
-  LOTUS_HAT: 60, LOTUS_CHESTPLATE: 60, LOTUS_LEGGINGS: 60, LOTUS_BOOTS: 60,
-  // Fermento set (Kuudra)
-  FERMENTO_HAT: 60, FERMENTO_CHESTPLATE: 60, FERMENTO_LEGGINGS: 60, FERMENTO_BOOTS: 60,
-  // Rancher's Boots (speed-based, rough estimate)
-  RANCHER_BOOTS: 15,
-  // Rabbit Hat (Hypixel shop / Jacob rewards)
-  RABBIT_HAT: 5,
-  // Melon Helmet (early game)
-  MELON_HAT: 10,
+  // Melon Armor (early, Farming 1)
+  MELON_HELMET: 15, MELON_CHESTPLATE: 20, MELON_LEGGINGS: 20, MELON_BOOTS: 15,
+  // Cropie Armor (Farming 20 required)
+  CROPIE_HELMET: 20, CROPIE_CHESTPLATE: 25, CROPIE_LEGGINGS: 25, CROPIE_BOOTS: 20,
+  // Squash Armor (Farming 30 required)
+  SQUASH_HELMET: 25, SQUASH_CHESTPLATE: 30, SQUASH_LEGGINGS: 30, SQUASH_BOOTS: 25,
+  // Fermento Armor (Farming 40 required)
+  FERMENTO_HELMET: 30, FERMENTO_CHESTPLATE: 35, FERMENTO_LEGGINGS: 35, FERMENTO_BOOTS: 30,
+  // Helianthus Armor (Farming 50 required, December 2025 BIS)
+  HELIANTHUS_HELMET: 35, HELIANTHUS_CHESTPLATE: 40, HELIANTHUS_LEGGINGS: 40, HELIANTHUS_BOOTS: 35,
 };
 
-/** Equipment reforges that give farming fortune */
-const FARMING_REFORGE_FF: Record<string, number> = {
-  'turbo-crop': 5,  // +5 FF per equipment piece
-  'bountiful': 4,   // Bountiful reforge on equipment
+// ─── Farming Equipment FF (Lotus/Blossom equipment — BELT/NECKLACE/CLOAK/BRACELET) ─
+const FARMING_EQUIP_FF: Record<string, number> = {
+  LOTUS_NECKLACE: 5, LOTUS_BELT: 5, LOTUS_CLOAK: 5, LOTUS_BRACELET: 5,
+  BLOSSOM_NECKLACE: 7, BLOSSOM_BELT: 7, BLOSSOM_CLOAK: 7, BLOSSOM_BRACELET: 7,
 };
 
-/** Calculate FF from parsed armor/equipment items */
-function calcGearFF(items: ParsedItem[]): { ff: number; breakdown: string[] } {
+// ─── Reforges on armor that give farming fortune (by NBT modifier, LEGENDARY FF value) ─
+// Source: NEU reforgestones.json, itemTypes=ARMOR
+const ARMOR_REFORGE_FF: Record<string, Record<string, number>> = {
+  // mossy (OVERGROWN_GRASS): +5/10/15/20/25/30 FF by rarity
+  'mossy': { COMMON: 5, UNCOMMON: 10, RARE: 15, EPIC: 20, LEGENDARY: 25, MYTHIC: 30 },
+  // mantid (MANTID_CLAW): +2/4/6/8/10/12 FF by rarity
+  'mantid': { COMMON: 2, UNCOMMON: 4, RARE: 6, EPIC: 8, LEGENDARY: 10, MYTHIC: 12 },
+  // bustling (SKYMART_BROCHURE): +1/2/4/6/8/10 FF by rarity
+  'bustling': { COMMON: 1, UNCOMMON: 2, RARE: 4, EPIC: 6, LEGENDARY: 8, MYTHIC: 10 },
+};
+
+// ─── Reforges on equipment that give farming fortune ─────────────────────────
+// Source: NEU reforgestones.json, itemTypes=EQUIPMENT
+const EQUIP_REFORGE_FF: Record<string, Record<string, number>> = {
+  // rooted (BURROWING_SPORES): +6/9/12/15/18/21 FF by rarity
+  'rooted': { COMMON: 6, UNCOMMON: 9, RARE: 12, EPIC: 15, LEGENDARY: 18, MYTHIC: 21 },
+  // blooming (FLOWERING_BOUQUET): +1/2/3/4/5/6 FF by rarity
+  'blooming': { COMMON: 1, UNCOMMON: 2, RARE: 3, EPIC: 4, LEGENDARY: 5, MYTHIC: 6 },
+  // squeaky (SQUEAKY_TOY): +2/4/6/8/10/12 FF by rarity
+  'squeaky': { COMMON: 2, UNCOMMON: 4, RARE: 6, EPIC: 8, LEGENDARY: 10, MYTHIC: 12 },
+};
+
+/** Calculate FF from parsed armor items (armor set bonuses + armor reforges) */
+function calcArmorFF(items: ParsedItem[]): { ff: number; breakdown: string[] } {
   let ff = 0;
   const breakdown: string[] = [];
 
   for (const item of items) {
     if (!item.id || item.id === 'AIR') continue;
 
-    // Check armor/equipment FF by item ID
-    for (const [key, bonus] of Object.entries(FARMING_ARMOR_FF)) {
-      if (item.id.includes(key)) {
-        ff += bonus;
-        breakdown.push(`${item.name || key}: +${bonus} FF`);
-        break;
-      }
+    // Armor set FF by item ID
+    const armorBonus = FARMING_ARMOR_FF[item.id];
+    if (armorBonus) {
+      ff += armorBonus;
+      breakdown.push(`${item.name || item.id}: +${armorBonus} FF`);
     }
 
-    // Check reforge FF
+    // Armor reforge FF (rarity-scaled)
     if (item.reforge) {
       const reforgeKey = item.reforge.toLowerCase();
-      for (const [reforge, bonus] of Object.entries(FARMING_REFORGE_FF)) {
-        if (reforgeKey.includes(reforge)) {
+      const reforgeTable = ARMOR_REFORGE_FF[reforgeKey];
+      if (reforgeTable) {
+        const bonus = reforgeTable[item.rarity] ?? reforgeTable['LEGENDARY'] ?? 0;
+        if (bonus > 0) {
           ff += bonus;
-          breakdown.push(`${item.name || item.id} (${item.reforge} reforge): +${bonus} FF`);
-          break;
+          breakdown.push(`${item.name || item.id} (${item.reforge}): +${bonus} FF`);
+        }
+      }
+    }
+  }
+
+  return { ff, breakdown };
+}
+
+/** Calculate FF from parsed equipment items (item base FF + equipment reforges) */
+function calcEquipFF(items: ParsedItem[]): { ff: number; breakdown: string[] } {
+  let ff = 0;
+  const breakdown: string[] = [];
+
+  for (const item of items) {
+    if (!item.id || item.id === 'AIR') continue;
+
+    // Equipment base FF by item ID (Lotus, Blossom)
+    const equipBonus = FARMING_EQUIP_FF[item.id];
+    if (equipBonus) {
+      ff += equipBonus;
+      breakdown.push(`${item.name || item.id}: +${equipBonus} FF`);
+    }
+
+    // Equipment reforge FF (rarity-scaled)
+    if (item.reforge) {
+      const reforgeKey = item.reforge.toLowerCase();
+      const reforgeTable = EQUIP_REFORGE_FF[reforgeKey];
+      if (reforgeTable) {
+        const bonus = reforgeTable[item.rarity] ?? reforgeTable['LEGENDARY'] ?? 0;
+        if (bonus > 0) {
+          ff += bonus;
+          breakdown.push(`${item.name || item.id} (${item.reforge}): +${bonus} FF`);
         }
       }
     }
@@ -124,6 +178,8 @@ interface FFSource {
   max: number;
   notes: string;
   needsNBT?: boolean;
+  /** API doesn't expose this stat at all — shown as informational only */
+  noAPI?: boolean;
   upgradeHint?: string;
   upgradeCost?: string;
 }
@@ -155,10 +211,9 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
     upgradeCost: 'Compost (farm → compost → plots)',
   });
 
-  // 3. Jacob's Farming Fortune Perk
-  // API key is 'farming_level_cap' in jacobs_contest.perks (modern) — no direct FF perk key
-  // Anita's Extra Farming Fortune perk maps to farming_level_cap levels
-  const jacobFFLevel = farming.jacobPerks['farming_level_cap'] ?? farming.jacobPerks['farming_fortune'] ?? 0;
+  // 3. Jacob's Farming Fortune Perk (Anita's Extra Farming Fortune)
+  // API key is 'farming_fortune' in jacobs_contest.perks. Note: 'farming_level_cap' is a separate perk.
+  const jacobFFLevel = farming.jacobPerks['farming_fortune'] ?? 0;
   const jacobFF = jacobFFLevel * FF_PER_JACOB_FF_PERK;
   sources.push({
     name: "Anita's FF Perk",
@@ -240,34 +295,98 @@ function calculateFFSources(profile: PlayerProfile, armorItems: ParsedItem[], eq
     });
   }
 
-  // 6. Armor FF (from NBT if available)
-  const armorGear = calcGearFF(armorItems);
+  // 5b. Pet held item — Bandana FF
+  if (activePet?.heldItem === 'GREEN_BANDANA') {
+    const bandanaFF = 4 * farming.gardenLevel;
+    sources.push({
+      name: 'Green Bandana',
+      category: 'Pet',
+      current: bandanaFF,
+      max: 60, // 4 × 15 max garden level
+      notes: `+4 FF × Garden Level ${farming.gardenLevel}`,
+    });
+  } else if (activePet?.heldItem === 'YELLOW_BANDANA') {
+    sources.push({
+      name: 'Yellow Bandana',
+      category: 'Pet',
+      current: 30,
+      max: 30,
+      notes: '+30 FF flat',
+    });
+  }
+
+  // 5c. Active buffs — Booster Cookie / God Potion
+  const cookieActive = profile.tempStatBuffs.some(b => b.key === 'booster_cookie');
+  const godPotionActive = profile.activeEffects.some(e => e.effect === 'GOD_POTION_ALL');
+  if (cookieActive || godPotionActive) {
+    const buffFF = (cookieActive ? 15 : 0) + (godPotionActive ? 20 : 0);
+    const buffNames = [
+      cookieActive && 'Booster Cookie (+15 FF)',
+      godPotionActive && 'God Potion (+20 FF)',
+    ].filter(Boolean).join(', ');
+    sources.push({
+      name: 'Active Buffs',
+      category: 'Buffs',
+      current: buffFF,
+      max: 35,
+      notes: buffNames as string,
+    });
+  }
+
+  // 6. Armor FF (armor set + armor reforges, from NBT)
+  const armorResult = calcArmorFF(armorItems);
   const hasArmorNBT = armorItems.some(i => i.id && i.id !== 'AIR' && i.name);
   sources.push({
     name: 'Armor Set',
     category: 'Gear',
-    current: armorGear.ff,
-    max: 240,
+    current: armorResult.ff,
+    // Helianthus full set = +150 FF; +30 from Mossy reforge on each piece = +270 total endgame
+    max: 270,
     notes: hasArmorNBT
-      ? (armorGear.breakdown.length > 0 ? armorGear.breakdown.join(', ') : 'No farming armor detected')
-      : 'Requires recent login for NBT data',
+      ? (armorResult.breakdown.length > 0 ? armorResult.breakdown.join(', ') : 'No farming armor equipped')
+      : 'Requires recent login — armor data not loaded',
     needsNBT: !hasArmorNBT,
-    upgradeHint: armorGear.ff === 0 ? 'Lotus or Fermento set gives +60 FF/piece (best farming armor)' : undefined,
+    upgradeHint: armorResult.ff === 0
+      ? 'Farming armor path: Melon → Cropie → Squash → Fermento → Helianthus. Mossy (OVERGROWN_GRASS) reforge gives up to +25 FF per piece.'
+      : undefined,
   });
 
-  // 7. Equipment FF (from NBT if available)
-  const equipGear = calcGearFF(equipItems);
+  // 7. Equipment FF (Lotus/Blossom base + equipment reforges, from NBT)
+  const equipResult = calcEquipFF(equipItems);
   const hasEquipNBT = equipItems.some(i => i.id && i.id !== 'AIR' && i.name);
   sources.push({
-    name: 'Equipment Reforges',
+    name: 'Equipment',
     category: 'Gear',
-    current: equipGear.ff,
-    max: 25,
+    current: equipResult.ff,
+    // 4 slots × 21 FF (Rooted/BURROWING_SPORES Mythic) = 84 max
+    max: 84,
     notes: hasEquipNBT
-      ? (equipGear.breakdown.length > 0 ? equipGear.breakdown.join(', ') : 'No farming equipment reforges detected')
-      : 'Requires recent login for NBT data',
+      ? (equipResult.breakdown.length > 0 ? equipResult.breakdown.join(', ') : 'No farming equipment detected')
+      : 'Requires recent login — equipment data not loaded',
     needsNBT: !hasEquipNBT,
-    upgradeHint: equipGear.ff < 20 ? 'Turbo-Crop reforge gives +5 FF per equipment piece' : undefined,
+    upgradeHint: equipResult.ff < 72
+      ? 'Rooted (BURROWING_SPORES) reforge gives up to +18 FF per equipment piece. Lotus Necklace/Belt/Cloak/Bracelet give +5 FF base each.'
+      : undefined,
+  });
+
+  // 8. Untracked sources — API doesn't expose these; shown as informational hints
+  sources.push({
+    name: 'Crop Shot Chip',
+    category: 'Garden Chip',
+    current: 0,
+    max: 100,
+    notes: 'Garden Chip — Hypixel API does not expose chip levels; max +100 FF at full upgrade',
+    noAPI: true,
+    upgradeHint: 'Upgrade via Garden Desk using Sodust (earned while farming)',
+  });
+  sources.push({
+    name: 'Celestial Mason Jar',
+    category: 'Mixin',
+    current: 0,
+    max: 15,
+    notes: 'Mixin from Harvest Feast — API does not expose active mixin buffs; gives +15 FF when consumed',
+    noAPI: true,
+    upgradeHint: 'Earn during Harvest Feast by donating Seasonings to the communal stew',
   });
 
   return sources;
@@ -333,6 +452,24 @@ export default async function FarmingPage({ params, searchParams }: Props) {
       if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
       profile = selectBestProfile([targetProfile], uuid, resolvedName);
 
+      // Fetch garden data from separate endpoint (not in profiles response)
+      try {
+        const gardenRes = await getSkyBlockGarden(targetProfile.profile_id);
+        if (gardenRes.success && gardenRes.garden) {
+          profile = enrichWithGarden(profile, gardenRes.garden);
+          // Composter data comes from garden endpoint
+          const cd = gardenRes.garden.composter_data ?? {};
+          const upgrades = (cd.upgrades ?? {}) as Record<string, number>;
+          composter = {
+            organicsMatter: (cd.organic_matter as number) ?? 0,
+            fuelUnits:      (cd.fuel_units as number) ?? 0,
+            compostUnits:   (cd.compost_units as number) ?? 0,
+            taps:           (cd.conversion_taps as number) ?? 0,
+          };
+          void upgrades; // available if needed later
+        }
+      } catch { /* non-fatal */ }
+
       // Parse armor + equipment NBT for real FF values
       const member = targetProfile.members[uuid] ?? {};
       const armorData = member.inventory?.inv_armor?.data;
@@ -343,15 +480,6 @@ export default async function FarmingPage({ params, searchParams }: Props) {
       if (equipData) {
         try { equipItems = await parseInventoryNBT(equipData, true); } catch { /* non-fatal */ }
       }
-
-      // Composter data
-      const cd = (member.garden_player_data?.composter_data ?? {}) as Record<string, unknown>;
-      composter = {
-        organicsMatter: (cd.organics_matter as number) ?? 0,
-        fuelUnits:      (cd.fuel_units as number) ?? 0,
-        compostUnits:   (cd.compost_units as number) ?? 0,
-        taps:           (cd.conversion_taps as number) ?? 0,
-      };
     }
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load profile.';
@@ -373,11 +501,12 @@ export default async function FarmingPage({ params, searchParams }: Props) {
   }
 
   const ffSources = calculateFFSources(profile, armorItems, equipItems);
-  const knownFF = ffSources.filter(s => !s.needsNBT).reduce((sum, s) => sum + s.current, 0);
-  const maxKnownFF = ffSources.filter(s => !s.needsNBT).reduce((sum, s) => sum + s.max, 0);
+  const hasAnyNBTMissing = ffSources.some(s => s.needsNBT);
+  // Include NBT sources in total if data was loaded; exclude if not
+  const knownFF = ffSources.filter(s => !s.noAPI).reduce((sum, s) => sum + s.current, 0);
+  const maxKnownFF = ffSources.filter(s => !s.noAPI).reduce((sum, s) => sum + s.max, 0);
   const cropProgress = getCropProgress(profile.farming.gardenResources);
-  // Jacob's Extra FF perk is 'farming_level_cap' in the API (not 'farming_fortune')
-  const jacobFF = profile.farming.jacobPerks['farming_level_cap'] ?? profile.farming.jacobPerks['farming_fortune'] ?? 0;
+  const jacobFF = profile.farming.jacobPerks['farming_fortune'] ?? 0;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -423,11 +552,14 @@ export default async function FarmingPage({ params, searchParams }: Props) {
               {ffSources
                 .sort((a, b) => b.current - a.current)
                 .map(source => (
-                  <tr key={source.name} className={source.needsNBT ? 'opacity-50' : ''}>
+                  <tr key={source.name} className={source.needsNBT || source.noAPI ? 'opacity-50' : ''}>
                     <td className="py-2.5 text-white font-medium">
                       {source.name}
                       {source.needsNBT && (
                         <span className="ml-2 text-xs text-amber-400/70 font-normal">[NBT]</span>
+                      )}
+                      {source.noAPI && (
+                        <span className="ml-2 text-xs text-slate-500 font-normal">[No API]</span>
                       )}
                     </td>
                     <td className="py-2.5 text-slate-500 text-xs">{source.category}</td>
@@ -452,9 +584,11 @@ export default async function FarmingPage({ params, searchParams }: Props) {
           </table>
         </div>
 
-        <p className="mt-3 text-xs text-amber-400/60">
-          ⚠ Sources marked [NBT] require inventory parsing (Phase 2). Equipment reforges and armor bonuses are not yet calculated.
-        </p>
+        {hasAnyNBTMissing && (
+          <p className="mt-3 text-xs text-amber-400/60">
+            ⚠ Armor and equipment data unavailable — player must have logged in recently for inventory data to appear. Visit this page after the player has been online.
+          </p>
+        )}
       </div>
 
       {/* Upgrade Priorities */}
@@ -486,9 +620,9 @@ export default async function FarmingPage({ params, searchParams }: Props) {
             />
           )}
           <UpgradeRow
-            title="Turbo-Crop Reforges on Equipment"
-            gain="+5 FF per piece (max +25 FF)"
-            cost="Reforge Stone from Bazaar"
+            title="Rooted Reforge on Equipment (BURROWING_SPORES)"
+            gain="+18 FF per piece at Legendary (max +72 FF)"
+            cost="BURROWING_SPORES from Bazaar"
             priority="medium"
           />
           <UpgradeRow

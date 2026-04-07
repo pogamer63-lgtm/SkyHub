@@ -45,7 +45,7 @@ const NEU_CROP_TO_API_KEY: Record<string, string> = {
   MUSHROOM:    'MUSHROOM_COLLECTION',
   NETHER_WART: 'NETHER_STALK',
   MOONFLOWER:  'MOONFLOWER',
-  SUNFLOWER:   'SUNFLOWER',
+  SUNFLOWER:   'DOUBLE_PLANT',  // Hypixel garden API uses DOUBLE_PLANT for sunflower
   WILD_ROSE:   'WILD_ROSE',
 };
 
@@ -62,18 +62,23 @@ export const CROP_DISPLAY_NAMES: Record<string, string> = {
   MUSHROOM_COLLECTION:'Mushroom',
   NETHER_STALK:       'Nether Wart',
   MOONFLOWER:         'Moonflower',
-  SUNFLOWER:          'Sunflower',
+  DOUBLE_PLANT:       'Sunflower',
   WILD_ROSE:          'Wild Rose',
 };
 
 /**
  * Crop milestone thresholds keyed by Hypixel API resource key.
- * Each array entry is the cumulative crop count needed to reach that milestone tier.
+ * Each array entry is the CUMULATIVE crop count needed to reach that milestone tier.
+ * NEU-REPO stores incremental costs per tier; we convert to cumulative here.
  * Source: NEU-REPO garden.json → crop_milestones (46 tiers per crop).
  */
 export const CROP_MILESTONE_THRESHOLDS: Record<string, number[]> = Object.fromEntries(
   Object.entries(gardenRaw.crop_milestones as Record<string, number[]>).map(
-    ([neuKey, thresholds]) => [NEU_CROP_TO_API_KEY[neuKey] ?? neuKey, thresholds]
+    ([neuKey, incremental]) => {
+      let sum = 0;
+      const cumulative = incremental.map(inc => (sum += inc));
+      return [NEU_CROP_TO_API_KEY[neuKey] ?? neuKey, cumulative];
+    }
   )
 );
 
@@ -85,6 +90,23 @@ export const GARDEN_PLOT_COUNT = Object.keys(gardenRaw.plots).length;
  * Source: NEU-REPO garden.json → crop_upgrades
  */
 export const CROP_UPGRADE_COSTS: number[] = gardenRaw.crop_upgrades as number[];
+
+/**
+ * Cumulative garden XP required to reach each garden level (index = level).
+ * Derived from NEU-REPO garden.json → garden_exp (incremental per-level costs).
+ * garden_exp[0] = 0 (level 0→1 is free), garden_exp[1] = 70 (level 1→2), etc.
+ * Max garden level = 15.
+ */
+export const GARDEN_LEVEL_TABLE: number[] = (() => {
+  const incremental = gardenRaw.garden_exp as number[];
+  const cumulative: number[] = [0]; // level 0 = 0 XP
+  let sum = 0;
+  for (const xp of incremental) {
+    sum += xp;
+    cumulative.push(sum);
+  }
+  return cumulative;
+})();
 
 // ─── Leveling ─────────────────────────────────────────────────────────────────
 
@@ -138,34 +160,86 @@ export const PET_TYPES: Record<string, string> = petsRaw.pet_types as Record<str
  * Compute pet level and XP progress from raw XP value.
  * Returns { level, xpForCurrentLevel, xpForNextLevel, xpProgress }
  */
+/**
+ * Only these three pets can reach level 200. All other pets cap at level 100
+ * regardless of rarity. Source: NEU-REPO pets.json custom_pet_leveling.
+ */
+export const PET_MAX_200_TYPES = new Set(['GOLDEN_DRAGON', 'JADE_DRAGON', 'ROSE_DRAGON']);
+
+// Cumulative XP thresholds to reach each pet level (all rarities, levels 1–100).
+// Index i = total XP needed to be at level (i+1).
+// Source: Hypixel SkyBlock wiki / SkyCrypt (verified April 2026).
+// NOTE: NEU pet_levels (petsRaw.pet_levels) is NOT the per-level XP cost — do not use it here.
+const PET_XP_CUMULATIVE: number[] = [
+  0, 100, 310, 700, 1300, 2200, 3500, 5200, 7400, 10100, 13500, 17600,
+  22500, 28200, 35700, 44000, 53500, 64000, 75500, 88000, 102000, 116500,
+  132000, 148500, 166000, 184500, 204000, 224500, 246000, 268500, 292000,
+  317500, 344000, 371500, 400000, 429500, 460000, 492500, 526500, 561500,
+  597500, 634500, 672500, 711500, 751500, 792500, 834500, 877500, 921500,
+  966500, 1012500, 1059500, 1107500, 1156500, 1206500, 1257500, 1309500,
+  1362500, 1416500, 1471500, 1527500, 1584500, 1642500, 1701500, 1761500,
+  1822500, 1884500, 1947500, 2011500, 2076500, 2142500, 2209500, 2277500,
+  2346500, 2416500, 2487500, 2559500, 2632500, 2706500, 2781500, 2857500,
+  2934500, 3012500, 3091500, 3171500, 3252500, 3334500, 3417500, 3501500,
+  3586500, 3672500, 3759500, 3847500, 3936500, 4026500, 4117500, 4209500,
+  4302500, 4396500, 4491500,
+]; // 100 entries
+
+// Per-level XP costs for L101→L200 (legendary/mythic only).
+// Source: SkyCrypt / NEU community — same values used in parser.ts PET_XP_PER_LEVEL_L101_200.
+const PET_XP_PER_LEVEL_L101_200: number[] = [
+  490000, 510000, 530000, 550000, 570000, 590000, 610000, 630000, 650000, 670000,
+  700000, 730000, 760000, 790000, 820000, 850000, 890000, 930000, 970000, 1020000,
+  1060000, 1110000, 1160000, 1210000, 1260000, 1310000, 1370000, 1430000, 1490000, 1560000,
+  1630000, 1700000, 1770000, 1840000, 1920000, 2010000, 2100000, 2200000, 2300000, 2400000,
+  2510000, 2630000, 2760000, 2900000, 3050000, 3200000, 3360000, 3530000, 3710000, 3900000,
+  4100000, 4310000, 4530000, 4770000, 5020000, 5290000, 5570000, 5870000, 6190000, 6530000,
+  6890000, 7270000, 7670000, 8100000, 8550000, 9030000, 9540000, 10080000, 10650000, 11260000,
+  11910000, 12590000, 13310000, 14070000, 14870000, 15720000, 16620000, 17570000, 18570000, 19630000,
+  20750000, 21940000, 23200000, 24530000, 25940000, 27440000, 29030000, 30720000, 32510000, 34420000,
+  36450000, 38600000, 40890000, 43310000, 45880000, 48600000, 51490000, 54560000, 57820000, 61280000,
+];
+
+// Cumulative table for the 3 dragon pets that reach level 200 (L1–200).
+const PET_XP_LEGENDARY_CUM: number[] = [...PET_XP_CUMULATIVE];
+{
+  let cum = PET_XP_CUMULATIVE[PET_XP_CUMULATIVE.length - 1];
+  for (const cost of PET_XP_PER_LEVEL_L101_200) {
+    cum += cost;
+    PET_XP_LEGENDARY_CUM.push(cum);
+  }
+}
+
 export function computePetLevel(
   xp: number,
-  rarity: string,
+  petType: string,
 ): { level: number; xpIntoLevel: number; xpForNextLevel: number | null; progressPct: number } {
-  const offset = PET_RARITY_OFFSET[rarity.toUpperCase()] ?? 0;
-  const maxLevel = rarity.toUpperCase() === 'LEGENDARY' || rarity.toUpperCase() === 'MYTHIC' ? 100 : 100;
+  const isDragon = PET_MAX_200_TYPES.has(petType.toUpperCase());
+  const table = isDragon ? PET_XP_LEGENDARY_CUM : PET_XP_CUMULATIVE;
+  const maxLevel = isDragon ? 200 : 100;
 
-  let remaining = xp;
+  // Find level: largest index i where xp >= table[i], then level = i+1
   let level = 1;
+  for (let i = 0; i < table.length; i++) {
+    if (xp >= table[i]) level = i + 1;
+    else break;
+  }
+  level = Math.min(level, maxLevel);
 
-  for (let i = offset; i < PET_LEVEL_XP.length; i++) {
-    const needed = PET_LEVEL_XP[i];
-    if (remaining < needed) {
-      return {
-        level,
-        xpIntoLevel: remaining,
-        xpForNextLevel: needed,
-        progressPct: Math.min(100, (remaining / needed) * 100),
-      };
-    }
-    remaining -= needed;
-    level++;
-    if (level >= maxLevel) {
-      return { level: maxLevel, xpIntoLevel: 0, xpForNextLevel: null, progressPct: 100 };
-    }
+  if (level >= maxLevel) {
+    return { level: maxLevel, xpIntoLevel: 0, xpForNextLevel: null, progressPct: 100 };
   }
 
-  return { level: maxLevel, xpIntoLevel: 0, xpForNextLevel: null, progressPct: 100 };
+  const xpAtCurrentLevel = table[level - 1];
+  const xpAtNextLevel = table[level];
+  const xpIntoLevel = xp - xpAtCurrentLevel;
+  const xpForNextLevel = xpAtNextLevel - xpAtCurrentLevel; // per-level cost
+  return {
+    level,
+    xpIntoLevel,
+    xpForNextLevel,
+    progressPct: Math.min(100, (xpIntoLevel / xpForNextLevel) * 100),
+  };
 }
 
 // ─── Pet Nums ─────────────────────────────────────────────────────────────────
@@ -198,6 +272,120 @@ export function computePetStats(type: string, tier: string, level: number): Reco
     result[stat] = val1 + (val100 - val1) * t;
   }
   return result;
+}
+
+// ─── Pet Lore ─────────────────────────────────────────────────────────────────
+
+const RARITY_SUFFIX: Record<string, string> = {
+  COMMON: '0', UNCOMMON: '1', RARE: '2', EPIC: '3', LEGENDARY: '4', MYTHIC: '5',
+};
+
+/** Extract the actual effect lines from a held pet item's lore, skipping boilerplate. */
+function extractHeldItemEffectLines(lore: string[]): string[] {
+  // Generic boilerplate appears before "The pet must be visible..." sentinel.
+  // Effect lines come after it.
+  const sentinelIdx = lore.findIndex(l => l.includes('must be visible'));
+  const startAt = sentinelIdx !== -1 ? sentinelIdx + 1 : 0;
+  const result: string[] = [];
+  for (let i = startAt; i < lore.length; i++) {
+    // Stop at rarity line (§x§lUPPERCASE)
+    if (/§[0-9a-f]§l[A-Z]/.test(lore[i])) break;
+    result.push(lore[i]);
+  }
+  // Trim leading/trailing empty lines
+  while (result.length > 0 && result[0] === '') result.shift();
+  while (result.length > 0 && result[result.length - 1] === '') result.pop();
+  return result;
+}
+
+/**
+ * Build the Minecraft-style lore for a pet at a given level, ready for MinecraftText rendering.
+ * Returns { name, lore } where lore lines contain §-color codes.
+ */
+export function computePetLore(
+  type: string,
+  tier: string,
+  level: number,
+  xp: number,
+  maxed: boolean,
+  heldItemId?: string,
+): { name: string; lore: string[] } {
+  const rarityIdx = RARITY_SUFFIX[tier.toUpperCase()] ?? '4';
+  const itemData = ITEMS_INDEX[`${type};${rarityIdx}`];
+
+  // Interpolation factor (0 at level 1, 1 at level 100)
+  const petData = PET_NUMS[type];
+  const rarityData = petData?.[tier.toUpperCase()] ?? petData?.[Object.keys(petData ?? {})[0]];
+  const l1 = rarityData?.['1'];
+  const l100 = rarityData?.['100'];
+  const t = Math.min(1, Math.max(0, (Math.min(level, 100) - 1) / 99));
+
+  function fmt(val: number): string {
+    const rounded = Math.round(val * 10) / 10;
+    return rounded % 1 === 0 ? String(rounded) : rounded.toFixed(1);
+  }
+
+  function replacePlaceholders(line: string): string {
+    line = line.replace(/\{LVL\}/g, String(level));
+    if (l1 && l100) {
+      line = line.replace(/\{(\d+)\}/g, (_, i) => {
+        const idx = Number(i);
+        const v1 = (l1.otherNums ?? [])[idx] ?? 0;
+        const v100 = (l100.otherNums ?? [])[idx] ?? 0;
+        return fmt(v1 + (v100 - v1) * t);
+      });
+      line = line.replace(/\{([A-Z_]+)\}/g, (_, stat) => {
+        const v1 = (l1.statNums ?? {})[stat] ?? 0;
+        const v100 = (l100.statNums ?? {})[stat] ?? 0;
+        return fmt(v1 + (v100 - v1) * t);
+      });
+    }
+    return line;
+  }
+
+  // Strip trailing boilerplate (Right-click lines + rarity line) from base lore
+  const rawLore: string[] = itemData?.lore ?? [];
+  let cutAt = rawLore.length;
+  for (let i = rawLore.length - 1; i >= 0; i--) {
+    const l = rawLore[i];
+    if (/§[0-9a-f]§l[A-Z]/.test(l) || l.includes('Right-click') || l.includes('pet menu')) {
+      cutAt = i;
+    } else {
+      break;
+    }
+  }
+  while (cutAt > 0 && rawLore[cutAt - 1] === '') cutAt--;
+
+  const lore = rawLore.slice(0, cutAt).map(replacePlaceholders);
+
+  // Held item section
+  if (heldItemId) {
+    const heldData = ITEMS_INDEX[heldItemId];
+    if (heldData) {
+      const effectLines = extractHeldItemEffectLines(heldData.lore ?? []);
+      if (effectLines.length > 0) {
+        lore.push('');
+        lore.push(`§6Held Item: §a${heldData.name}`);
+        lore.push(...effectLines);
+      }
+    }
+  }
+
+  // Level / XP footer
+  lore.push('');
+  if (maxed) {
+    lore.push('§bMAX LEVEL');
+    lore.push(`§7· ${xp.toLocaleString()} XP`);
+  } else {
+    const maxLevel = PET_MAX_200_TYPES.has(type) ? 200 : 100;
+    lore.push(`§7Level §f${level}§7/§f${maxLevel}`);
+    lore.push(`§7· ${xp.toLocaleString()} XP total`);
+  }
+
+  const rawName = itemData?.name ?? `[Lvl {LVL}] ${type.replace(/_/g, ' ')}`;
+  const name = rawName.replace(/\{LVL\}/g, String(level));
+
+  return { name, lore };
 }
 
 // ─── Bestiary ─────────────────────────────────────────────────────────────────

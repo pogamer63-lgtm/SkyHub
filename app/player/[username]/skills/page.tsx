@@ -176,9 +176,12 @@ export default async function SkillsPage({ params, searchParams }: Props) {
   const skillData = SKILLS.map(s => {
     const level = skills[s.key] as number;
     const xp = skills[s.xpKey] as number;
-    const xpToNext = xp > 0 ? xpToNextLevel(xp, SKILL_XP_TABLE) : null;
+    const maxed = level >= s.maxLevel;
+    // xpToNext must respect the skill's own cap — do not chase L61 for a L50-max skill
+    const xpToNext = (!maxed && xp > 0) ? xpToNextLevel(xp, SKILL_XP_TABLE) : null;
     const xpToMax = xp > 0 ? Math.max(0, xpForLevel(s.maxLevel, SKILL_XP_TABLE) - xp) : null;
-    const prog = xp > 0 ? levelProgress(xp, SKILL_XP_TABLE) : level / s.maxLevel;
+    // prog = 1 when maxed; otherwise use level-band progress through SKILL_XP_TABLE
+    const prog = maxed ? 1 : (xp > 0 ? levelProgress(xp, SKILL_XP_TABLE) : level / s.maxLevel);
     return { ...s, level, xp, xpToNext, xpToMax, prog };
   });
 
@@ -340,6 +343,95 @@ export default async function SkillsPage({ params, searchParams }: Props) {
           );
         })}
       </div>
+
+      {/* Secondary Skills */}
+      <div className="card p-5">
+        <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
+          Secondary Skills
+          <span className="text-xs font-normal text-slate-500">not included in skill average</span>
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[
+            { name: 'Taming',       emoji: '🐾', level: skills.taming,       xp: skills.taming_xp,       max: 60 },
+            { name: 'Carpentry',    emoji: '🪵', level: skills.carpentry,     xp: skills.carpentry_xp,    max: 50 },
+            { name: 'Runecrafting', emoji: '🔮', level: skills.runecrafting,  xp: skills.runecrafting_xp, max: 25 },
+            { name: 'Social',       emoji: '💬', level: skills.social,        xp: skills.social_xp,       max: 25 },
+          ].map(s => {
+            const prog = s.xp > 0 ? levelProgress(s.xp, SKILL_XP_TABLE) : s.level / s.max;
+            const maxed = s.level >= s.max;
+            return (
+              <div key={s.name} className="rounded-lg bg-slate-800/40 border border-white/5 p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span>{s.emoji}</span>
+                  <span className="text-sm font-medium text-white">{s.name}</span>
+                  <span className={`ml-auto text-sm font-bold ${levelColor(s.level, s.max)}`}>Lv {s.level}</span>
+                </div>
+                <div className="h-1.5 rounded-full bg-white/5">
+                  <div className={`h-full rounded-full ${maxed ? 'bg-yellow-400' : 'bg-indigo-500'}`} style={{ width: `${Math.min(100, prog * 100)}%` }} />
+                </div>
+                <div className="text-xs text-slate-500 mt-1">{maxed ? 'MAX LEVEL' : `${formatXP(xpToNextLevel(s.xp, SKILL_XP_TABLE) ?? 0)} XP to next`}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Foraging Tree */}
+      {(profile.foragingTreeTokensSpent > 0 || Object.keys(profile.foragingTreeNodes).length > 0 || profile.foragingWhispers > 0 || profile.foragingDailyTreesCut > 0) && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-white mb-3 flex items-center gap-2">
+            🌲 Foraging Skill Tree
+            <span className="text-xs font-normal text-slate-500">tokens, whispers, and unlocked nodes</span>
+          </h2>
+          <div className="flex flex-wrap items-center gap-6 mb-4">
+            {profile.foragingTreeTokensSpent > 0 && (
+              <div>
+                <div className="text-2xl font-bold text-emerald-300">{profile.foragingTreeTokensSpent}</div>
+                <div className="text-xs text-slate-500">Tokens Spent</div>
+              </div>
+            )}
+            {Object.keys(profile.foragingTreeNodes).length > 0 && (
+              <div>
+                <div className="text-2xl font-bold text-green-300">{Object.keys(profile.foragingTreeNodes).length}</div>
+                <div className="text-xs text-slate-500">Nodes Unlocked</div>
+              </div>
+            )}
+            {profile.foragingWhispers > 0 && (
+              <div>
+                <div className="text-2xl font-bold text-teal-300">{profile.foragingWhispers.toLocaleString()}</div>
+                <div className="text-xs text-slate-500">Whispers</div>
+              </div>
+            )}
+            {profile.foragingWhispersSpent > 0 && (
+              <div>
+                <div className="text-2xl font-bold text-slate-400">{profile.foragingWhispersSpent.toLocaleString()}</div>
+                <div className="text-xs text-slate-500">Whispers Spent</div>
+              </div>
+            )}
+            {profile.foragingDailyTreesCut > 0 && (
+              <div>
+                <div className="text-2xl font-bold text-lime-300">{profile.foragingDailyTreesCut.toLocaleString()}</div>
+                <div className="text-xs text-slate-500">Trees Cut Today</div>
+              </div>
+            )}
+          </div>
+          {profile.foragingDailyEffect && (
+            <div className="mb-3 text-xs rounded border border-lime-500/20 bg-lime-500/5 px-3 py-1.5 text-lime-300 inline-block">
+              Daily Effect: {profile.foragingDailyEffect.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+            </div>
+          )}
+          {Object.keys(profile.foragingTreeNodes).length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(profile.foragingTreeNodes).map(([node, level]) => (
+                <span key={node} className="rounded border border-emerald-500/20 bg-emerald-500/5 px-2 py-1 text-xs text-emerald-300">
+                  {node.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                  {typeof level === 'number' && level > 1 ? ` Lv ${level}` : ''}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

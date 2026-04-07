@@ -112,6 +112,8 @@ export default async function MuseumPage({ params, searchParams }: Props) {
   let donatedItems = new Set<string>();
   let specialItems: string[] = [];
   let hasMuseumData = false;
+  /** Actual total appraisal value from the museum API (used for milestone calc when available) */
+  let apiMuseumValue: number | null = null;
 
   try {
     const { uuid, username: resolvedName } = await resolvePlayer(username);
@@ -133,13 +135,14 @@ export default async function MuseumPage({ params, searchParams }: Props) {
         hasMuseumData = true;
         const memberMuseum = museumRes.members[uuid];
         donatedItems = new Set(Object.keys(memberMuseum?.items ?? {}));
-        specialItems = (memberMuseum?.special ?? []).map((s: unknown) => {
-          if (typeof s === 'object' && s !== null && 'tag' in s) {
-            const tag = (s as { tag?: { ExtraAttributes?: { id?: string } } }).tag;
-            return tag?.ExtraAttributes?.id ?? '';
-          }
-          return '';
-        }).filter(Boolean);
+        specialItems = (memberMuseum?.special ?? [])
+          .map(s => s.tag?.ExtraAttributes?.id ?? '')
+          .filter(Boolean);
+        // Use the API-provided total appraisal value for milestone calculation;
+        // it includes ALL donated items, not just the notable ones we know about.
+        if (typeof memberMuseum?.value === 'number') {
+          apiMuseumValue = memberMuseum.value;
+        }
       }
     }
   } catch (err) {
@@ -164,13 +167,16 @@ export default async function MuseumPage({ params, searchParams }: Props) {
   // ── Museum value from donated notable items ────────────────────────────────
   const totalDonated = donatedItems.size + specialItems.length;
 
-  // Estimate museum value from donated notable items
+  // Estimate museum value from donated notable items (fallback when API value is unavailable).
+  // The API value (apiMuseumValue) is preferred because it covers all donations, not just
+  // the ~35 notable items we know about.
   let estimatedValue = 0;
   for (const item of NOTABLE_MUSEUM_ITEMS) {
     if (donatedItems.has(item.id)) estimatedValue += item.value;
   }
+  const museumValue = apiMuseumValue ?? estimatedValue;
 
-  const milestones = milestonesReached(estimatedValue);
+  const milestones = milestonesReached(museumValue);
   const bitsBonus = milestones; // +1% per milestone
   const bankBonus = milestones * 2; // +2% per milestone
 
@@ -194,7 +200,7 @@ export default async function MuseumPage({ params, searchParams }: Props) {
   });
 
   const progressPct = nextMilestoneThreshold
-    ? Math.min(100, (estimatedValue / nextMilestoneThreshold) * 100)
+    ? Math.min(100, (museumValue / nextMilestoneThreshold) * 100)
     : 100;
 
   return (
@@ -228,8 +234,8 @@ export default async function MuseumPage({ params, searchParams }: Props) {
       {/* Summary stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
         <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-yellow-300">{formatValue(estimatedValue)}</div>
-          <div className="text-xs text-slate-500 mt-1">Est. Museum Value</div>
+          <div className="text-2xl font-bold text-yellow-300">{formatValue(museumValue)}</div>
+          <div className="text-xs text-slate-500 mt-1">{apiMuseumValue !== null ? 'Museum Value' : 'Est. Museum Value'}</div>
         </div>
         <div className="card p-4 text-center">
           <div className="text-2xl font-bold text-white">{totalDonated}</div>

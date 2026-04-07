@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
-import { selectBestProfile } from '@/lib/hypixel/parser';
+import { selectBestProfile, parseProfile } from '@/lib/hypixel/parser';
 
 export async function GET(
   req: NextRequest,
@@ -20,7 +20,7 @@ export async function GET(
     let profile;
     if (profileId) {
       const found = profilesRes.profiles.find(p => p.profile_id === profileId || p.cute_name.toLowerCase() === profileId.toLowerCase());
-      profile = found ? require('@/lib/hypixel/parser').parseProfile(found, uuid, resolvedName) : null;
+      profile = found ? parseProfile(found, uuid, resolvedName) : null;
     }
 
     if (!profile) {

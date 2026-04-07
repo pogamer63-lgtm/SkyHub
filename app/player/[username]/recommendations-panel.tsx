@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Recommendation, RecommendationCategory } from '@/lib/types/player';
+import { Recommendation, RecommendationCategory, GameStage } from '@/lib/types/player';
 
 const CATEGORY_LABELS: Record<RecommendationCategory, string> = {
   general:     'General',
@@ -26,7 +26,9 @@ const PLANNER_PATHS: Partial<Record<RecommendationCategory, string>> = {
   money:       'money',
 };
 
-type Filter = 'all' | 'cheapest' | 'best_roi' | 'fastest' | 'blocker' | RecommendationCategory;
+type Filter = 'all' | 'cheapest' | 'best_roi' | 'fastest' | 'blocker' | 'progression' | 'longterm' | GameStage | RecommendationCategory;
+
+const STAGE_KEYS = new Set<string>(['early', 'mid', 'late', 'endgame']);
 
 interface Props {
   recs: Recommendation[];
@@ -44,7 +46,10 @@ export default function RecommendationsPanel({ recs, username }: Props) {
     if (filter === 'cheapest') return r.type === 'cheapest' || (r.estimatedCost !== null && r.estimatedCost < 500_000);
     if (filter === 'best_roi') return r.type === 'best_roi' || r.roiScore >= 60;
     if (filter === 'fastest') return r.type === 'fastest';
-    if (filter === 'blocker') return r.type === 'blocker' || r.priority === 'critical';
+    if (filter === 'blocker')     return r.type === 'blocker' || r.priority === 'critical';
+    if (filter === 'progression') return r.type === 'progression' || r.progressionScore >= 70;
+    if (filter === 'longterm')    return r.type === 'longterm';
+    if (STAGE_KEYS.has(filter)) return r.gameStage.includes(filter as GameStage);
     return r.category === filter;
   });
 
@@ -61,7 +66,13 @@ export default function RecommendationsPanel({ recs, username }: Props) {
     { key: 'cheapest', label: 'Cheapest', count: recs.filter(r => r.type === 'cheapest' || (r.estimatedCost !== null && r.estimatedCost < 500_000)).length },
     { key: 'best_roi', label: 'Best ROI', count: recs.filter(r => r.type === 'best_roi' || r.roiScore >= 60).length },
     { key: 'fastest',  label: 'Fastest',  count: recs.filter(r => r.type === 'fastest').length },
-    { key: 'blocker',  label: 'Blockers', count: recs.filter(r => r.type === 'blocker' || r.priority === 'critical').length },
+    { key: 'blocker',     label: 'Blockers',    count: recs.filter(r => r.type === 'blocker' || r.priority === 'critical').length },
+    { key: 'progression', label: 'Progression', count: recs.filter(r => r.type === 'progression' || r.progressionScore >= 70).length },
+    { key: 'longterm',    label: 'Long-term',   count: recs.filter(r => r.type === 'longterm').length },
+    { key: 'early'   as Filter, label: 'Early',   count: recs.filter(r => r.gameStage.includes('early')).length },
+    { key: 'mid'     as Filter, label: 'Mid',      count: recs.filter(r => r.gameStage.includes('mid')).length },
+    { key: 'late'    as Filter, label: 'Late',     count: recs.filter(r => r.gameStage.includes('late')).length },
+    { key: 'endgame' as Filter, label: 'Endgame',  count: recs.filter(r => r.gameStage.includes('endgame')).length },
     ...categories.map(c => ({
       key: c as Filter,
       label: CATEGORY_LABELS[c],
@@ -147,18 +158,30 @@ export default function RecommendationsPanel({ recs, username }: Props) {
                     </div>
 
                     {/* Expandable "Why it matters" */}
-                    {r.whyItMatters && (
+                    {(r.whyItMatters || r.unlocks.length > 0 || r.dependsOn.length > 0) && (
                       <button
                         onClick={() => toggleExpanded(r.id)}
                         className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
                       >
-                        {isExpanded ? '▲ Hide details' : '▼ Why it matters'}
+                        {isExpanded ? '▲ Hide details' : '▼ Details'}
                       </button>
                     )}
-                    {isExpanded && r.whyItMatters && (
-                      <p className="mt-2 text-xs text-slate-400 bg-slate-900/50 rounded p-2 border border-white/5">
-                        {r.whyItMatters}
-                      </p>
+                    {isExpanded && (
+                      <div className="mt-2 text-xs text-slate-400 bg-slate-900/50 rounded p-2 border border-white/5 space-y-1.5">
+                        {r.whyItMatters && <p>{r.whyItMatters}</p>}
+                        {r.dependsOn.length > 0 && (
+                          <p className="text-slate-500">
+                            <span className="text-slate-400 font-medium">Requires: </span>
+                            {r.dependsOn.join(', ')}
+                          </p>
+                        )}
+                        {r.unlocks.length > 0 && (
+                          <p className="text-slate-500">
+                            <span className="text-emerald-600 font-medium">Unlocks: </span>
+                            {r.unlocks.join(', ')}
+                          </p>
+                        )}
+                      </div>
                     )}
                   </div>
 

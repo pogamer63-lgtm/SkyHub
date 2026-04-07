@@ -42,9 +42,22 @@ export interface MuseumItem {
   [key: string]: unknown;
 }
 
+/** NBT item object as returned in museum.special[] — full Minecraft item structure */
+export interface MuseumSpecialItem {
+  tag?: {
+    ExtraAttributes?: { id?: string; [key: string]: unknown };
+    display?: { Name?: string; Lore?: string[]; [key: string]: unknown };
+    [key: string]: unknown;
+  };
+  Count?: number;
+  id?: number;
+  Damage?: number;
+}
+
 export interface MuseumMember {
   items?: Record<string, MuseumItem>;
-  special?: MuseumItem[];
+  /** Special donated items (Dice, First Dragon Egg, etc.) stored as raw NBT item objects, NOT MuseumItem */
+  special?: MuseumSpecialItem[];
   value?: number;
   appraisal?: boolean;
 }
@@ -138,6 +151,57 @@ export interface SkyBlockMember {
     gifts?: { total_given?: number; total_received?: number };
   };
   nether_island_player_data?: NetherData;
+  glacite_player_data?: {
+    fossils_donated?: string[];
+    fossil_dust?: number;
+    corpses_looted?: Record<string, number>;
+    mineshafts_entered?: number;
+  };
+  item_data?: {
+    soulflow?: number;
+    teleporter_pill_consumed?: boolean;
+    favorite_arrow?: string;
+  };
+  skill_tree?: {
+    /** Flat map of node_id → level (e.g. "FORAGING_1": 2). NOT nested by skill category. */
+    nodes?: Record<string, number | boolean>;
+    tokens_spent?: Record<string, number>;
+    experience?: Record<string, number>;
+    last_reset?: number;
+  };
+  foraging_core?: {
+    daily_trees_cut?: number;
+    daily_trees_cut_day?: number;
+    forests_whispers?: number;
+    forests_whispers_spent?: number;
+    current_daily_effect?: string;
+  };
+  forge?: {
+    forge_processes?: Record<string, {
+      id?: string;
+      startTime?: number;
+      slot?: number;
+      type?: string;
+      notified?: boolean;
+    }>;
+  };
+  shared_inventory?: {
+    candy_inventory_contents?: { type?: number; data: string };
+    carnival_mask_inventory_contents?: { type?: number; data: string };
+  };
+  quests?: {
+    trapper_quest?: {
+      last_task_time?: number;
+      pelt_count?: number;
+    };
+  };
+  attributes?: {
+    stacks?: Record<string, number>;
+  };
+  experimentation?: {
+    serums_drank?: number;
+    claims_resets?: number;
+  };
 }
 
 export interface ActiveEffect {
@@ -252,6 +316,7 @@ export interface InventoryData {
   equipment_contents?: NBTData;
   wardrobe_contents?: NBTData;
   ender_chest_contents?: NBTData;
+  personal_vault_contents?: NBTData;
   backpack_contents?: Record<string, NBTData>;
   bag_contents?: {
     talisman_bag?: NBTData;
@@ -300,6 +365,7 @@ export interface CrystalData {
   total_placed?: number;
 }
 
+/** Legacy: garden_player_data is NOT returned by /v2/skyblock/profiles — use GardenApiData instead */
 export interface GardenData {
   copper?: number;
   larva_consumed?: number;
@@ -310,6 +376,29 @@ export interface GardenData {
   crop_upgrade_levels?: Record<string, number>;
   visitors_served?: number;
   composter_data?: Record<string, unknown>;
+}
+
+/** Response from GET /v2/skyblock/garden?profile=<profileId> */
+export interface GardenApiData {
+  garden_experience?: number;
+  /** Crop counts by Hypixel API key (WHEAT, CARROT_ITEM, DOUBLE_PLANT for sunflower, etc.) */
+  resources_collected?: Record<string, number>;
+  /** Number of unlocked plots */
+  plots_unlocked?: number;
+  /** Crop upgrade tier by crop key */
+  crop_upgrade_levels?: Record<string, number>;
+  copper?: number;
+  visitors_served?: number;
+  larva_consumed?: number;
+  composter_data?: {
+    upgrades?: Record<string, number>;
+    organic_matter?: number;
+    fuel_units?: number;
+    compost_units?: number;
+    conversion_taps?: number;
+    [key: string]: unknown;
+  };
+  commission_data?: Record<string, unknown>;
 }
 
 export interface JacobsFarmingData {
@@ -345,7 +434,7 @@ export interface AccessoryBagData {
 export interface NetherData {
   kuudra_completed_tiers?: Record<string, number>;
   dojo?: Record<string, unknown>;
-  abiphone?: Record<string, unknown>;
+  abiphone?: { contacts?: string[]; [key: string]: unknown };
   matriarch?: Record<string, unknown>;
   mages_reputation?: number;
   barbarians_reputation?: number;

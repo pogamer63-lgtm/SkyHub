@@ -274,6 +274,8 @@ export default async function GearPage({ params, searchParams }: Props) {
   let fishingBagItems: ParsedItem[] = [];
   let quiverItems: ParsedItem[] = [];
   let sacksItems: ParsedItem[] = [];
+  let vaultItems: ParsedItem[] = [];
+  let candyItems: ParsedItem[] = [];
   let rawProfile: SkyBlockProfile | null = null;
   let uuid = '';
   let resolvedName = username;
@@ -323,6 +325,8 @@ export default async function GearPage({ params, searchParams }: Props) {
         bagContents?.fishing_bag?.data ? parseInventoryNBT(bagContents.fishing_bag.data).then(r => { fishingBagItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
         bagContents?.quiver?.data ? parseInventoryNBT(bagContents.quiver.data).then(r => { quiverItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
         bagContents?.sacks_bag?.data ? parseInventoryNBT(bagContents.sacks_bag.data).then(r => { sacksItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
+        member.inventory?.personal_vault_contents?.data ? parseInventoryNBT(member.inventory.personal_vault_contents.data).then(r => { vaultItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
+        member.shared_inventory?.candy_inventory_contents?.data ? parseInventoryNBT(member.shared_inventory.candy_inventory_contents.data).then(r => { candyItems = r.filter(i => !!i.id); }).catch(() => {}) : Promise.resolve(),
       ]);
     }
   } catch (err) {
@@ -525,7 +529,14 @@ export default async function GearPage({ params, searchParams }: Props) {
       </div>
 
       {/* Bags */}
-      {(potionItems.length > 0 || fishingBagItems.length > 0 || quiverItems.length > 0 || sacksItems.length > 0) && (
+      {vaultItems.length > 0 && (
+        <div className="card p-6">
+          <h2 className="text-lg font-semibold text-white mb-4">🔒 Personal Vault ({vaultItems.length})</h2>
+          <ClickableItemGrid items={vaultItems.map(i => ({ ...i }))} gridCols="grid-cols-4 sm:grid-cols-9" />
+        </div>
+      )}
+
+      {(potionItems.length > 0 || fishingBagItems.length > 0 || quiverItems.length > 0 || sacksItems.length > 0 || candyItems.length > 0) && (
         <div className="card p-6 space-y-5">
           <h2 className="text-lg font-semibold text-white">🎒 Bags</h2>
           {potionItems.length > 0 && (
@@ -550,6 +561,12 @@ export default async function GearPage({ params, searchParams }: Props) {
             <div>
               <h3 className="text-sm font-medium text-slate-300 mb-2">Sacks Bag ({sacksItems.length})</h3>
               <ClickableItemGrid items={sacksItems.map(i => ({ ...i }))} gridCols="grid-cols-4 sm:grid-cols-8" />
+            </div>
+          )}
+          {candyItems.length > 0 && (
+            <div>
+              <h3 className="text-sm font-medium text-slate-300 mb-2">🍬 Candy Bag ({candyItems.length})</h3>
+              <ClickableItemGrid items={candyItems.map(i => ({ ...i }))} gridCols="grid-cols-4 sm:grid-cols-8" />
             </div>
           )}
         </div>

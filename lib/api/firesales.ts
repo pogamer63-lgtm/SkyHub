@@ -13,13 +13,13 @@ export interface FireSale {
   price: number;   // cost in gems
 }
 
-const _cache: { data: FireSale[]; expiresAt: number } = { data: [], expiresAt: 0 };
+const _cache: { data: FireSale[]; expiresAt: number; initialized: boolean } = { data: [], expiresAt: 0, initialized: false };
 
 interface RawFireSale { item_id: string; start: number; end: number; amount: number; price: number }
 interface RawResponse { success: boolean; sales?: RawFireSale[] }
 
 export async function getFireSales(): Promise<FireSale[]> {
-  if (_cache.data.length > 0 && Date.now() < _cache.expiresAt) return _cache.data;
+  if (_cache.initialized && Date.now() < _cache.expiresAt) return _cache.data;
 
   try {
     const res = await fetch(FIRESALES_URL, { cache: 'no-store' });
@@ -41,6 +41,7 @@ export async function getFireSales(): Promise<FireSale[]> {
 
     _cache.data = data;
     _cache.expiresAt = now + 5 * 60 * 1000;
+    _cache.initialized = true;
     return data;
   } catch {
     return _cache.data;

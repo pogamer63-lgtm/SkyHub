@@ -93,6 +93,8 @@ function AnimatedSprite({
   frametime,
   size,
   alt,
+  filename,
+  itemId,
   className,
 }: {
   src: string;
@@ -100,12 +102,16 @@ function AnimatedSprite({
   frametime: number;
   size: number;
   alt: string;
+  filename: string;
+  itemId: string;
   className: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const frameRef = useRef(0);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
+    if (failed) return;
     const intervalMs = frametime * 50; // 1 tick = 50 ms
     const id = setInterval(() => {
       frameRef.current = (frameRef.current + 1) % frames;
@@ -114,7 +120,11 @@ function AnimatedSprite({
       }
     }, intervalMs);
     return () => clearInterval(id);
-  }, [frames, frametime, size]);
+  }, [frames, frametime, size, failed]);
+
+  if (failed) {
+    return <StaticIcon filename={filename} itemId={itemId} size={size} className={className} />;
+  }
 
   const style: CSSProperties = {
     display: 'inline-block',
@@ -129,12 +139,51 @@ function AnimatedSprite({
   };
 
   return (
-    <span
-      ref={ref}
-      role="img"
-      aria-label={alt}
-      className={className}
-      style={style}
+    <>
+      {/* Hidden probe img to detect load failure — CSS backgroundImage has no onError */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" aria-hidden style={{ display: 'none' }} onError={() => setFailed(true)} />
+      <span
+        ref={ref}
+        role="img"
+        aria-label={alt}
+        className={className}
+        style={style}
+      />
+    </>
+  );
+}
+
+// ── Model icon with fallback chain ───────────────────────────────────────────
+
+function ModelIcon({ filename, itemId, size, className }: {
+  filename: string; itemId: string; size: number; className: string;
+}) {
+  const [modelFailed, setModelFailed] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete && img.naturalWidth === 0) {
+      setModelFailed(true);
+    }
+  }, []);
+
+  if (modelFailed) {
+    return <StaticIcon filename={filename} itemId={itemId} size={size} className={className} />;
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      ref={imgRef}
+      src={`/items/${filename}_model.png`}
+      alt={itemId}
+      width={size}
+      height={size}
+      className={`pixelated object-contain shrink-0 ${className}`}
+      style={{ width: size, height: size }}
+      onError={() => setModelFailed(true)}
     />
   );
 }
@@ -144,20 +193,9 @@ function AnimatedSprite({
 export default function ItemIcon({ itemId, size = 20, className = '', useModel = true }: ItemIconProps) {
   const filename = itemId.toLowerCase().replace(/[^a-z0-9_]/g, '_');
 
-  // 1. Helmet / armor model PNG
+  // 1. Helmet / armor model PNG — with fallback to regular icon
   if (useModel && MODEL_SUFFIX_IDS.has(itemId)) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={`/items/${filename}_model.png`}
-        alt={itemId}
-        width={size}
-        height={size}
-        className={`pixelated object-contain shrink-0 ${className}`}
-        style={{ width: size, height: size }}
-        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-      />
-    );
+    return <ModelIcon filename={filename} itemId={itemId} size={size} className={className} />;
   }
 
   // 2. Animated sprite sheet (skip 1-frame "animations" — they're effectively static)
@@ -170,6 +208,8 @@ export default function ItemIcon({ itemId, size = 20, className = '', useModel =
         frametime={anim.frametime}
         size={size}
         alt={itemId}
+        filename={filename}
+        itemId={itemId}
         className={`shrink-0 ${className}`}
       />
     );
@@ -179,14 +219,27 @@ export default function ItemIcon({ itemId, size = 20, className = '', useModel =
   return <StaticIcon filename={filename} itemId={itemId} size={size} className={className} />;
 }
 
+type IconStage = 'local' | 'cdn' | 'tile';
+
 function StaticIcon({ filename, itemId, size, className }: { filename: string; itemId: string; size: number; className: string }) {
-  const [failed, setFailed] = useState(false);
-  // Deterministic color from item ID for fallback
+  const [stage, setStage] = useState<IconStage>('local');
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // Catch the race where the browser resolves a cached 404 before React
+  // attaches the onError handler — img.complete is true but naturalWidth is 0.
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete && img.naturalWidth === 0) {
+      setStage(prev => prev === 'local' ? 'cdn' : 'tile');
+    }
+  }, [stage]);
+
+  // Deterministic color from item ID for letter-tile fallback
   const colors = ['bg-slate-600', 'bg-indigo-700', 'bg-purple-700', 'bg-blue-700', 'bg-emerald-700', 'bg-amber-700', 'bg-red-700', 'bg-cyan-700'];
   const colorIdx = itemId.charCodeAt(0) % colors.length;
   const initial = itemId[0]?.toUpperCase() ?? '?';
 
-  if (failed) {
+  if (stage === 'tile') {
     return (
       <span
         className={`inline-flex items-center justify-center shrink-0 rounded text-white font-bold ${colors[colorIdx]} ${className}`}
@@ -198,16 +251,21 @@ function StaticIcon({ filename, itemId, size, className }: { filename: string; i
     );
   }
 
+  const src = stage === 'local'
+    ? `/items/${filename}.png`
+    : `https://sky.coflnet.com/static/icon/${itemId}`;
+
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`/items/${filename}.png`}
+      ref={imgRef}
+      src={src}
       alt={itemId}
       width={size}
       height={size}
       className={`pixelated shrink-0 ${className}`}
       style={{ width: size, height: size }}
-      onError={() => setFailed(true)}
+      onError={() => setStage(prev => prev === 'local' ? 'cdn' : 'tile')}
     />
   );
 }

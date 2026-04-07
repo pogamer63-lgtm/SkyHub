@@ -57,3 +57,16 @@ Thumbs.db
 
 # Texture pack source (already extracted to public/items/)
 /temp/
+
+# Claude Code local settings
+.claude/
+
+# Raw research scratch files (synthesized into META_SOURCES.md / UPGRADE_RULES.json)
+*_raw.json
+*_raw.md
+research_pass*.md
+research_youtube*.md
+wiki_content.md
+
+# Unreferenced assets
+Logo.png

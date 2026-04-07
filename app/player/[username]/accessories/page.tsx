@@ -332,6 +332,40 @@ export default async function AccessoriesPage({ params, searchParams }: Props) {
         );
       })()}
 
+      {/* Attribute Shards */}
+      {Object.keys(profile.attributeStacks ?? {}).length > 0 && (
+        <div className="card p-5 mt-6">
+          <h2 className="text-base font-semibold text-white mb-3">🧬 Attribute Shards</h2>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(profile.attributeStacks).sort(([, a], [, b]) => b - a).map(([attr, level]) => (
+              <span key={attr} className="rounded-lg border border-purple-500/20 bg-purple-500/5 px-3 py-1.5 text-xs">
+                <span className="text-slate-400">{attr.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</span>
+                <span className="ml-1.5 font-bold text-purple-300">Lv {level}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Accessory Bag Powers */}
+      {(profile.unlockedPowers.length > 0 || profile.accessoryBagUpgrades > 0) && (
+        <div className="card p-5 mt-6">
+          <h2 className="text-base font-semibold text-white mb-3">⚡ Bag Powers</h2>
+          <div className="flex flex-wrap gap-3 items-start">
+            {profile.accessoryBagUpgrades > 0 && (
+              <span className="rounded border border-slate-500/30 bg-slate-500/5 px-3 py-1.5 text-xs text-slate-300">
+                Bag Upgrades <strong className="text-white ml-1">{profile.accessoryBagUpgrades}</strong>
+              </span>
+            )}
+            {profile.unlockedPowers.map(power => (
+              <span key={power} className="rounded border border-yellow-500/20 bg-yellow-500/5 px-3 py-1.5 text-xs text-yellow-300">
+                {power.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* API-sourced additional accessories */}
       {apiExtras.length > 0 && (
         <div className="card p-5 mt-6">

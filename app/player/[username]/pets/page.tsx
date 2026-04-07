@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 import { resolvePlayer, getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { selectBestProfile } from '@/lib/hypixel/parser';
 import { PlayerProfile, ParsedPet } from '@/lib/types/player';
-import { computePetLevel, computePetStats, PET_SCORE_REWARDS } from '@/lib/neu/data';
+import { computePetLevel, computePetStats, computePetLore, PET_SCORE_REWARDS, PET_MAX_200_TYPES } from '@/lib/neu/data';
+import { PetGrid, SerializablePet } from './pet-grid';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -29,10 +30,9 @@ const TIER_COLOR: Record<string, string> = {
 
 // Use NEU-authoritative pet level XP curve
 function petProgressToNextLevel(pet: ParsedPet): { progress: number; xpToNext: number; maxLevel: number } {
-  const maxLevel = pet.tier === 'LEGENDARY' || pet.tier === 'MYTHIC' ? 200 : 100;
-  if (pet.level >= maxLevel) return { progress: 1, xpToNext: 0, maxLevel };
-  // Use NEU computePetLevel for accurate XP progress within current level
-  const { xpIntoLevel, xpForNextLevel } = computePetLevel(pet.xp, pet.tier);
+  const maxLevel = PET_MAX_200_TYPES.has(pet.type) ? 200 : 100;
+  if (pet.maxed) return { progress: 1, xpToNext: 0, maxLevel };
+  const { xpIntoLevel, xpForNextLevel } = computePetLevel(pet.xp, pet.type);
   const needed = xpForNextLevel ?? 1;
   return {
     progress: needed > 0 ? Math.min(1, xpIntoLevel / needed) : 1,
@@ -185,6 +185,25 @@ export default async function PetsPage({ params, searchParams }: Props) {
     return tierDiff !== 0 ? tierDiff : b.level - a.level;
   });
 
+  // Pre-compute serializable pet data for client PetGrid
+  const serializablePets: SerializablePet[] = sortedPets.map(pet => {
+    const maxLevel = PET_MAX_200_TYPES.has(pet.type) ? 200 : 100;
+    const { xpIntoLevel, xpForNextLevel, progressPct } = computePetLevel(pet.xp, pet.type);
+    const rawStats = computePetStats(pet.type, pet.tier, pet.level);
+    const stats = Object.entries(rawStats)
+      .filter(([k]) => k in STAT_LABELS)
+      .map(([key, value]) => ({ key, label: STAT_LABELS[key], value }));
+    const { name: petName, lore } = computePetLore(
+      pet.type, pet.tier, pet.level, pet.xp, pet.maxed, pet.heldItem,
+    );
+    return {
+      type: pet.type, tier: pet.tier, level: pet.level, xp: pet.xp,
+      maxed: pet.maxed, active: pet.active, heldItem: pet.heldItem,
+      skin: pet.skin, candyUsed: pet.candyUsed, maxLevel,
+      xpIntoLevel, xpForNextLevel, progressPct, stats, petName, lore,
+    };
+  });
+
   // Count by tier
   const byTier = TIER_ORDER.reduce((acc, t) => {
     acc[t] = pets.filter(p => p.tier === t).length;
@@ -196,8 +215,8 @@ export default async function PetsPage({ params, searchParams }: Props) {
 
   // Pets close to maxing (within 10 levels of max)
   const almostMaxed = sortedPets.filter(p => {
-    const max = p.tier === 'LEGENDARY' || p.tier === 'MYTHIC' ? 200 : 100;
-    return p.level >= max - 10 && p.level < max;
+    const max = PET_MAX_200_TYPES.has(p.type) ? 200 : 100;
+    return p.level >= max - 10 && !p.maxed;
   });
 
   // Check which BIS pets the player owns
@@ -228,7 +247,7 @@ export default async function PetsPage({ params, searchParams }: Props) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <StatCard label="Total Pets" value={`${pets.length}`} color="text-white" />
         <StatCard label="Legendary" value={`${legendaryCount}`} color="text-yellow-300" sub={mythicCount > 0 ? `+${mythicCount} Mythic` : undefined} />
-        <StatCard label="Active Pet" value={active ? active.type.replace(/_/g, ' ').slice(0, 12) : '—'} color="text-emerald-300" sub={active ? `Lv ${active.level} ${active.tier.slice(0, 3)}` : 'none active'} />
+        <StatCard label="Active Pet" value={active ? active.type.replace(/_/g, ' ').slice(0, 12) : '—'} color="text-emerald-300" sub={active ? (active.maxed ? `MAXED ${active.tier.slice(0, 3)}` : `Lv ${active.level} ${active.tier.slice(0, 3)}`) : 'none active'} />
         <StatCard label="Near Max" value={`${almostMaxed.length}`} color="text-amber-300" sub="within 10 levels" />
       </div>
 
@@ -247,7 +266,11 @@ export default async function PetsPage({ params, searchParams }: Props) {
               <div className="text-lg text-yellow-300 font-bold mb-1">
                 {active.type.replace(/_/g, ' ')}
               </div>
-              <div className="text-sm text-slate-400">Level {active.level}</div>
+              <div className="text-sm text-slate-400">
+                {active.maxed ? (
+                  <span className="text-green-400 font-semibold">MAXED</span>
+                ) : `Level ${active.level}`}
+              </div>
               {active.heldItem && (
                 <div className="text-xs text-slate-500 mt-1">
                   Held: {active.heldItem.replace(/_/g, ' ')}
@@ -356,7 +379,9 @@ export default async function PetsPage({ params, searchParams }: Props) {
                             {bis.tier.slice(0, 3)}
                           </span>
                           {ownedPet && (
-                            <span className="text-xs text-slate-500">Lv {ownedPet.level}</span>
+                            <span className="text-xs text-slate-500">
+                              {ownedPet.maxed ? <span className="text-green-400">MAXED</span> : `Lv ${ownedPet.level}`}
+                            </span>
                           )}
                         </div>
                         <p className="text-xs text-slate-500 mt-0.5">{bis.reason}</p>
@@ -374,70 +399,12 @@ export default async function PetsPage({ params, searchParams }: Props) {
       <div className="card p-5">
         <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
           🐾 All Pets
-          <span className="text-xs font-normal text-slate-500">{pets.length} total · sorted by tier/level</span>
+          <span className="text-xs font-normal text-slate-500">{pets.length} total · click a pet for details</span>
         </h2>
         {pets.length === 0 ? (
           <p className="text-slate-500 text-sm text-center py-4">No pets found in this profile.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {sortedPets.map((pet, i) => {
-              const { progress, xpToNext, maxLevel } = petProgressToNextLevel(pet);
-              const maxed = pet.level >= maxLevel;
-              return (
-                <div key={i} className={`rounded-lg border p-3 ${pet.active ? 'border-yellow-500/30 bg-yellow-500/5' : 'border-white/5 bg-slate-800/30'}`}>
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      {pet.active && <span className="text-yellow-400 text-xs">★</span>}
-                      <span className="text-sm font-medium text-white">{pet.type.replace(/_/g, ' ')}</span>
-                    </div>
-                    <span className={`text-xs rounded-full border px-1.5 py-0.5 ${TIER_COLOR[pet.tier] ?? 'text-slate-400'}`}>
-                      {pet.tier.slice(0, 3)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-xs text-slate-400 mb-1">
-                    <span>Lv {pet.level}{maxed ? ' (MAX)' : `/${maxLevel}`}</span>
-                    {!maxed && <span className="text-slate-600">{formatXP(xpToNext)} to next</span>}
-                  </div>
-                  {!maxed && (
-                    <div className="h-1 rounded-full bg-white/5">
-                      <div
-                        className={`h-full rounded-full ${
-                          pet.tier === 'LEGENDARY' ? 'bg-yellow-500' :
-                          pet.tier === 'MYTHIC' ? 'bg-pink-500' :
-                          pet.tier === 'EPIC' ? 'bg-purple-500' :
-                          'bg-blue-500'
-                        }`}
-                        style={{ width: `${progress * 100}%` }}
-                      />
-                    </div>
-                  )}
-                  {pet.heldItem && (
-                    <div className="text-xs text-slate-600 mt-1">🎒 {pet.heldItem.replace(/_/g, ' ')}</div>
-                  )}
-                  {pet.candyUsed > 0 && (
-                    <div className="text-xs text-slate-600">🍬 {pet.candyUsed} candy</div>
-                  )}
-                  {/* Pet stat bonuses from NEU petnums */}
-                  {(() => {
-                    const stats = computePetStats(pet.type, pet.tier, pet.level);
-                    const displayStats = Object.entries(stats)
-                      .filter(([k]) => k in STAT_LABELS)
-                      .slice(0, 3);
-                    if (displayStats.length === 0) return null;
-                    return (
-                      <div className="mt-1.5 flex flex-wrap gap-1">
-                        {displayStats.map(([stat, val]) => (
-                          <span key={stat} className="text-xs text-indigo-300 bg-indigo-500/10 rounded px-1.5 py-0.5">
-                            +{Math.round(val)} {STAT_LABELS[stat]}
-                          </span>
-                        ))}
-                      </div>
-                    );
-                  })()}
-                </div>
-              );
-            })}
-          </div>
+          <PetGrid pets={serializablePets} />
         )}
 
         {/* Tier breakdown */}
