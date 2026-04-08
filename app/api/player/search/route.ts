@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { resolvePlayer } from '@/lib/hypixel/client';
 import { getSkyBlockProfiles } from '@/lib/hypixel/client';
 import { PlayerSearchResult } from '@/lib/types/player';
-import { recordSearch } from '@/lib/db/snapshots';
 
 export async function GET(req: NextRequest) {
   const username = req.nextUrl.searchParams.get('q');
@@ -27,9 +26,6 @@ export async function GET(req: NextRequest) {
         selected: p.selected ?? false,
       })),
     };
-
-    // Record search in history (non-fatal)
-    recordSearch(resolvedName, uuid).catch(() => {});
 
     return NextResponse.json(result);
   } catch (err) {

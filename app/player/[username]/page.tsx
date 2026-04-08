@@ -9,7 +9,6 @@ import { formatCoins, levelColor, priorityColor, scoreColor } from '@/lib/utils/
 import { PET_MAX_200_TYPES, CROP_MILESTONE_THRESHOLDS, GARDEN_PLOT_COUNT } from '@/lib/neu/data';
 import { SKILL_XP_TABLE, xpToNextLevel, levelProgress } from '@/lib/data/xp-tables';
 import { PlayerProfile, Recommendation } from '@/lib/types/player';
-import { saveSnapshot, loadSnapshot } from '@/lib/db/snapshots';
 import RecommendationsPanel from './recommendations-panel';
 import AvatarImage from './avatar-image';
 
@@ -45,41 +44,29 @@ export default async function PlayerPage({ params, searchParams }: Props) {
       }));
     }
 
-    const cached = await loadSnapshot(uuid, profileId ?? undefined).catch(() => null);
-    if (cached) {
-      profile = cached;
+    if (!profilesRes.success || !profilesRes.profiles?.length) {
+      error = 'No SkyBlock profiles found for this player.';
     } else {
-      if (!profilesRes.success || !profilesRes.profiles?.length) {
-        error = 'No SkyBlock profiles found for this player.';
-      } else {
-        let targetProfile = profilesRes.profiles.find(p =>
-          p.profile_id === profileId || p.cute_name.toLowerCase() === profileId?.toLowerCase()
-        );
-        if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
+      let targetProfile = profilesRes.profiles.find(p =>
+        p.profile_id === profileId || p.cute_name.toLowerCase() === profileId?.toLowerCase()
+      );
+      if (!targetProfile) targetProfile = profilesRes.profiles.find(p => p.selected) ?? profilesRes.profiles[0];
 
-        const parsed = selectBestProfile([targetProfile], uuid, resolvedName);
-        // Enrich with NBT (real accessories) — non-fatal if it fails.
-        // Only save enriched profiles to the snapshot cache; if enrichment fails, serve
-        // the unenriched profile for this request but don't persist it so the next
-        // request gets a fresh attempt at enrichment.
-        let enriched: typeof parsed | null = null;
-        try {
-          enriched = await enrichWithNBT(parsed, targetProfile, uuid);
-        } catch {
-          // enrichment failed — use un-enriched data but don't cache it
-        }
-        profile = enriched ?? parsed;
-
-        // Enrich with garden API (separate endpoint — not in profiles response)
-        try {
-          const gardenRes = await getSkyBlockGarden(targetProfile.profile_id);
-          if (gardenRes.success && gardenRes.garden) {
-            profile = enrichWithGarden(profile, gardenRes.garden);
-          }
-        } catch { /* non-fatal */ }
-
-        if (enriched) saveSnapshot(enriched).catch(() => {});
+      const parsed = selectBestProfile([targetProfile], uuid, resolvedName);
+      let enriched: typeof parsed | null = null;
+      try {
+        enriched = await enrichWithNBT(parsed, targetProfile, uuid);
+      } catch {
+        // enrichment failed — use un-enriched data
       }
+      profile = enriched ?? parsed;
+
+      try {
+        const gardenRes = await getSkyBlockGarden(targetProfile.profile_id);
+        if (gardenRes.success && gardenRes.garden) {
+          profile = enrichWithGarden(profile, gardenRes.garden);
+        }
+      } catch { /* non-fatal */ }
     }
   } catch (err) {
     error = err instanceof Error ? err.message : 'Failed to load profile.';

@@ -1,33 +1,11 @@
 import { Metadata } from 'next';
-import { prisma } from '@/lib/db/client';
 
 export const metadata: Metadata = { title: 'Admin — SkyHub' };
 export const dynamic = 'force-dynamic';
 
-async function getStats() {
-  if (!prisma) return null;
-  try {
-    const [snapshots, searches] = await Promise.all([
-      prisma.playerSnapshot.count(),
-      prisma.searchHistory.count(),
-    ]);
-    const latestSnapshot = await prisma.playerSnapshot.findFirst({ orderBy: { updatedAt: 'desc' } });
-    const latestSearch = await prisma.searchHistory.findFirst({ orderBy: { createdAt: 'desc' } });
-    const topSearches = await prisma.searchHistory.groupBy({
-      by: ['username'],
-      _count: { username: true },
-      orderBy: { _count: { username: 'desc' } },
-      take: 10,
-    });
-    return { snapshots, searches, latestSnapshot, latestSearch, topSearches };
-  } catch {
-    return null;
-  }
-}
-
 export default async function AdminPage() {
-  const dbConnected = !!prisma;
-  const stats = await getStats();
+  const dbConnected = false;
+  const stats = null;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 space-y-6">
@@ -45,7 +23,7 @@ export default async function AdminPage() {
             { label: 'Hypixel API', status: process.env.HYPIXEL_API_KEY ? 'Key set' : 'Missing key', ok: !!process.env.HYPIXEL_API_KEY },
             { label: 'Environment', status: process.env.NODE_ENV ?? 'unknown', ok: true },
             { label: 'Next.js', status: '16.x (App Router)', ok: true },
-            { label: 'Prisma', status: '7.6.0', ok: true },
+            { label: 'Database', status: 'Not configured', ok: false },
             { label: 'Routes', status: '16 active', ok: true },
           ].map(item => (
             <div key={item.label} className="bg-slate-800/50 rounded-lg px-4 py-3">

@@ -1,4 +1,3 @@
-import { getRecentSearches } from '@/lib/db/snapshots';
 import { getElectionData } from '@/lib/api/election';
 import { getFireSales, isActive, formatTimeLeft } from '@/lib/api/firesales';
 import { getItemName } from '@/lib/neu/data';
@@ -119,12 +118,10 @@ const STATS = [
 ];
 
 export default async function HomePage() {
-  const [recentRows, election, fireSales] = await Promise.all([
-    getRecentSearches(6),
+  const [election, fireSales] = await Promise.all([
     getElectionData().catch(() => null),
     getFireSales().catch(() => [] as Awaited<ReturnType<typeof getFireSales>>),
   ]);
-  const recentNames = recentRows.map(r => r.username);
   const activeSales = fireSales.filter(isActive);
 
   return (
@@ -171,7 +168,7 @@ export default async function HomePage() {
               ))}
             </div>
 
-            <SearchForm recentSearches={recentNames} />
+            <SearchForm recentSearches={[]} />
           </div>
 
           {/* Right — logo as hero visual */}
